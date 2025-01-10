@@ -20,10 +20,10 @@ class CustomTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final textAlign;
-  bool obscureText = false;
-  bool readonly = false;
+  final bool obscureText;
+  final bool readonly;
 
-  CustomTextFormField(
+  const CustomTextFormField(
       {super.key,
       this.validator,
       this.label,
@@ -117,10 +117,10 @@ class CustomInAppTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final TextAlign? textAlign;
-  bool obscureText = false;
-  bool readonly = false;
+  final bool obscureText;
+  final bool readonly;
 
-  CustomInAppTextFormField(
+  const CustomInAppTextFormField(
       {super.key,
       this.validator,
       this.label,
@@ -210,11 +210,11 @@ class HomeScreenCustomTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? suffixIcon;
   final EdgeInsetsGeometry? padding;
-  bool obscureText = false;
-  bool readonly = false;
+  final bool obscureText;
+  final bool readonly;
 
-  HomeScreenCustomTextFormField(
-      {Key? key,
+  const HomeScreenCustomTextFormField(
+      {super.key,
       this.validator,
       this.color,
       this.label,
@@ -236,12 +236,11 @@ class HomeScreenCustomTextFormField extends StatelessWidget {
       this.suffixIcon,
       required this.readonly,
       this.prefixIcon,
-      this.padding})
-      : super(key: key);
+      this.padding});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: TextFormField(
         obscureText: obscureText,
@@ -298,15 +297,15 @@ class HomeScreenCustomTextFormField extends StatelessWidget {
 }
 
 class pinFied extends StatelessWidget {
-  Function(String value)? onchanged;
-  Function(String value)? onSubmit;
-  TextEditingController? controller;
-  pinFied({
+  final Function(String value)? onchanged;
+  final Function(String value)? onSubmit;
+  final TextEditingController? controller;
+  const pinFied({
     required this.onchanged,
     required this.onSubmit,
     required this.controller,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {

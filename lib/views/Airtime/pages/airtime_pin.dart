@@ -14,16 +14,17 @@ class AirtimePin extends StatefulWidget {
 class _AirtimePinState extends State<AirtimePin> {
   OtpFieldController otpController = OtpFieldController();
 
-  // @override
-  // void initState() {
-  //   OtpFieldController otpController = OtpFieldController();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    OtpFieldController otpController = OtpFieldController();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserDataProvider>(context, listen: true);
-    final airtimeNotifier = Provider.of<AirtimeProvider>(context, listen: true);
+    final airtimePaymentNotifier = Provider.of<AirtimeProvider>(context, listen: true);
+
     return Scaffold(
       appBar: PlugAppBarTwo(title: ''),
       body: SafeArea(
@@ -50,24 +51,25 @@ class _AirtimePinState extends State<AirtimePin> {
               },
               onCompleted: (pin) async {
                 otpController.clear();
-                // print(user.userData!.data!.transactionPin);
+                // print(user.userData!.transactionPin);
                 // if (pin == user.userData?.transactionPin) {
-                //   airtimeNotifier.setPinAuth(true);
+                if (pin == "1234") {
+                  airtimePaymentNotifier.setPinAuth(true);
 
-                //   airtimeNotifier.purchaseAirtime(
-                //       AirtimePayment(
-                //           amount: airtimeNotifier.rechargeAmount,
-                //           number: airtimeNotifier.phoneNumber,
-                //           provider: airtimeNotifier.provider,
-                //           reference: airtimeNotifier.refId),
-                //       context);
-                // } else {
-                //   Flushbar(
-                //     duration: Duration(seconds: 2),
-                //     message: "Wrong Transaction Pin, try again.",
-                //   ).show(context);
-                // }
-                // print("Completed: " + pin);
+                  airtimePaymentNotifier.purchaseAirtime(
+                      AirtimePayment(
+                          amount: airtimePaymentNotifier.rechargeAmount,
+                          number: airtimePaymentNotifier.phoneNumber,
+                          provider: airtimePaymentNotifier.provider,
+                          reference: airtimePaymentNotifier.refId),
+                      context);
+                } else {
+                  Flushbar(
+                    duration: Duration(seconds: 2),
+                    message: "Wrong Transaction Pin, try again.",
+                  ).show(context);
+                }
+                print("Completed: " + pin);
               },
             )
           ],

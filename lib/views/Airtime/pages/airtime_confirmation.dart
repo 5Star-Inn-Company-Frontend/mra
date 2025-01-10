@@ -1,5 +1,4 @@
 import 'package:mra/constant/fonts.dart';
-import 'package:mra/constant/text.dart';
 import 'package:mra/res/import/import.dart';
 
 class AirtimeConfirmation extends StatelessWidget {

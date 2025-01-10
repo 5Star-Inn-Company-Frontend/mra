@@ -68,8 +68,7 @@ class AirtimeProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<AirtimePayment> purchaseAirtime(
-      AirtimePayment payment, BuildContext context) async {
+  Future<AirtimePayment> purchaseAirtime(AirtimePayment payment, BuildContext context) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
     if (pinAuthenticated == true) {
       try {

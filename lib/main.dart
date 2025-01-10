@@ -1,5 +1,4 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import 'res/import/import.dart';
 
 void main() {
@@ -26,10 +25,10 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => PowerProvider()),
           ChangeNotifierProvider(create: (_) => TransferNotifier()),
           ChangeNotifierProvider(create: (_) => DataProvider()),
-          StreamProvider<InternetConnectionStatus>(
-            create: (_) {return InternetConnectionChecker.createInstance().onStatusChange;},
-            initialData: InternetConnectionStatus.connected,
-          )
+          // StreamProvider<InternetConnectionStatus>(
+          //   create: (_) {return InternetConnectionChecker.createInstance().onStatusChange;},
+          //   initialData: InternetConnectionStatus.connected,
+          // )
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,

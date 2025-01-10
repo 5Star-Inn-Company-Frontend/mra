@@ -20,4 +20,5 @@ class AirtimePayment {
       _$AirtimePaymentFromJson(json);
 
   Map<String, dynamic> toJson() => _$AirtimePaymentToJson(this);
+
 }

@@ -57,6 +57,7 @@ dependencies:
   group_list_view: ^1.1.1
   local_auth: ^2.3.0
   flutter_screenutil: ^5.9.3
+  flutter_svg: ^2.0.17
 
 dev_dependencies:
   flutter_test:
@@ -93,6 +94,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/bills/
+    - assets/icons/
 
   # example:
   fonts:
