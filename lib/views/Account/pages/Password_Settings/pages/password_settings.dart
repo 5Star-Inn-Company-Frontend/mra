@@ -15,15 +15,13 @@ class PasswordSettings extends StatefulWidget {
 class _PasswordSettingsState extends State<PasswordSettings> {
   final TextEditingController oldPasswordController = TextEditingController();
   final TextEditingController newPasswordController = TextEditingController();
-  final TextEditingController confirmPasswordController =
-      TextEditingController();
+  final TextEditingController confirmPasswordController = TextEditingController();
   late String _regErrorMsg;
   bool _isLoading = false;
 
   final _formKey = GlobalKey<FormState>();
 
-  Future<void> updatePassword(
-      BuildContext context, String current, String newPassword) async {
+  Future<void> updatePassword(BuildContext context, String current, String newPassword) async {
     try {
       setState(() {
         _isLoading = true;
@@ -35,8 +33,7 @@ class _PasswordSettingsState extends State<PasswordSettings> {
               return const Loading();
             });
       }
-      var response =
-          await UpdatePasswordService().updatePin(current, newPassword);
+      var response = await UpdatePasswordService().updatePin(current, newPassword);
 
       if (response.statusCode == 200) {
         print(response.data);
@@ -204,9 +201,10 @@ class _PasswordSettingsState extends State<PasswordSettings> {
                           onPressed: () {
                             if (_formKey.currentState!.validate()) {
                               updatePassword(
-                                  context,
-                                  oldPasswordController.text,
-                                  newPasswordController.text);
+                                context,
+                                oldPasswordController.text,
+                                newPasswordController.text
+                              );
                             }
                           },
                           title: 'Save',

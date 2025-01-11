@@ -119,9 +119,10 @@ class _ChangePinState extends State<ChangePin> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               await updateAcccountPin(
-                                  context,
-                                  _currentPinController.text,
-                                  _newPinController.text);
+                                context,
+                                _currentPinController.text,
+                                _newPinController.text
+                              );
                             }
                           },
                           title: 'Save',

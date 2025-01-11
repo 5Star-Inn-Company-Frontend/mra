@@ -15,7 +15,7 @@ class UpdatePasswordService {
     );
 
     try {
-      final response = await ApiService.dio.post('/update-password',
+      final response = await ApiService.dio.post('/change-password',
           options: Options(headers: {'Authorization': 'Bearer $token'}),
           data: {"current": current, "new": newPassword});
 

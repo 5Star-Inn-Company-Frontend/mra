@@ -15,9 +15,10 @@ class UpdateAccountPinService {
     );
 
     try {
-      final response = await ApiService.dio.post('/update-pin',
-          options: Options(headers: {'Authorization': 'Bearer $token'}),
-          data: {"current": current, "new": newPin});
+      final response = await ApiService.dio.post('/change-pin',
+        options: Options(headers: {'Authorization': 'Bearer $token'}),
+        data: {"current": current, "new": newPin}
+      );
 
       return response;
     } catch (error) {

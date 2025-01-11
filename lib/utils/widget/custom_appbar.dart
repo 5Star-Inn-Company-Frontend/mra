@@ -55,7 +55,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     final userData = userProvider.userData;
 
     final wallet = userProvider.walletData?.data?.map((e) => e.balance);
-    String balance = wallet?.first.toString() ?? 'wallet_balance null';
+    String balance = wallet?.first.toString() ?? 0.00.toString();
     final amount = double.parse(balance);
 
     // Format the balance

@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mra/constant/loader.dart';
 import 'package:mra/core/network/api_client.dart';
-import 'package:mra/views/Account/dashboard.dart';
 import 'package:mra/views/auth/Login/Model/login_request.dart';
 
 class AuthProvider with ChangeNotifier {
@@ -41,7 +40,7 @@ class AuthProvider with ChangeNotifier {
           }
         );
       }
-
+ 
       final response = await ApiService.dio.post(
         '/login',
         data: json.encode(login.toJson()),
