@@ -35,7 +35,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       }
 
       final response = await ApiService.dio.post(
-        '/forget-password',
+        '/reset-password-request',
         data: {'email': email}
       );
 
@@ -45,13 +45,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           Navigator.pop(context);
         }
 
-        if (response.data['success'] == true) {
+        if (response.data['status'] == true) {
           print(response.data);
           Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => VerifyOtp(email: _emailController.text, ))
           );
-        } else if (response.data['success'] == false) {
+        } else if (response.data['status'] == false) {
           print(response.data);
 
           Flushbar(

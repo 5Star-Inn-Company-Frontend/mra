@@ -34,7 +34,7 @@ class _SetFingerPrintState extends State<SetFingerPrint> {
       _isAuthenticated = await _localAuthentication.authenticate(
         localizedReason: 'Authenticate with biometrics',
         options: const AuthenticationOptions(
-          biometricOnly: true, useErrorDialogs: false, stickyAuth: true
+          biometricOnly: true, useErrorDialogs: true, stickyAuth: true
         )
       );
     } on PlatformException catch (e) {

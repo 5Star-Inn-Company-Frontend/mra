@@ -1,27 +1,15 @@
 import 'dart:math';
-import 'package:another_flushbar/flushbar.dart';
-import 'package:dio/dio.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
 import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:mra/constant/app_colors.dart';
-import 'package:mra/constant/text.dart';
-import 'package:mra/core/network/api_client.dart';
-import 'package:mra/utils/ui_helpers.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
-import 'package:mra/views/Data/changeNotifier/dataNotifier.dart';
 import 'package:mra/views/Data/model/dataPlans.dart';
 import 'package:mra/views/Data/model/dataProviders.dart';
 import 'package:mra/views/Data/pages/dataPin.dart';
 import 'package:mra/views/Data/service/dataProviders.dart';
 import 'package:mra/views/Transfer/constants/textField.dart';
-import 'package:provider/provider.dart';
-
 import '../../../res/import/import.dart';
-import 'package:group_list_view/group_list_view.dart';
 
 class Data extends StatefulWidget {
-  const Data({Key? key}) : super(key: key);
+  const Data({super.key});
 
   @override
   State<Data> createState() => _DataState();
@@ -60,7 +48,7 @@ class _DataState extends State<Data> {
   Future<DataPlans> loadDataPlans(String service) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
 
-    print(token);
+    // print(token);
     try {
       final response = await ApiService.dio.get('/internet-plans/$service',
           options: Options(headers: {'Authorization': 'Bearer $token'}));
@@ -125,6 +113,7 @@ class _DataState extends State<Data> {
   @override
   Widget build(BuildContext context) {
     final dataNotifier = Provider.of<DataProvider>(context, listen: false);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const PlugAppBarTwo(title: "Data"),
@@ -133,8 +122,9 @@ class _DataState extends State<Data> {
           builder: (context, constraints) {
             return ConstrainedBox(
               constraints: BoxConstraints(
-                  minWidth: constraints.maxWidth,
-                  minHeight: constraints.maxHeight),
+                minWidth: constraints.maxWidth,
+                minHeight: constraints.maxHeight
+              ),
               child: IntrinsicHeight(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
@@ -147,6 +137,7 @@ class _DataState extends State<Data> {
                           size: 14,
                           color: plugSecondaryTextColor,
                         ),
+
                         AppVerticalSpacing.verticalSpacingS,
                         SizedBox(
                           height: 80,
@@ -164,45 +155,31 @@ class _DataState extends State<Data> {
                                         print(snapshot.data?.data?[index].id);
                                         setState(() {
                                           currentIndex = index;
-                                          provider =
-                                              snapshot.data?.data?[index].id ??
-                                                  1;
+                                          provider = snapshot.data?.data?[index].id ?? 1;
                                         });
-                                        futureDataPlans = loadDataPlans(snapshot
-                                                .data!.data?[index].provider ??
-                                            '');
-                                        print(snapshot
-                                            .data?.data?[index].provider);
+                                        futureDataPlans = loadDataPlans(snapshot.data!.data?[index].provider ?? '');
+                                        print(snapshot.data?.data?[index].provider);
                                       },
                                       child: Container(
                                         margin: const EdgeInsets.all(8.0),
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 5.0, horizontal: 8.0),
+                                        padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
                                         decoration: BoxDecoration(
-                                            border: Border.all(
-                                                width: 1.5,
-                                                color: currentIndex == index
-                                                    ? AppColors.plugPrimaryColor
-                                                    : AppColors.white),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            color: currentIndex == index
-                                                ? AppColors.primaryBrown
-                                                : AppColors.white,
-                                            // color: AppColors.white,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: const Color(0xff525151)
-                                                    .withOpacity(0.3),
-                                                offset: const Offset(4, 4),
-                                                blurRadius: 15,
-                                              ),
-                                            ]),
+                                          border: Border.all(
+                                            width: 1.5,
+                                            color: currentIndex == index ? AppColors.plugPrimaryColor : AppColors.white),
+                                          borderRadius: BorderRadius.circular(8),
+                                          color: currentIndex == index ? AppColors.primaryBrown : AppColors.white,
+                                          // color: AppColors.white,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: const Color(0xff525151).withOpacity(0.3),
+                                              offset: const Offset(4, 4),
+                                              blurRadius: 15,
+                                            ),
+                                          ]
+                                        ),
                                         child: Image.asset(
-                                          snapshot.data?.data![index]
-                                                  .providerLogoUrl
-                                                  .toString() ??
-                                              '',
+                                          snapshot.data?.data![index].providerLogoUrl.toString() ?? '',
                                           width: 50,
                                         ),
                                       ),
@@ -220,6 +197,7 @@ class _DataState extends State<Data> {
                             },
                           ),
                         ),
+
                         AppVerticalSpacing.verticalSpacingXL,
                         MyText(
                           title: 'Mobile Number',
@@ -227,50 +205,41 @@ class _DataState extends State<Data> {
                           color: plugSecondaryTextColor,
                           weight: FontWeight.w400,
                         ),
+
                         AppVerticalSpacing.verticalSpacingS,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
                               child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
+                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Expanded(
                                       child: IntlPhoneField(
                                         controller: phonecontroller,
                                         decoration:
-                                            textInputDecoration.copyWith(
-                                                hintText: '0000 0000 0000',
-                                                enabledBorder: InputBorder.none,
-                                                focusedBorder: InputBorder.none,
-                                                errorBorder: InputBorder.none,
-                                                fillColor: Color(0xffF5F5F5),
-                                                focusedErrorBorder:
-                                                    InputBorder.none),
+                                          textInputDecoration.copyWith(
+                                            hintText: '0000 0000 0000',
+                                            enabledBorder: InputBorder.none,
+                                            focusedBorder: InputBorder.none,
+                                            errorBorder: InputBorder.none,
+                                            fillColor: Color(0xffF5F5F5),
+                                            focusedErrorBorder:InputBorder.none
+                                          ),
                                         initialCountryCode: 'NG',
                                         initialValue: '00000000000',
                                         autofocus: false,
                                         validator: (p0) {
-                                          if (phonecontroller.text.length !=
-                                                  10 ||
-                                              phonecontroller.text.length !=
-                                                  11) {
+                                          if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
                                             return ("Invalid phone number");
                                           }
                                           return null;
                                         },
-                                        flagsButtonMargin:
-                                            const EdgeInsets.only(left: 10),
-                                        dropdownIconPosition:
-                                            IconPosition.trailing,
-                                        dropdownIcon: const Icon(
-                                          Icons.keyboard_arrow_down,
-                                          color: AppColors.textPrimaryColor,
-                                        ),
+                                        flagsButtonMargin: const EdgeInsets.only(left: 10),
+                                        dropdownIconPosition: IconPosition.trailing,
+                                        dropdownIcon: const Icon(Icons.keyboard_arrow_down, color: AppColors.textPrimaryColor,),
                                         disableLengthCheck: true,
                                         textInputAction: TextInputAction.next,
                                         onChanged: (phone) {
@@ -289,6 +258,7 @@ class _DataState extends State<Data> {
                                 ),
                               ),
                             ),
+
                             AppHorizontalSpacing.horizontalSpacingS,
                             InkWell(
                               onTap: () {
@@ -309,134 +279,95 @@ class _DataState extends State<Data> {
                                           builder: (context, snapshot) {
                                             if (snapshot.data == null) {
                                               return const Text(
-                                                  "No contacts found");
+                                                "No contacts found"
+                                              );
                                             }
                                             var contacts = snapshot.data;
                                             return snapshot.hasData
                                                 ? ListView.builder(
                                                     itemCount: contacts!.length,
                                                     itemBuilder: (context, i) {
-                                                      Contact contact =
-                                                          snapshot.data![i];
-
-                                                      controller.text = contact
-                                                          .phones[0].number;
+                                                      Contact contact = snapshot.data![i];
+                                                      controller.text = contact.phones[0].number;
                                                       return InkWell(
                                                         onTap: () {
-                                                          setState(() {
-                                                            contact;
-                                                          });
-                                                          Navigator.pop(
-                                                              context);
+                                                          setState(() {contact;});
+                                                          Navigator.pop(context);
                                                         },
                                                         child: Padding(
-                                                          padding:
-                                                              const EdgeInsets
-                                                                      .symmetric(
-                                                                  horizontal:
-                                                                      20),
+                                                          padding: const EdgeInsets.symmetric(horizontal: 20),
                                                           child: Column(
                                                             children: [
-                                                              AppVerticalSpacing
-                                                                  .verticalSpacingD,
+                                                              AppVerticalSpacing.verticalSpacingD,
                                                               Container(
-                                                                padding:
-                                                                    const EdgeInsets
-                                                                        .all(10),
+                                                                padding: const EdgeInsets.all(10),
                                                                 height: 70,
-                                                                width: MediaQuery.of(
-                                                                        context)
-                                                                    .size
-                                                                    .width,
+                                                                width: MediaQuery.of(context).size.width,
                                                                 child: Row(
-                                                                  crossAxisAlignment:
-                                                                      CrossAxisAlignment
-                                                                          .start,
+                                                                  crossAxisAlignment: CrossAxisAlignment.start,
                                                                   children: [
                                                                     CircleAvatar(
-                                                                      radius:
-                                                                          20,
-                                                                      child:
-                                                                          Icon(
-                                                                        Icons
-                                                                            .person,
-                                                                        color:
-                                                                            plugTetTextColor,
-                                                                      ),
+                                                                      radius: 20,
+                                                                      child: Icon(Icons.person, color:plugTetTextColor,),
                                                                     ),
-                                                                    AppHorizontalSpacing
-                                                                        .horizontalSpacingS,
+
+                                                                    AppHorizontalSpacing.horizontalSpacingS,
                                                                     Column(
-                                                                      crossAxisAlignment:
-                                                                          CrossAxisAlignment
-                                                                              .start,
+                                                                      crossAxisAlignment: CrossAxisAlignment.start,
                                                                       children: [
                                                                         MyText(
-                                                                          title:
-                                                                              contact.displayName,
-                                                                          size:
-                                                                              16,
-                                                                          color:
-                                                                              plugBlack,
-                                                                          weight:
-                                                                              FontWeight.w700,
+                                                                          title: contact.displayName,
+                                                                          size: 16,
+                                                                          color: plugBlack,
+                                                                          weight: FontWeight.w700,
                                                                         ),
+
                                                                         MyText(
-                                                                          title: contact
-                                                                              .phones[0]
-                                                                              .number,
-                                                                          size:
-                                                                              16,
-                                                                          color:
-                                                                              plugBlack,
-                                                                          weight:
-                                                                              FontWeight.w700,
+                                                                          title: contact.phones[0].number,
+                                                                          size: 16,
+                                                                          color: plugBlack,
+                                                                          weight: FontWeight.w700,
                                                                         ),
                                                                       ],
                                                                     ),
                                                                   ],
                                                                 ),
                                                               ),
-                                                              const Divider(
-                                                                color: Color(
-                                                                    0xffF5F5F5),
-                                                                thickness: 2,
-                                                              ),
+                                                              const Divider(color: Color(0xffF5F5F5), thickness: 2,),
                                                             ],
                                                           ),
                                                         ),
                                                       );
-                                                    })
+                                                    }
+                                                  )
                                                 : snapshot.hasError
-                                                    ? Center(
-                                                        child: MyText(
-                                                          title:
-                                                              'NO Contacts Available On this device',
-                                                          size: 24,
-                                                          weight:
-                                                              FontWeight.w700,
-                                                          color: plugBlack,
-                                                        ),
-                                                      )
-                                                    : Center(
-                                                        child: MyText(
-                                                          title: 'LOADING.....',
-                                                          size: 24,
-                                                          weight:
-                                                              FontWeight.w700,
-                                                          color: plugBlack,
-                                                        ),
-                                                      );
+                                                ? Center(
+                                                    child: MyText(
+                                                      title:'No Contacts Available On this device',
+                                                      size: 24,
+                                                      weight: FontWeight.w700,
+                                                      color: plugBlack,
+                                                    ),
+                                                  )
+                                                : Center(
+                                                    child: MyText(
+                                                      title: 'LOADING.....',
+                                                      size: 24,
+                                                      weight:
+                                                          FontWeight.w700,
+                                                      color: plugBlack,
+                                                    ),
+                                                  );
                                           }),
                                     ),
                                   ),
                                 );
                               },
-                              child:
-                                  Image.asset('assets/images/add_contacts.png'),
+                              child: Image.asset('assets/images/add_contacts.png'),
                             ),
                           ],
                         ),
+
                         AppVerticalSpacing.verticalSpacingN,
                         MyText(
                           title: 'Select Data Plan',
@@ -446,20 +377,19 @@ class _DataState extends State<Data> {
                             color: plugTextColor,
                           ),
                         ),
+
                         Visibility(
-                          visible:
-                              _dataPlans?.data?.length != null ? true : false,
+                          visible: _dataPlans?.data?.length != null ? true : false,
                           child: GridView.builder(
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(
-                                parent: ScrollPhysics()),
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                                    maxCrossAxisExtent: 200,
-                                    childAspectRatio: 4 / 2,
-                                    crossAxisSpacing: 10,
-                                    mainAxisSpacing: 1),
+                            physics: const NeverScrollableScrollPhysics(parent: ScrollPhysics()),
+                            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                              maxCrossAxisExtent: 200,
+                              childAspectRatio: 4 / 2,
+                              crossAxisSpacing: 10,
+                              mainAxisSpacing: 1
+                            ),
                             itemCount: _dataPlans?.data?.length ?? 0,
                             itemBuilder: (context, index) {
                               return RadioListTile(
@@ -518,8 +448,7 @@ class _DataState extends State<Data> {
                             } else if (phonecontroller.text.length != 10 ||
                                 phonecontroller.text.length != 11) {
                               Flushbar(
-                                message:
-                                    'Input a valid phone number, to continue',
+                                message: 'Input a valid phone number, to continue',
                                 duration: Duration(seconds: 3),
                                 isDismissible: true,
                                 backgroundColor: Colors.red,
