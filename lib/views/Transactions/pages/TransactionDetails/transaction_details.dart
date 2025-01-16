@@ -1,8 +1,4 @@
 import 'package:flutter/rendering.dart';
-
-import 'package:mra/constant/app_colors.dart';
-import 'package:mra/constant/text.dart';
-import 'package:mra/utils/ui_helpers.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Transactions/model/transactions.dart';
 import 'package:screenshot/screenshot.dart';
@@ -10,12 +6,11 @@ import 'dart:ui' as ui;
 import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
-
 import '../../../../res/import/import.dart';
 
 class TransactionDetails extends StatefulWidget {
-  TransactionDetails(
-      {Key? key,
+  const TransactionDetails(
+      {super.key,
       this.transactions,
       this.image,
       this.from,
@@ -28,8 +23,7 @@ class TransactionDetails extends StatefulWidget {
       this.to,
       this.type,
       this.title,
-      this.transactionStatus})
-      : super(key: key);
+      this.transactionStatus});
   final Transactions? transactions;
   final String? image;
   final String? from;
@@ -315,16 +309,16 @@ class _TransactionDetailsState extends State<TransactionDetails> {
   }
 }
 
-class transactionsDetailsInfo extends StatelessWidget {
+class TransactionsDetailsInfo extends StatelessWidget {
   final String title;
   final String subtitle;
   final Color? color;
-  const transactionsDetailsInfo({
-    Key? key,
+  const TransactionsDetailsInfo({
+    super.key,
     required this.title,
     required this.subtitle,
     this.color,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

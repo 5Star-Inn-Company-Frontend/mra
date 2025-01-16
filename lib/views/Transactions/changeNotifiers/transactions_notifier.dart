@@ -40,10 +40,8 @@ class TransactionsDataProvider with ChangeNotifier {
         
         final userData = Transactions.fromJson(response.data);
         setTransactionsData(userData);
-        print(userData);
+        print('transactions loaded successfully: $userData');
       }
     } catch (e) {}
-
-    return null;
   }
 }

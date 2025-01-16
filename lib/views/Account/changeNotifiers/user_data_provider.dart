@@ -4,14 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mra/core/network/api_client.dart';
 import 'package:mra/views/Account/model/profile_model.dart';
+import 'package:mra/views/Account/model/vaccts_model.dart';
 import 'package:mra/views/Account/model/walletResponse.dart';
 
 class UserDataProvider with ChangeNotifier {
   AccountModel? _userData;
+  VacctsModel? _userVacctData;
   Wallet? _walletData;
 
   Wallet? get walletData => _walletData;
   AccountModel? get userData => _userData;
+  VacctsModel? get userVacctData => _userVacctData;
 
   final String _errormsg = '';
   String get errormsg => _errormsg;
@@ -29,6 +32,11 @@ class UserDataProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  void setUserAccountData(VacctsModel userVacctData){
+    _userVacctData = userVacctData; 
+    notifyListeners();
+  }
+
   void setWalletData(Wallet walletData) {
     _walletData = walletData;
     notifyListeners();
@@ -43,7 +51,7 @@ class UserDataProvider with ChangeNotifier {
     }
 
     try {
-      // setLoading(true);
+      setLoading(true);
 
       final response = await ApiService.dio.get(
         '/profile',
@@ -53,10 +61,13 @@ class UserDataProvider with ChangeNotifier {
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        final userData = AccountModel.fromJson(response.data['data']); // Adjusted to access 'data' key
+        final userData = AccountModel.fromJson(response.data['data']);
+
         setUserData(userData);
+
         print('User data loaded successfully: $userData');
         return userData;
+
       } 
       else {
         print('Error: Unexpected status code ${response.statusCode}');
@@ -92,12 +103,68 @@ class UserDataProvider with ChangeNotifier {
       .show(context);
       }
     } 
-    // finally {
-    //   setLoading(false);
-    // }
+    finally {
+      setLoading(false);
+    }
 
     return null;
   }
+
+
+  Future<VacctsModel?> loadVacctsData(BuildContext context) async {
+    final token = await const FlutterSecureStorage().read(key: 'token');
+    
+    if (token == null) {
+      print('Error: Token is missing');
+      return null;
+    }
+
+    try {
+      setLoading(true);
+
+      final response = await ApiService.dio.get(
+        '/vaccts',
+        options: Options(
+          headers: {'Authorization': 'Bearer $token'},
+        ),
+      );
+
+      print('Vaccts API response: ${response.data}'); // Debugging line
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final vacctsData = VacctsModel.fromJson(response.data);
+
+        setUserAccountData(vacctsData);
+
+        print('Vaccts data loaded successfully: $vacctsData');
+        return vacctsData;
+
+      } 
+      else {
+        print('Error: Unexpected status code ${response.statusCode}');
+      }
+    } on DioException catch (e) {
+      print('DioException caught: ${e.message}');
+      print('Error type: ${e.type}');
+      print('Error response: ${e.response?.data}');
+
+      if (DioExceptionType.badResponse == e.type) {
+        print("Error in internet");
+        Flushbar(
+          message: "Unable to make request, try again ",
+          flushbarStyle: FlushbarStyle.GROUNDED,
+          isDismissible: true,
+          flushbarPosition: FlushbarPosition.TOP,
+          duration: const Duration(seconds: 2),
+          backgroundColor: Colors.red
+        ).show(context);
+      }
+    } finally {
+      setLoading(false);
+    }
+    return null;
+  }
+
   
 
   Future<Wallet?> loadWallet(BuildContext context) async {

@@ -5,7 +5,7 @@ import 'package:mra/constant/text.dart';
 import 'package:mra/core/navigators/router_names.dart';
 import 'package:mra/res/import/import.dart';
 import 'package:mra/utils/ui_helpers.dart';
-import 'package:mra/views/Electricity/changeNotifier/powerNotifier.dart';
+import 'package:mra/views/Electricity/changeNotifier/power_notifier.dart';
 import 'package:provider/provider.dart';
 
 class PowerSuccessConfirmation extends StatelessWidget {

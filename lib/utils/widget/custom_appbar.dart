@@ -54,6 +54,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
     final userProvider = Provider.of<UserDataProvider>(context, listen: true);
     final userData = userProvider.userData;
 
+    final vacctsData = Provider.of<UserDataProvider>(context).userVacctData;
+
     final wallet = userProvider.walletData?.data?.map((e) => e.balance);
     String balance = wallet?.first.toString() ?? 0.00.toString();
     final amount = double.parse(balance);
@@ -151,7 +153,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               Row(
                 children: [
                   MyText(
-                    title: userData?.accountNumber ?? 'Acct number: Null',
+                    title: vacctsData?.data[0].accountNumber ?? 'No Account Number',
                     // title: '0123456789', 
                     size: 20, color: plugWhite, weight: FontWeight.w700,
                   ),
@@ -159,9 +161,26 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   const Gap(8),
                   TouchableOpacity(
                     onTap: () async {
-                      FlutterClipboard.copy('Account Number: 0123456789')
-                        // 'Account Number: ${accts?[0].toString()}, Bank: ${accts?.last.toString()}')
-                        .then((value) => print('isCopied'));
+                      if (vacctsData != null && vacctsData.data.isNotEmpty) {
+                        await FlutterClipboard.copy('Account Number: ${vacctsData.data.first.accountNumber}')
+                          .then((value) => Flushbar(
+                            message: 'Account number copied to clipboard',
+                            flushbarStyle: FlushbarStyle.GROUNDED,
+                            isDismissible: true,
+                            flushbarPosition: FlushbarPosition.TOP,
+                            duration: const Duration(seconds: 2),
+                            backgroundColor: Colors.green,
+                          ).show(context));
+                      } else {
+                        Flushbar(
+                          message: 'No account number to copy',
+                          flushbarStyle: FlushbarStyle.GROUNDED,
+                          isDismissible: true,
+                          flushbarPosition: FlushbarPosition.TOP,
+                          duration: const Duration(seconds: 2),
+                          backgroundColor: Colors.red,
+                        ).show(context);
+                      }
                     },
                     child: const Icon(Icons.copy_sharp, color: AppColors.white,),
                   )
@@ -170,8 +189,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
               AppVerticalSpacing.verticalSpacingS,
               MyText(
-                // title: accts?.last.toString(),
-                title: 'accts_last', size: 14, color: plugWhite, weight: FontWeight.w400,
+                title: 'Bank Name | ${vacctsData?.data[0].accountName}',
+                color: AppColors.white,
               ),
 
               // AppVerticalSpacing.verticalSpacingS,

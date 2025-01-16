@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:another_flushbar/flushbar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,9 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mra/constant/loader.dart';
 import 'package:mra/core/network/api_client.dart';
-import 'package:mra/views/Airtime/model/airtimePayment.dart';
-import 'package:mra/views/Airtime/pages/airtime_confirmation.dart';
-import 'package:mra/views/Airtime/pages/airtime_pin.dart';
 import 'package:mra/views/Electricity/model/powerPayment.dart';
 import 'package:mra/views/Electricity/pages/powerConfirmation.dart';
 import 'package:mra/views/Electricity/pages/powerPin.dart';
@@ -79,8 +75,7 @@ class PowerProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<PowerPayment> purchasePower(
-      PowerPayment payment, BuildContext context) async {
+  Future<PowerPayment> purchasePower(PowerPayment payment, BuildContext context) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
     if (pinAuthenticated == true) {
       try {

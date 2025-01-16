@@ -4,7 +4,7 @@ import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Data/model/dataPlans.dart';
 import 'package:mra/views/Data/model/dataProviders.dart';
 import 'package:mra/views/Data/pages/dataPin.dart';
-import 'package:mra/views/Data/service/dataProviders.dart';
+import 'package:mra/views/Data/service/data_providers.dart';
 import 'package:mra/views/Transfer/constants/textField.dart';
 import '../../../res/import/import.dart';
 
@@ -397,17 +397,15 @@ class _DataState extends State<Data> {
                                 value: index,
                                 groupValue: selectedRadioTile,
                                 title: TextSemiBold(
-                                  ' ${_dataPlans?.data?[index].name?.split('-').first} ${_dataPlans?.data?[index].name?.split('-').last}',
+                                  '${_dataPlans?.data?[index].name?.split('-').first} ${_dataPlans?.data?[index].name?.split('-').last}',
                                   textAlign: TextAlign.left,
                                 ),
-                                subtitle: TextSemiBold(
-                                    'Price: N${_dataPlans?.data?[index].amount}'),
+                                subtitle: TextSemiBold('Price: N${_dataPlans?.data?[index].amount}'),
                                 onChanged: (value) {
                                   setSelectedRadioTile(value!);
                                   setState(() {
                                     selectedPlan = _dataPlans?.data?[index].id;
-                                    selectedPlanName =
-                                        _dataPlans?.data?[index].name;
+                                    selectedPlanName = _dataPlans?.data?[index].name;
                                   });
                                   print(_dataPlans?.data?[index].amount);
                                   print(value);
@@ -417,36 +415,38 @@ class _DataState extends State<Data> {
                             },
                           ),
                         ),
+
                         // const Spacer(),
                         Gap(screenHeight(context) * 0.1),
+
                         CustomButtonWithIconRight(
                           onPressed: () async {
-                            if (selectedRadioTile != null &&
-                                    phonecontroller.text.length != 10 ||
-                                phonecontroller.text.length != 11 &&
-                                    _formKey.currentState!.validate()) {
+                            if (selectedRadioTile != null && phonecontroller.text.length != 10 || phonecontroller.text.length != 11 &&
+                              _formKey.currentState!.validate()) {
                               final random = Random();
                               final refId = 'ref${random.nextInt(999999999)}d';
                               dataNotifier.setDataPayment(
-                                  phonecontroller.text,
-                                  selectedPlan!.toInt(),
-                                  provider,
-                                  refId,
-                                  selectedPlanName.toString());
+                                phonecontroller.text,
+                                selectedPlan!.toInt(),
+                                provider,
+                                refId,
+                                selectedPlanName.toString()
+                              );
                               await Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (context) => const DataPin(),
                                 ),
                               );
-                            } else if (selectedRadioTile == null) {
+                            } 
+                            else if (selectedRadioTile == null) {
                               Flushbar(
                                 message: 'Pls select a data plan, to continue',
                                 duration: Duration(seconds: 3),
                                 isDismissible: true,
                                 backgroundColor: Colors.red,
                               ).show(context);
-                            } else if (phonecontroller.text.length != 10 ||
-                                phonecontroller.text.length != 11) {
+                            } 
+                            else if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
                               Flushbar(
                                 message: 'Input a valid phone number, to continue',
                                 duration: Duration(seconds: 3),

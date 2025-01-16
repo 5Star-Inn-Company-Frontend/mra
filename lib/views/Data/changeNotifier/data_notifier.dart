@@ -1,16 +1,10 @@
 import 'dart:convert';
-
-import 'package:another_flushbar/flushbar.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mra/constant/loader.dart';
-import 'package:mra/core/network/api_client.dart';
 import 'package:mra/res/import/import.dart';
 import 'package:mra/views/Data/model/buyData.dart';
 import 'package:mra/views/Data/pages/dataConfirmation.dart';
-import 'package:mra/views/Electricity/pages/powerConfirmation.dart';
-import 'package:mra/views/Electricity/pages/powerPin.dart';
+// import 'package:mra/views/Electricity/pages/powerConfirmation.dart';
+// import 'package:mra/views/Electricity/pages/powerPin.dart';
 
 class DataProvider with ChangeNotifier {
   String? _number;
@@ -58,19 +52,25 @@ class DataProvider with ChangeNotifier {
 
   Future<BuyData> purchaseData(BuyData payment, BuildContext context) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
+
     if (pinAuthenticated == true) {
       try {
         setPaymentLoading(true);
         if (isPaymentLoading == true) {
           showCupertinoDialog(
-              context: context,
-              builder: (context) {
-                return const Loading();
-              });
+            context: context,
+            builder: (context) {
+              return const Loading();
+            }
+          );
         }
-        final response = await ApiService.dio.post('/buy-data',
-            data: json.encode(payment.toJson()),
-            options: Options(headers: {'Authorization': 'Bearer $token'}));
+
+        final response = await ApiService.dio.post(
+          '/purchase-data',
+          data: json.encode(payment.toJson()),
+          options: Options(headers: {'Authorization': 'Bearer $token'}
+          )
+        );
 
         if (response.statusCode == 200 || response.statusCode == 201) {
           setPaymentLoading(false);
@@ -79,14 +79,14 @@ class DataProvider with ChangeNotifier {
           }
           setPinAuth(false);
           print(response.data);
+
           if (response.data['success'] == true) {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const DataConfirmation()),
             );
           } else {
-            // ignore: use_build_context_synchronously
             Flushbar(
-                    message: "Unable to buy airtime, try again ",
+                    message: "Unable to buy data, try again ",
                     flushbarStyle: FlushbarStyle.GROUNDED,
                     isDismissible: true,
                     flushbarPosition: FlushbarPosition.TOP,

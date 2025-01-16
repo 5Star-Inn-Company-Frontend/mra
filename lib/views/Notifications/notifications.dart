@@ -1,6 +1,4 @@
 import 'package:mra/constant/fonts.dart';
-import 'package:mra/constant/text.dart';
-import 'package:mra/utils/formatter.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Notifications/model/notifications.dart';
 import 'package:mra/views/Notifications/service/notification_service.dart';

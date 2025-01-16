@@ -1,25 +1,14 @@
 import 'dart:math';
-
-import 'package:another_flushbar/flushbar.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import 'package:mra/constant/app_colors.dart';
-import 'package:mra/core/network/api_client.dart';
-import 'package:mra/utils/ui_helpers.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
-import 'package:mra/views/Electricity/changeNotifier/powerNotifier.dart';
 import 'package:mra/views/Electricity/model/powerPayment.dart';
 import 'package:mra/views/Electricity/model/powerProviders.dart';
 import 'package:mra/views/Electricity/model/powerValidate.dart';
-import 'package:mra/views/Electricity/services/powerService.dart';
-import 'package:provider/provider.dart';
-
+import 'package:mra/views/Electricity/services/power_service.dart';
 import '../../../res/import/import.dart';
 
 class Electricity extends StatefulWidget {
-  Electricity({Key? key}) : super(key: key);
+  const Electricity({super.key});
 
   @override
   State<Electricity> createState() => _ElectricityState();
@@ -77,8 +66,9 @@ class _ElectricityState extends State<Electricity> {
             return SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                    minWidth: constraints.maxWidth,
-                    minHeight: constraints.maxHeight),
+                  minWidth: constraints.maxWidth,
+                  minHeight: constraints.maxHeight
+                ),
                 child: IntrinsicHeight(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
