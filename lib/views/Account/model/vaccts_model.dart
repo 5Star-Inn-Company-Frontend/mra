@@ -31,6 +31,7 @@ class AccountData {
   final int userId;
   final String accountName;
   final String accountNumber;
+  final String provider;
   final String reference;
   final String status;
 
@@ -39,6 +40,7 @@ class AccountData {
     required this.userId,
     required this.accountName,
     required this.accountNumber,
+    required this.provider,
     required this.reference,
     required this.status,
   });
@@ -49,6 +51,7 @@ class AccountData {
       userId: json['user_id'],
       accountName: json['account_name'],
       accountNumber: json['account_number'],
+      provider: json['provider'],
       reference: json['reference'],
       status: json['status'],
     );
@@ -60,6 +63,7 @@ class AccountData {
       'user_id': userId,
       'account_name': accountName,
       'account_number': accountNumber,
+      'provider': provider,
       'reference': reference,
       'status': status,
     };

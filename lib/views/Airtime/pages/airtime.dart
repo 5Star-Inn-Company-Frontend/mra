@@ -86,16 +86,22 @@ class _AirtimeState extends State<Airtime> {
                           size: 14,
                           color: plugSecondaryTextColor,
                         ),
+
                         AppVerticalSpacing.verticalSpacingS,
                         SizedBox(
-                          height: 50.h,
+                          height: 120.h,
                           width: double.maxFinite,
                           child: FutureBuilder(
                             future: futureAirtimeProvider,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                return ListView.builder(
-                                  scrollDirection: Axis.horizontal,
+                                return GridView.builder(
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 4,
+                                    crossAxisSpacing: 5.0,
+                                    mainAxisSpacing: 0.0,
+                                    childAspectRatio: 0.7,
+                                  ),
                                   itemCount: snapshot.data?.data.length,
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
@@ -108,48 +114,38 @@ class _AirtimeState extends State<Airtime> {
                                         print(snapshot.data?.data[index].network);
                                       },
                                       child: Container(
-                                        margin: const EdgeInsets.only(right: 8.0),
+                                        padding: EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                             width: 2,
                                             color: currentIndex == index ? AppColors.plugPrimaryColor : AppColors.white
                                           ),
-                                          shape: BoxShape.circle,
+                                          borderRadius: BorderRadius.circular(10)
                                         ),
-                                        child: CircleAvatar(
-                                          radius: 30.r,
-                                          backgroundImage: snapshot.data!.data[index].network == 'MTN'
-                                          ? const AssetImage('assets/images/mtn.png')
-                                          : snapshot.data!.data[index].network == 'GLO'
-                                          ? const AssetImage('assets/images/bills/GLO-Airtime.jpg')
-                                          : snapshot.data!.data[index].network == 'AIRTEL'
-                                          ? const AssetImage('assets/images/bills/Airtel-Airtime.jpg')
-                                          : snapshot.data!.data[index].network == '9MOBILE'
-                                          ? const AssetImage('assets/images/bills/9mobile-Airtime.jpg')
-                                          : null
-                                          
-                                        ),
-                                      ),
-                                      // child: Container(
-                                      //   width: 60.w,
-                                      //   margin: const EdgeInsets.all(8.0),
-                                      //   decoration: BoxDecoration(
-                                      //     border: Border.all(
-                                      //       width: 1.5,
-                                      //       color: currentIndex == index ? AppColors.plugPrimaryColor : AppColors.white
-                                      //     ),
-                                      //     shape: BoxShape.circle,
-                                      //   ),
-                                      //   child: snapshot.data!.data[index].network == 'MTN'
-                                      //   ? Image.asset('assets/images/mtn.png')
-                                      //   : snapshot.data!.data[index].network == 'GLO'
-                                      //   ? Image.asset('assets/images/bills/GLO-Airtime.jpg', fit: BoxFit.fill,)
-                                      //   : snapshot.data!.data[index].network == 'AIRTEL'
-                                      //   ? Image.asset('assets/images/bills/Airtel-Airtime.jpg')
-                                      //   : snapshot.data!.data[index].network == '9MOBILE'
-                                      //   ? Image.asset('assets/images/bills/9mobile-Airtime.jpg')
-                                      //   : SizedBox.shrink()
-                                      // ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            snapshot.data!.data[index].network == 'MTN'
+                                            ? Image.asset('assets/images/mtn.png')
+                                            : snapshot.data!.data[index].network == 'GLO'
+                                            ? Image.asset('assets/images/bills/GLO-Airtime.jpg')
+                                            : snapshot.data!.data[index].network == 'AIRTEL'
+                                            ? Image.asset('assets/images/bills/Airtel-Airtime.jpg')
+                                            : snapshot.data!.data[index].network == '9MOBILE'
+                                            ? Image.asset('assets/images/bills/9mobile-Airtime.jpg')
+                                            : SizedBox.shrink(),
+
+                                            Text(
+                                              snapshot.data!.data[index].network,
+                                              style: GoogleFonts.poppins(
+                                                color: currentIndex == index ? AppColors.plugPrimaryColor : Colors.black,
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            ),
+                                          ],
+                                        )
+                                      )
                                     );
                                   },
                                 );
@@ -166,7 +162,7 @@ class _AirtimeState extends State<Airtime> {
                           ),
                         ),
 
-                        AppVerticalSpacing.verticalSpacingXL,
+                        AppVerticalSpacing.verticalSpacingS,
                         Form(
                           key: _formKey,
                           child: Column(

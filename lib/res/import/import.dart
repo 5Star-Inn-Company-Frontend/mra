@@ -31,7 +31,7 @@ export 'package:mra/views/auth/verify_otp/verify_otp.dart';
 export 'package:mra/views/auth/CreateNewPassword/create_new_password.dart';
 export 'package:mra/views/SetFingerPrint/set_fingerprint.dart';
 export 'package:mra/views/Account/dashboard.dart';
-export 'package:mra/views/CableTv/pages/CableTv.dart';
+export 'package:mra/views/CableTv/pages/cable_screen.dart';
 export 'package:mra/views/Airtime/pages/airtime.dart';
 export 'package:mra/views/Electricity/pages/electricity.dart';
 export 'package:mra/views/Data/pages/data.dart';

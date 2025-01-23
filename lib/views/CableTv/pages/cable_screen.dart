@@ -1,23 +1,11 @@
 import 'dart:math';
-
-import 'package:another_flushbar/flushbar.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-import 'package:mra/constant/app_colors.dart';
-import 'package:mra/constant/loader.dart';
-import 'package:mra/core/network/api_client.dart';
-import 'package:mra/utils/ui_helpers.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
-import 'package:mra/views/CableTv/changeNotifier/cableNotifier.dart';
 import 'package:mra/views/CableTv/model/cablePayment.dart';
 import 'package:mra/views/CableTv/model/cablePlans.dart';
 import 'package:mra/views/CableTv/model/validateCableSub.dart';
 import 'package:mra/views/CableTv/services/cableProvider.dart';
 import 'package:mra/views/Data/model/dataProviders.dart';
-import 'package:provider/provider.dart';
-
 import '../../../res/import/import.dart';
 
 class CableTv extends StatefulWidget {
@@ -152,7 +140,7 @@ class _CableTvState extends State<CableTv> {
     });
   }
 
-  final FocusNode _focusNode = FocusNode();
+  final FocusNode _focusNode = FocusNode(); 
 
   @override
   void initState() {

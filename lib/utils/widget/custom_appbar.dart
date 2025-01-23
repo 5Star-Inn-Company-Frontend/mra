@@ -189,7 +189,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
               AppVerticalSpacing.verticalSpacingS,
               MyText(
-                title: 'Bank Name | ${vacctsData?.data[0].accountName}',
+                title: '${vacctsData?.data[0].provider} | ${vacctsData?.data[0].accountName}',
                 color: AppColors.white,
               ),
 

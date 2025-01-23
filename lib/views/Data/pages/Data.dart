@@ -1,10 +1,12 @@
 import 'dart:math';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
+import 'package:mra/views/Airtime/model/airtime_provider_model.dart';
+import 'package:mra/views/Airtime/service/airtime_service.dart';
 import 'package:mra/views/Data/model/dataPlans.dart';
-import 'package:mra/views/Data/model/dataProviders.dart';
-import 'package:mra/views/Data/pages/dataPin.dart';
-import 'package:mra/views/Data/service/data_providers.dart';
+import 'package:mra/views/Data/model/data_provider_model.dart';
+import 'package:mra/views/Data/pages/data_pin.dart';
 import 'package:mra/views/Transfer/constants/textField.dart';
 import '../../../res/import/import.dart';
 
@@ -21,18 +23,17 @@ class _DataState extends State<Data> {
 
   final _formKey = GlobalKey<FormState>();
 
-  late Future<DataProviders?> futureDataProvider;
+  late Future<AirtimeProviderModel?> futureDataProvider;
 
   DataPlans? _dataPlans;
+  DataProviderModel? _dataProviderModel;
 
   int? selectedRadioTile;
 
   int? selectedPlan;
-
   String? selectedPlanName;
 
   bool isVisible = false;
-
   bool isValid = true;
 
   String _country = 'Nigeria';
@@ -81,9 +82,39 @@ class _DataState extends State<Data> {
     return DataPlans(success: false, message: "", data: []);
   }
 
-  int provider = 1;
+
+  Future<DataProviderModel?> loadData(String networkType, String packageType) async {
+    final token = await const FlutterSecureStorage().read(key: 'token');
+
+    print(token);
+    try {
+      final response = await ApiService.dio.get(
+        '/list-data/$networkType/$packageType',
+          options: Options(headers: {'Authorization': 'Bearer $token'}));
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        return DataProviderModel.fromJson(response.data);
+      }
+    } on DioException catch (e) {
+      if (DioExceptionType.badResponse == e.type) {
+        throw Exception('Unable to fetch Providers');
+      }
+      if (DioExceptionType.connectionError == e.type ||
+          DioExceptionType.connectionTimeout == e.type ||
+          DioExceptionType.receiveTimeout == e.type ||
+          DioExceptionType.sendTimeout == e.type) {
+        throw Exception('Unable to make requests, try again');
+      }
+    }
+
+    return null;
+  }
+
+
+  String provider = "MTN";
   int currentIndex = 0;
-  Future<DataPlans>? futureDataPlans;
+  // Future<DataPlans>? futureDataPlans;
+  // late Future<DataProviderModel?> futureData;
 
   Future<List<Contact>> getContacts() async {
     bool isGranted = await Permission.contacts.status.isGranted;
@@ -104,15 +135,16 @@ class _DataState extends State<Data> {
     super.initState();
     getContacts();
     selectedRadioTile;
-    futureDataProvider = loadDataProvider();
-    futureDataPlans = loadDataPlans('AIRTEL');
+    futureDataProvider = loadAirtimeProvider();
+    // futureDataPlans = loadDataPlans('AIRTEL');
+    // futureData = loadData(provider, 'SME');
   }
 
   String? dataPlan;
   String? dataPlan2;
   @override
   Widget build(BuildContext context) {
-    final dataNotifier = Provider.of<DataProvider>(context, listen: false);
+    // final dataNotifier = Provider.of<DataProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -140,53 +172,68 @@ class _DataState extends State<Data> {
 
                         AppVerticalSpacing.verticalSpacingS,
                         SizedBox(
-                          height: 80,
+                          height: 120.h,
                           width: double.maxFinite,
                           child: FutureBuilder(
                             future: futureDataProvider,
                             builder: (context, snapshot) {
                               if (snapshot.hasData) {
-                                return ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: snapshot.data!.data!.length,
+                                return GridView.builder(
+                                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 4,
+                                    crossAxisSpacing: 5.0,
+                                    mainAxisSpacing: 0.0,
+                                    childAspectRatio: 0.7,
+                                  ),
+                                  itemCount: snapshot.data?.data.length,
                                   itemBuilder: (context, index) {
-                                    return InkWell(
+                                    return GestureDetector(
                                       onTap: () {
-                                        print(snapshot.data?.data?[index].id);
                                         setState(() {
                                           currentIndex = index;
-                                          provider = snapshot.data?.data?[index].id ?? 1;
+                                          provider = snapshot.data?.data[index].network ?? "MTN";
                                         });
-                                        futureDataPlans = loadDataPlans(snapshot.data!.data?[index].provider ?? '');
-                                        print(snapshot.data?.data?[index].provider);
+
+                                        print(snapshot.data?.data[index].network);
                                       },
                                       child: Container(
-                                        margin: const EdgeInsets.all(8.0),
-                                        padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 8.0),
+                                        padding: EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
                                         decoration: BoxDecoration(
                                           border: Border.all(
-                                            width: 1.5,
-                                            color: currentIndex == index ? AppColors.plugPrimaryColor : AppColors.white),
-                                          borderRadius: BorderRadius.circular(8),
-                                          color: currentIndex == index ? AppColors.primaryBrown : AppColors.white,
-                                          // color: AppColors.white,
-                                          boxShadow: [
-                                            BoxShadow(
-                                              color: const Color(0xff525151).withOpacity(0.3),
-                                              offset: const Offset(4, 4),
-                                              blurRadius: 15,
+                                            width: 2,
+                                            color: currentIndex == index ? AppColors.plugPrimaryColor : AppColors.white
+                                          ),
+                                          borderRadius: BorderRadius.circular(10)
+                                        ),
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            snapshot.data!.data[index].network == 'MTN'
+                                            ? Image.asset('assets/images/mtn.png')
+                                            : snapshot.data!.data[index].network == 'GLO'
+                                            ? Image.asset('assets/images/bills/GLO-Airtime.jpg')
+                                            : snapshot.data!.data[index].network == 'AIRTEL'
+                                            ? Image.asset('assets/images/bills/Airtel-Airtime.jpg')
+                                            : snapshot.data!.data[index].network == '9MOBILE'
+                                            ? Image.asset('assets/images/bills/9mobile-Airtime.jpg')
+                                            : SizedBox.shrink(),
+
+                                            Text(
+                                              snapshot.data!.data[index].network,
+                                              style: GoogleFonts.poppins(
+                                                color: currentIndex == index ? AppColors.plugPrimaryColor : Colors.black,
+                                                fontSize: 13.sp,
+                                                fontWeight: FontWeight.w700,
+                                              ),
                                             ),
-                                          ]
-                                        ),
-                                        child: Image.asset(
-                                          snapshot.data?.data![index].providerLogoUrl.toString() ?? '',
-                                          width: 50,
-                                        ),
-                                      ),
+                                          ],
+                                        )
+                                      )
                                     );
                                   },
                                 );
-                              } else if (snapshot.hasError) {
+                              } 
+                              else if (snapshot.hasError) {
                                 return Text(snapshot.error.toString());
                               }
                               return const Center(
@@ -198,7 +245,7 @@ class _DataState extends State<Data> {
                           ),
                         ),
 
-                        AppVerticalSpacing.verticalSpacingXL,
+                        AppVerticalSpacing.verticalSpacingS,
                         MyText(
                           title: 'Mobile Number',
                           size: 14,
@@ -211,51 +258,47 @@ class _DataState extends State<Data> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Expanded(
-                                      child: IntlPhoneField(
-                                        controller: phonecontroller,
-                                        decoration:
-                                          textInputDecoration.copyWith(
-                                            hintText: '0000 0000 0000',
-                                            enabledBorder: InputBorder.none,
-                                            focusedBorder: InputBorder.none,
-                                            errorBorder: InputBorder.none,
-                                            fillColor: Color(0xffF5F5F5),
-                                            focusedErrorBorder:InputBorder.none
-                                          ),
-                                        initialCountryCode: 'NG',
-                                        initialValue: '00000000000',
-                                        autofocus: false,
-                                        validator: (p0) {
-                                          if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
-                                            return ("Invalid phone number");
-                                          }
-                                          return null;
-                                        },
-                                        flagsButtonMargin: const EdgeInsets.only(left: 10),
-                                        dropdownIconPosition: IconPosition.trailing,
-                                        dropdownIcon: const Icon(Icons.keyboard_arrow_down, color: AppColors.textPrimaryColor,),
-                                        disableLengthCheck: true,
-                                        textInputAction: TextInputAction.next,
-                                        onChanged: (phone) {
-                                          setState(() {
-                                            _countryCode = phone.countryCode;
-                                          });
-                                        },
-                                        onCountryChanged: (country) {
-                                          setState(() {
-                                            _country = country.name;
-                                          });
-                                        },
-                                      ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Expanded(
+                                    child: IntlPhoneField(
+                                      controller: phonecontroller,
+                                      decoration: textInputDecoration.copyWith(
+                                          hintText: '0000 0000 0000',
+                                          enabledBorder: InputBorder.none,
+                                          focusedBorder: InputBorder.none,
+                                          errorBorder: InputBorder.none,
+                                          fillColor: Color(0xffF5F5F5),
+                                          focusedErrorBorder:InputBorder.none
+                                        ),
+                                      initialCountryCode: 'NG',
+                                      initialValue: '00000000000',
+                                      autofocus: false,
+                                      validator: (p0) {
+                                        if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
+                                          return ("Invalid phone number");
+                                        }
+                                        return null;
+                                      },
+                                      flagsButtonMargin: const EdgeInsets.only(left: 10),
+                                      dropdownIconPosition: IconPosition.trailing,
+                                      dropdownIcon: const Icon(Icons.keyboard_arrow_down, color: AppColors.textPrimaryColor,),
+                                      disableLengthCheck: true,
+                                      textInputAction: TextInputAction.next,
+                                      onChanged: (phone) {
+                                        setState(() {
+                                          _countryCode = phone.countryCode;
+                                        });
+                                      },
+                                      onCountryChanged: (country) {
+                                        setState(() {
+                                          _country = country.name;
+                                        });
+                                      },
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
                             ),
 
@@ -379,7 +422,8 @@ class _DataState extends State<Data> {
                         ),
 
                         Visibility(
-                          visible: _dataPlans?.data?.length != null ? true : false,
+                          // visible: _dataPlans?.data?.length != null ? true : false,
+                          visible: _dataProviderModel?.data.length != null ? true : false,
                           child: GridView.builder(
                             padding: EdgeInsets.zero,
                             shrinkWrap: true,
@@ -390,7 +434,7 @@ class _DataState extends State<Data> {
                               crossAxisSpacing: 10,
                               mainAxisSpacing: 1
                             ),
-                            itemCount: _dataPlans?.data?.length ?? 0,
+                            itemCount: _dataProviderModel?.data.length ?? 0,
                             itemBuilder: (context, index) {
                               return RadioListTile(
                                 contentPadding: EdgeInsets.zero,
@@ -419,45 +463,45 @@ class _DataState extends State<Data> {
                         // const Spacer(),
                         Gap(screenHeight(context) * 0.1),
 
-                        CustomButtonWithIconRight(
-                          onPressed: () async {
-                            if (selectedRadioTile != null && phonecontroller.text.length != 10 || phonecontroller.text.length != 11 &&
-                              _formKey.currentState!.validate()) {
-                              final random = Random();
-                              final refId = 'ref${random.nextInt(999999999)}d';
-                              dataNotifier.setDataPayment(
-                                phonecontroller.text,
-                                selectedPlan!.toInt(),
-                                provider,
-                                refId,
-                                selectedPlanName.toString()
-                              );
-                              await Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (context) => const DataPin(),
-                                ),
-                              );
-                            } 
-                            else if (selectedRadioTile == null) {
-                              Flushbar(
-                                message: 'Pls select a data plan, to continue',
-                                duration: Duration(seconds: 3),
-                                isDismissible: true,
-                                backgroundColor: Colors.red,
-                              ).show(context);
-                            } 
-                            else if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
-                              Flushbar(
-                                message: 'Input a valid phone number, to continue',
-                                duration: Duration(seconds: 3),
-                                isDismissible: true,
-                                backgroundColor: Colors.red,
-                              ).show(context);
-                            }
-                          },
-                          title: 'SEND',
-                          gradient: gradient2,
-                        ),
+                        // CustomButtonWithIconRight(
+                        //   onPressed: () async {
+                        //     if (selectedRadioTile != null && phonecontroller.text.length != 10 || phonecontroller.text.length != 11 &&
+                        //       _formKey.currentState!.validate()) {
+                        //       final random = Random();
+                        //       final refId = 'ref${random.nextInt(999999999)}d';
+                        //       dataNotifier.setDataPayment(
+                        //         phonecontroller.text,
+                        //         selectedPlan!.toInt(),
+                        //         provider,
+                        //         refId,
+                        //         selectedPlanName.toString()
+                        //       );
+                        //       await Navigator.of(context).push(
+                        //         MaterialPageRoute(
+                        //           builder: (context) => const DataPin(),
+                        //         ),
+                        //       );
+                        //     } 
+                        //     else if (selectedRadioTile == null) {
+                        //       Flushbar(
+                        //         message: 'Pls select a data plan, to continue',
+                        //         duration: Duration(seconds: 3),
+                        //         isDismissible: true,
+                        //         backgroundColor: Colors.red,
+                        //       ).show(context);
+                        //     } 
+                        //     else if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
+                        //       Flushbar(
+                        //         message: 'Input a valid phone number, to continue',
+                        //         duration: Duration(seconds: 3),
+                        //         isDismissible: true,
+                        //         backgroundColor: Colors.red,
+                        //       ).show(context);
+                        //     }
+                        //   },
+                        //   title: 'SEND',
+                        //   gradient: gradient2,
+                        // ),
                       ],
                     ),
                   ),

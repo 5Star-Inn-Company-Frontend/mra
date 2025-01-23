@@ -1,9 +1,11 @@
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Electricity/model/powerPayment.dart';
-import 'package:mra/views/Electricity/model/powerProviders.dart';
 import 'package:mra/views/Electricity/model/powerValidate.dart';
+import 'package:mra/views/Electricity/model/power_provider_model.dart';
+import 'package:mra/views/Electricity/model/power_validate_model.dart';
 import 'package:mra/views/Electricity/services/power_service.dart';
 import '../../../res/import/import.dart';
 
@@ -20,13 +22,11 @@ class _ElectricityState extends State<Electricity> {
   final TextEditingController amount = TextEditingController();
 
   int currentIndex = 0;
-
   final _formKey = GlobalKey<FormState>();
 
   int tvNumber = 0;
 
-  int? subAmount;
-
+  int? subAmount; 
   String minAmount = "500";
 
   String powerCode = "IKEDC";
@@ -35,13 +35,15 @@ class _ElectricityState extends State<Electricity> {
 
   bool _isLoading = false;
 
-  PowerProviders? providersData;
+  // PowerProviderModel? providersData;
+  late Future<PowerProviderModel?> futureProvider;
 
-  late Future<PowerProviders?> futureProvider;
-
-  PowerValidate? _validatePowerSub;
+  PowerValidateModel? _validatePowerSub;
 
   String provider = "IKEDC";
+
+  String selectedProviderId = '';
+
 
   @override
   void initState() {
@@ -81,88 +83,101 @@ class _ElectricityState extends State<Electricity> {
                           size: 14,
                           color: plugSecondaryTextColor,
                         ),
+  
+                        AppVerticalSpacing.verticalSpacingS,
+                        AppVerticalSpacing.verticalSpacingS,
                         AppVerticalSpacing.verticalSpacingS,
                         SizedBox(
-                          height: 80,
+                          height: 250,
                           width: double.maxFinite,
                           child: FutureBuilder(
-                            future: futureProvider,
-                            builder: (context, snapshot) {
-                              if (snapshot.hasData) {
-                                return ListView.builder(
-                                  scrollDirection: Axis.horizontal,
-                                  itemCount: snapshot.data!.data!.length,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        setState(() {
-                                          currentIndex = index;
-                                          provider = snapshot.data?.data?[index]
-                                                  .provider ??
-                                              'IKEDC';
-                                          minAmount = snapshot.data
-                                                  ?.data?[index].minAmount ??
-                                              '500';
-                                          powerCode = snapshot
-                                                  .data?.data?[index].code ??
-                                              "IKEDC";
-                                        });
-                                        print(snapshot
-                                            .data?.data?[index].provider);
-                                        print(snapshot.data?.data?[index].code);
-                                      },
-                                      child: Container(
-                                        margin: const EdgeInsets.all(8.0),
-                                        padding: const EdgeInsets.symmetric(
-                                            vertical: 5.0, horizontal: 8.0),
-                                        decoration: BoxDecoration(
+                              future: futureProvider,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  return GridView.builder(
+                                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 4, // Number of columns in the grid
+                                      crossAxisSpacing: 10.0, // Spacing between columns
+                                      mainAxisSpacing: 0.0, // Spacing between rows
+                                      childAspectRatio: 0.8, // Aspect ratio  
+                                    ),
+                                    itemCount: snapshot.data!.data.length,
+                                    itemBuilder: (context, index) {
+                                      return GestureDetector(
+                                        onTap: () {
+                                          setState(() {
+                                            currentIndex = index;
+                                            provider = snapshot.data?.data[index].name ?? 'IKEDC';
+                                            // minAmount = snapshot.data ?.data?[index].minAmount ?? '500';
+                                            powerCode = snapshot.data?.data[index].code ?? "IKEDC";
+                                            selectedProviderId = snapshot.data?.data[index].id ?? '';
+                                          });
+                                          print(snapshot.data?.data[index].name);
+                                          print(snapshot.data?.data[index].code);
+                                        },
+                                        child: Container(
+                                          padding: EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(10),
                                             border: Border.all(
-                                                width: 1.5,
-                                                color: currentIndex == index
-                                                    ? AppColors.plugPrimaryColor
-                                                    : AppColors.white),
-                                            borderRadius:
-                                                BorderRadius.circular(8),
-                                            color: currentIndex == index
-                                                ? AppColors.primaryBrown
-                                                : AppColors.white,
-                                            // color: AppColors.white,
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: const Color(0xff525151)
-                                                    .withOpacity(0.3),
-                                                offset: const Offset(4, 4),
-                                                blurRadius: 15,
+                                              color: currentIndex == index ? AppColors.plugPrimaryColor : Colors.transparent,
+                                              width: 2,
+                                            ),
+                                          ),
+                                          child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              snapshot.data!.data[index].code == 'ikeja-electric'
+                                                ? Image.asset('assets/images/bills/Ikeja-Electric-Payment-PHCN.jpg')
+                                                : snapshot.data!.data[index].code == 'eko-electric'
+                                                ? Image.asset('assets/images/bills/Eko-Electric-Payment-PHCN.jpg')
+                                                : snapshot.data!.data[index].code == 'kano-electric'
+                                                ? Image.asset('assets/images/bills/Kano-Electric.jpg')
+                                                : snapshot.data!.data[index].code == 'portharcourt-electric'
+                                                ? Image.asset('assets/images/bills/Port-Harcourt-Electric.jpg')
+                                                : snapshot.data!.data[index].code == 'jos-electric'
+                                                ? Image.asset('assets/images/bills/Jos-Electric-JED.jpg')
+                                                : snapshot.data!.data[index].code == 'ibadan-electric'
+                                                ? Image.asset('assets/images/bills/IBEDC-Ibadan-Electricity-Distribution-Company.jpg')
+                                                : snapshot.data!.data[index].code == 'kaduna-electric'
+                                                ? Image.asset('assets/images/bills/Kaduna-Electric-KAEDCO.jpg')
+                                                : snapshot.data!.data[index].code == 'abuja-electric'
+                                                ? Image.asset('assets/images/bills/Abuja-Electric.jpg')
+                                                : snapshot.data!.data[index].code == 'enugu-electric'
+                                                ? Image.asset('assets/images/bills/9mobile-Airtime.jpg')
+                                                : Container(),
+                                              // SizedBox(height: 10),
+                                              Text(
+                                                snapshot.data!.data[index].name,
+                                                style: GoogleFonts.poppins(
+                                                  color: currentIndex == index ? AppColors.plugPrimaryColor : Colors.black,
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w700,
+                                                ),
                                               ),
-                                            ]),
-                                        child: Image.asset(
-                                          snapshot.data!.data![index]
-                                              .providerLogoUrl
-                                              .toString(),
-                                          width: 50,
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    );
-                                  },
-                                );
-                              } else if (snapshot.hasError) {
-                                return Text(snapshot.error.toString());
-                              }
-                              return const Center(
-                                child: CircularProgressIndicator.adaptive(
-                                  backgroundColor: AppColors.plugPrimaryColor,
-                                ),
-                              );
-                            },
-                          ),
+                                      );
+                                    },
+                                  );
+                                } else {
+                                  return Center(child: CircularProgressIndicator());
+                                }
+                              },
+                            ),
                         ),
-                        AppVerticalSpacing.verticalSpacingXL,
+
+                        AppVerticalSpacing.verticalSpacingS,
+                        AppVerticalSpacing.verticalSpacingS,
+                        AppVerticalSpacing.verticalSpacingS,
                         MyText(
                           title: 'Meter Number',
                           size: 14,
                           color: plugSecondaryTextColor,
                           weight: FontWeight.w400,
                         ),
+
                         AppVerticalSpacing.verticalSpacingS,
                         Form(
                           key: _formKey,
@@ -201,6 +216,7 @@ class _ElectricityState extends State<Electricity> {
                                   }
                                 },
                               ),
+
                               Gap(screenHeight(context) * 0.02),
                               Visibility(
                                 visible: isCustomer,
@@ -212,8 +228,7 @@ class _ElectricityState extends State<Electricity> {
                                       readonly: false,
                                       onchanged: (val) {
                                         if (val!.isNotEmpty) {
-                                          int intValue =
-                                              int.parse(val.toString());
+                                          int intValue = int.parse(val.toString());
                                           setState(() {
                                             subAmount = intValue;
                                           });
@@ -229,12 +244,11 @@ class _ElectricityState extends State<Electricity> {
                                         // }
                                       },
                                       fillColor: const Color(0xffF5F5F5),
-                                      hintText: _validatePowerSub
-                                              ?.data?.customerName ??
-                                          '',
+                                      hintText: _validatePowerSub?.data ?? '',
                                       textInputType: TextInputType.number,
                                       textInputAction: TextInputAction.done,
                                     ),
+
                                     Gap(screenHeight(context) * 0.02),
                                     CustomInAppTextFormField(
                                       obscureText: false,
@@ -251,17 +265,21 @@ class _ElectricityState extends State<Electricity> {
                             ],
                           ),
                         ),
+
                         const Spacer(),
+
                         CustomButtonWithIconRight(
                           icon: Visibility(
-                              visible: _isLoading ? true : false,
-                              child: Container(
-                                  margin: const EdgeInsets.only(left: 10),
-                                  width: 30,
-                                  height: 20,
-                                  child: const CupertinoActivityIndicator(
-                                    color: AppColors.white,
-                                  ))),
+                            visible: _isLoading ? true : false,
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 10),
+                              width: 30,
+                              height: 20,
+                              child: const CupertinoActivityIndicator(
+                                color: AppColors.white,
+                              )
+                            )
+                          ),
                           onPressed: () async {
                             if (_formKey.currentState!.validate() &&
                                 meterNo.text.length >= 10) {
@@ -269,30 +287,32 @@ class _ElectricityState extends State<Electricity> {
                                 setState(() {
                                   _isLoading = true;
                                 });
-                                validatePowerSub(tvNumber, provider);
-                              } else {
-                                int intValue =
-                                    int.parse(amount.text.toString());
+                                validatePowerSub(tvNumber, provider, selectedProviderId);
+                              } 
+                              else {
+                                int intValue = int.parse(amount.text.toString());
                                 final random = Random();
                                 final refId =
                                     'ref${random.nextInt(999999999)}d';
                                 if (intValue < limitAmount) {
                                   Flushbar(
-                                    message:
-                                        'Minimum is ${limitAmount.toString()}',
+                                    message: 'Minimum is ${limitAmount.toString()}',
                                     duration: const Duration(seconds: 3),
                                   ).show(context);
-                                } else {
+                                } 
+                                else {
                                   print(powerCode);
                                   await powerNotifier.purchasePower(
-                                      PowerPayment(
-                                          amount: intValue,
-                                          code: powerCode,
-                                          number: tvNumber,
-                                          provider: provider,
-                                          reference: refId,
-                                          type: 'Prepaid'),
-                                      context);
+                                    PowerPayment(
+                                      amount: intValue, 
+                                      code: powerCode, 
+                                      number: tvNumber, 
+                                      provider: provider, 
+                                      reference: refId, 
+                                      type: 'Prepaid'
+                                    ),
+                                    context
+                                  );
                                   powerNotifier.setProvider(provider);
                                   powerNotifier.setNumber(tvNumber);
                                   powerNotifier.setRechargeAmount(intValue);
@@ -318,35 +338,35 @@ class _ElectricityState extends State<Electricity> {
   }
 
   //validate cable data
-  Future<void> validatePowerSub(int meterNumber, String powerProvider) async {
+  Future<PowerValidateModel?> validatePowerSub(int meterNumber, String powerProvider, String providerId) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
     setState(() {
       _isLoading == true;
     });
 
     try {
-      final response = await ApiService.dio.post('/electricity-validate',
+      final response = await ApiService.dio.post('/validate-electricity',
           data: {
-            'number': meterNumber.toInt(),
-            'provider': powerProvider,
-            'type': 'prepaid'
+            "id": providerId,
+            "type": "prepaid",
+            "phone": meterNumber.toInt()
           },
           options: Options(headers: {'Authorization': 'Bearer $token'}));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        if (response.data['success'] == true) {
+        if (response.data['status'] == true) {
           print(response.data);
           setState(() {
             _isLoading = false;
           });
-          final validatePower = PowerValidate.fromJson(response.data);
+          final validatePower = PowerValidateModel.fromJson(response.data);
 
           setState(() {
             _validatePowerSub = validatePower;
-            customerName.text = _validatePowerSub?.data?.customerName ?? '';
+            customerName.text = _validatePowerSub?.data ?? '';
             isCustomer = true;
           });
-        } else if (response.data["success"] == false) {
+        } else if (response.data["status"] == false) {
           print(response.data);
           setState(() {
             isCustomer = false;
@@ -378,5 +398,9 @@ class _ElectricityState extends State<Electricity> {
         throw Exception('Unable to make requests, try again');
       }
     }
+    return null;
   }
+
+
+
 }

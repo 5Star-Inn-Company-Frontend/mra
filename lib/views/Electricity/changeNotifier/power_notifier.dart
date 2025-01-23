@@ -7,8 +7,8 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mra/constant/loader.dart';
 import 'package:mra/core/network/api_client.dart';
 import 'package:mra/views/Electricity/model/powerPayment.dart';
-import 'package:mra/views/Electricity/pages/powerConfirmation.dart';
-import 'package:mra/views/Electricity/pages/powerPin.dart';
+import 'package:mra/views/Electricity/pages/power_confirmation.dart';
+import 'package:mra/views/Electricity/pages/power_pin.dart';
 
 class PowerProvider with ChangeNotifier {
   String? _provider;

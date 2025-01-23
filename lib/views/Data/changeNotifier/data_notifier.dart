@@ -2,27 +2,26 @@ import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:mra/res/import/import.dart';
 import 'package:mra/views/Data/model/buyData.dart';
-import 'package:mra/views/Data/pages/dataConfirmation.dart';
+import 'package:mra/views/Data/pages/data_confirmation.dart';
 // import 'package:mra/views/Electricity/pages/powerConfirmation.dart';
 // import 'package:mra/views/Electricity/pages/powerPin.dart';
 
 class DataProvider with ChangeNotifier {
   String? _number;
   int? _planId;
-  int? _provider;
+  String? _provider;
   String? _reference;
 
   String? _planName;
 
   String? get number => _number;
   int? get planId => _planId;
-  int? get provider => _provider;
+  String? get provider => _provider;
   String? get reference => _reference;
 
   String? get planName => _planName;
 
-  void setDataPayment(String number, int planId, int provider, String reference,
-      String planName) {
+  void setDataPayment(String number, int planId, String provider, String reference, String planName) {
     _number = number;
     _planId = planId;
     _provider = provider;
