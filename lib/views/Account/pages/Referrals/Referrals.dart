@@ -3,7 +3,7 @@ import 'package:mra/utils/widget/appbar_two.dart';
 import '../../../../res/import/import.dart';
 
 class Referrals extends StatelessWidget {
-  const Referrals({Key? key}) : super(key: key);
+  const Referrals({super.key});
 
   @override
   Widget build(BuildContext context) {

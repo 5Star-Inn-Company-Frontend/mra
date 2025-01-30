@@ -25,7 +25,7 @@ class _ChangePinState extends State<ChangePin> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: const PlugAppBarTwo(title: 'Change Pin'),
+      appBar: const PlugAppBarTwo(title: 'Change pin'),
       body: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
@@ -43,7 +43,7 @@ class _ChangePinState extends State<ChangePin> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         MyText(
-                          title: 'Default Pin',
+                          title: 'Old Pin',
                           color: const Color(0xff797878),
                           weight: FontWeight.w400,
                           size: 14,

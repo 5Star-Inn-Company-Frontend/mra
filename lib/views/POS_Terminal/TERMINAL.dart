@@ -9,7 +9,7 @@ import 'package:mra/core/network/api_client.dart';
 import 'package:mra/res/import/import.dart';
 import 'package:mra/utils/formatter.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
-import 'package:mra/utils/widget/touchableOpacity.dart';
+import 'package:mra/utils/widget/touchable_opacity.dart';
 import 'package:mra/views/POS_Terminal/model/singleTerminal.dart';
 import 'package:mra/views/POS_Terminal/service/terminalService.dart';
 

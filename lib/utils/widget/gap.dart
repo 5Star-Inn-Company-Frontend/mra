@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 
-import 'RenderGap.dart';
+import 'render_gap.dart';
 
 class Gap extends StatelessWidget {
   /// Creates a widget that takes a fixed [mainAxisExtent] of space in the

@@ -17,14 +17,14 @@ class Profile extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Align(
-                alignment: Alignment.center,
-                child: CircleAvatar(
-                  radius: 30,
-                  // backgroundImage:
-                  //     NetworkImage(userData?.profilePhotoUrl ?? ''),
-                ),
-              ),
+              // Align(
+              //   alignment: Alignment.center,
+              //   child: CircleAvatar(
+              //     radius: 30,
+              //     backgroundImage:
+              //         NetworkImage(userData?.profilePhotoUrl ?? ''),
+              //   ),
+              // ),
               AppVerticalSpacing.verticalSpacingL,
               MyText(
                 title: 'First Name',

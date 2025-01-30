@@ -72,36 +72,34 @@ class TransactionScreen extends StatelessWidget {
                       final data = transactionData.data?[index];
                       String dateString = data!.createdAt.toString();
                       DateTime dateTime = DateTime.parse(dateString);
-                      String title =
-                          capitalize(data.bills?.serviceType.toString() ?? '');
+                      String title = capitalize(data.bills?.serviceType.toString() ?? '');
                       String time = formatDate(data.updatedAt.toString());
                       final amount = double.parse(data.amount ?? '');
-                      String formattedDate =
-                          DateFormat('dd MMM yyyy').format(dateTime);
-                      final formattedAmount =
-                          "\u{20A6}${amount.toStringAsFixed(2).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => "${m[1]},")}";
+                      String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
+                      final formattedAmount = "\u{20A6}${amount.toStringAsFixed(2).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => "${m[1]},")}";
                       return Column(
                         children: [
                           ListTile(
                             onTap: () {
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => TransactionDetails(
-                                            image: data.bills?.provider,
-                                            description: data.remark,
-                                            fee: data.bills?.fee,
-                                            to: data.bills?.recipient,
-                                            reference: data.reference,
-                                            date: formattedDate,
-                                            time: time,
-                                            transactionStatus:
-                                                data.bills?.errorMsg,
-                                            from: data.bills?.provider,
-                                            amount: formattedAmount,
-                                            type: data.type,
-                                            title: title,
-                                          )));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => TransactionDetails(
+                                    image: data.bills?.provider,
+                                    description: data.remark,
+                                    fee: data.bills?.fee,
+                                    to: data.bills?.recipient,
+                                    reference: data.reference,
+                                    date: formattedDate,
+                                    time: time,
+                                    transactionStatus: data.bills?.errorMsg,
+                                    from: data.bills?.provider,
+                                    amount: formattedAmount,
+                                    type: data.type,
+                                    title: title,
+                                  )
+                                )
+                              );
                             },
                             leading: CircleAvatar(
                               radius: 20,
@@ -135,15 +133,11 @@ class TransactionScreen extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
                                 MyText(
-                                  title: data.type == 'debit'
-                                      ? '- $formattedAmount'
-                                      : '+ $formattedAmount',
+                                  title: data.type == 'debit' ? '- $formattedAmount' : '+ $formattedAmount',
                                   // data.amount,
                                   weight: FontWeight.w500,
                                   size: 18,
-                                  color: data.type == 'debit'
-                                      ? const Color(0xffFF0000)
-                                      : const Color(0xff11D100),
+                                  color: data.type == 'debit' ? const Color(0xffFF0000) : const Color(0xff11D100),
                                 ),
                                 const Gap(5),
                                 MyText(

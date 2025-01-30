@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
 import '../../../res/import/import.dart';
 
@@ -17,7 +17,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
 
   bool isLoading = false;
 
-  String? _errorMsg;
+  // String? _errorMsg;
 
   String otpCode = '';
 
@@ -27,86 +27,86 @@ class _VerifyOtpState extends State<VerifyOtp> {
     });
   }
 
-  Future<void> _verifyOtp(String email, String otp) async {
-    try {
-      setLoading(true);
-      if (isLoading == true) {
-        showCupertinoDialog(
-          context: context,
-          builder: (context) {
-            return const Loading();
-          },
-        );
-      }
-      final response = await ApiService.dio.post(
-        '/forget-password-otp',
-        data: {'email': email, 'code': otp}
-      );
+  // Future<void> _verifyOtp(String email, String otp) async {
+  //   try {
+  //     setLoading(true);
+  //     if (isLoading == true) {
+  //       showCupertinoDialog(
+  //         context: context,
+  //         builder: (context) {
+  //           return const Loading();
+  //         },
+  //       );
+  //     }
+  //     final response = await ApiService.dio.post(
+  //       '/reset-password-otp',
+  //       data: {'email': email, 'code': otp}
+  //     );
 
-      if (response.statusCode == 200) {
-        setLoading(false);
-        if (isLoading == false) {
-          Navigator.pop(context);
-        }
+  //     if (response.statusCode == 200) {
+  //       setLoading(false);
+  //       if (isLoading == false) {
+  //         Navigator.pop(context);
+  //       }
 
-        if (response.data['success'] == true) {
-          print(response.data);
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => CreateNewPassword(email: widget.email, code: otpCode)
-            )
-          );
-        } 
-        else if (response.data['success'] == false) {
-          print(response.data);
+  //       if (response.data['success'] == true) {
+  //         print(response.data);
+  //         Navigator.push(
+  //           context,
+  //           MaterialPageRoute(
+  //             builder: (_) => CreateNewPassword(email: widget.email, code: otpCode)
+  //           )
+  //         );
+  //       } 
+  //       else if (response.data['success'] == false) {
+  //         print(response.data);
 
-          Flushbar(
-            message: response.data['message'],
-            flushbarStyle: FlushbarStyle.GROUNDED,
-            isDismissible: true,
-            flushbarPosition: FlushbarPosition.TOP,
-            duration: const Duration(seconds: 2),
-            backgroundColor: AppColors.plugPrimaryColor,
-          ).show(context);
-        }
-      }
-    } on DioException catch (error) {
-      if (DioExceptionType.connectionTimeout == error.type ||
-          DioExceptionType.receiveTimeout == error.type ||
-          DioExceptionType.connectionError == error.type) {
-        setLoading(false);
-        if (isLoading == false) {
-          Navigator.pop(context);
-        }
-        _errorMsg = "No internet connection, try again";
-        Flushbar(
-          message: _errorMsg,
-          flushbarStyle: FlushbarStyle.GROUNDED,
-          isDismissible: true,
-          flushbarPosition: FlushbarPosition.TOP,
-          duration: const Duration(seconds: 4),
-          backgroundColor: Colors.red
-        ).show(context);
-      }
+  //         Flushbar(
+  //           message: response.data['message'],
+  //           flushbarStyle: FlushbarStyle.GROUNDED,
+  //           isDismissible: true,
+  //           flushbarPosition: FlushbarPosition.TOP,
+  //           duration: const Duration(seconds: 2),
+  //           backgroundColor: AppColors.plugPrimaryColor,
+  //         ).show(context);
+  //       }
+  //     }
+  //   } on DioException catch (error) {
+  //     if (DioExceptionType.connectionTimeout == error.type ||
+  //         DioExceptionType.receiveTimeout == error.type ||
+  //         DioExceptionType.connectionError == error.type) {
+  //       setLoading(false);
+  //       if (isLoading == false) {
+  //         Navigator.pop(context);
+  //       }
+  //       _errorMsg = "No internet connection, try again";
+  //       Flushbar(
+  //         message: _errorMsg,
+  //         flushbarStyle: FlushbarStyle.GROUNDED,
+  //         isDismissible: true,
+  //         flushbarPosition: FlushbarPosition.TOP,
+  //         duration: const Duration(seconds: 4),
+  //         backgroundColor: Colors.red
+  //       ).show(context);
+  //     }
 
-      if (error.response != null) {
-        setLoading(false);
-        if (isLoading == false) {
-          Navigator.pop(context);
-        }
+  //     if (error.response != null) {
+  //       setLoading(false);
+  //       if (isLoading == false) {
+  //         Navigator.pop(context);
+  //       }
 
-        Flushbar(
-          message: "Unable to complete request, try again",
-          flushbarStyle: FlushbarStyle.GROUNDED,
-          isDismissible: true,
-          flushbarPosition: FlushbarPosition.TOP,
-          duration: const Duration(seconds: 4),
-          backgroundColor: Colors.red
-        ).show(context);
-      }
-    }
-  }
+  //       Flushbar(
+  //         message: "Unable to complete request, try again",
+  //         flushbarStyle: FlushbarStyle.GROUNDED,
+  //         isDismissible: true,
+  //         flushbarPosition: FlushbarPosition.TOP,
+  //         duration: const Duration(seconds: 4),
+  //         backgroundColor: Colors.red
+  //       ).show(context);
+  //     }
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +154,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
 
                   AppVerticalSpacing.verticalSpacingXL,
                   PinCodeFields(
-                    length: 6,
+                    length: 5,
                     fieldBorderStyle: FieldBorderStyle.square,
                     // responsive: false,
                     fieldHeight: 50.0,
@@ -182,10 +182,17 @@ class _VerifyOtpState extends State<VerifyOtp> {
                   AppVerticalSpacing.verticalSpacingXXL,
                   BusyButton(
                     title: "Continue",
-                    disabled: otpCode.length < 6 ? true : false,
+                    disabled: otpCode.length < 5 ? true : false,
                     onTap: () async {
-                      await _verifyOtp(
-                        widget.email.toString(), otpCode.toString()
+                      // await _verifyOtp(
+                      //   widget.email.toString(), otpCode.toString()
+                      // );
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => CreateNewPassword(email: widget.email, code: otpCode)
+                        )
                       );
                     },
                   ),

@@ -17,13 +17,13 @@ class ProfileSettings extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Align(
-                  alignment: Alignment.center,
-                  child: CircleAvatar(
-                    radius: 30,
-                    // backgroundImage:
-                    //     NetworkImage(userData?.profilePhotoUrl ?? ''),
-                  )),
+              // Align(
+              //     alignment: Alignment.center,
+              //     child: CircleAvatar(
+              //       radius: 30,
+              //       // backgroundImage:
+              //       //     NetworkImage(userData?.profilePhotoUrl ?? ''),
+              //     )),
               AppVerticalSpacing.verticalSpacingL,
               MyText(
                 title: 'First Name',
@@ -94,6 +94,7 @@ class ProfileSettings extends StatelessWidget {
                 readonly: false,
                 textInputAction: TextInputAction.done,
               ),
+              
               AppVerticalSpacing.verticalSpacingXXXL,
               CustomButtonWithIconRight(
                 onPressed: () {
@@ -130,8 +131,7 @@ class ProfileSettings extends StatelessWidget {
                                     top: 200,
                                     left: 40,
                                     child: MyText(
-                                      title:
-                                          'Congratulations your profile\n has been updated Successfully ',
+                                      title: 'Congratulations your profile\n has been updated Successfully ',
                                       weight: FontWeight.w500,
                                       color: plugTextColor,
                                       size: 20,

@@ -8,7 +8,7 @@ import 'package:mra/res/import/import.dart';
 import 'package:mra/utils/ui_helpers.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Account/changeNotifiers/user_data_provider.dart';
-import 'package:mra/views/CableTv/changeNotifier/cableNotifier.dart';
+import 'package:mra/views/CableTv/changeNotifier/cable_notifier.dart';
 import 'package:mra/views/CableTv/model/cablePayment.dart';
 import 'package:provider/provider.dart';
 

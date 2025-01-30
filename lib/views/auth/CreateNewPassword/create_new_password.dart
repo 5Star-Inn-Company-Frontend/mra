@@ -33,7 +33,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
     });
   }
 
-  Future<void> _createNewPassword(String email, String otp, String password) async {
+  Future<void> _createNewPassword(String email, String otp, String password, String confirmPassword) async {
     try {
       setLoading(true);
       if (isLoading == true) {
@@ -44,8 +44,8 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
       }
 
       final response = await ApiService.dio.post(
-        '/forget-password-submit',
-        data: {'email': email, 'code': otp, 'password': password}
+        '/reset-password',
+        data: {'email': email, 'code': otp, 'password': password, 'password_confirmation': password}
       );
 
       if (response.statusCode == 200) {
@@ -54,14 +54,14 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
           Navigator.pop(context);
         }
 
-        if (response.data['success'] == true) {
+        if (response.data['status'] == true) {
           print(response.data);
           showDialog(
             context: context,
             builder: (context) => const CreateNewPassWordDialog(),
           );
         } 
-        else if (response.data['success'] == false) {
+        else if (response.data['status'] == false) {
           print(response.data);
 
           Flushbar(
@@ -158,7 +158,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
 
                     AppVerticalSpacing.verticalSpacingN,
                     MyText(
-                      title: 'Please enter your register  email address to reset your password',
+                      title: 'Please enter your register email address to reset your password',
                       size: 16, weight: FontWeight.w500, color: plugTextColor,
                     ),
                     
@@ -214,50 +214,55 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
                       ),
                     ),
 
-                    AppVerticalSpacing.verticalSpacingN,
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        StatefulBuilder(builder: (context, setState) {
-                          return Theme(
-                            data: ThemeData(
-                              unselectedWidgetColor: plugTextColor,
-                            ),
-                            child: Checkbox(
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                              value: _rememberMe,
-                              checkColor: plugWhite,
-                              activeColor: AppColors.plugPrimaryColor,
-                              onChanged: (val) {
-                                setState(() {
-                                  _rememberMe = val!;
-                                });
-                              }
-                            ),
-                          );
-                        }),
-
-                        const SizedBox(width: 5,),
-                        MyText(
-                          title: 'Remember Me',
-                          color: plugTextColor, weight: FontWeight.w400, size: 14,
-                        ),
-                      ],
-                    ),
+                    // AppVerticalSpacing.verticalSpacingN,
+                    // Row(
+                    //   mainAxisAlignment: MainAxisAlignment.start,
+                    //   children: [
+                    //     StatefulBuilder(builder: (context, setState) {
+                    //       return Theme(
+                    //         data: ThemeData(
+                    //           unselectedWidgetColor: plugTextColor,
+                    //         ),
+                    //         child: Checkbox(
+                    //           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                    //           value: _rememberMe,
+                    //           checkColor: plugWhite,
+                    //           activeColor: AppColors.plugPrimaryColor,
+                    //           onChanged: (val) {
+                    //             setState(() {
+                    //               _rememberMe = val!;
+                    //             });
+                    //           }
+                    //         ),
+                    //       );
+                    //     }),
+                    //     const SizedBox(width: 5,),
+                    //     MyText(
+                    //       title: 'Remember Me',
+                    //       color: plugTextColor, weight: FontWeight.w400, size: 14,
+                    //     ),
+                    //   ],
+                    // ),
 
                     AppVerticalSpacing.verticalSpacingL,
                     CustomButtonWithIconRight(
                       title: 'Continue',
                       radius: BorderRadius.circular(5),
-                      buttonColor: plugPrimaryColor,
+                      buttonColor: AppColors.plugPrimaryColor,
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           await _createNewPassword(
                             widget.email.toString(),
                             widget.code.toString(), 
-                            _passwordController.text
+                            _passwordController.text,
+                            _confirmPasswordController.text
                           );
                         }
+
+                        print(widget.email.toString());
+                        print(widget.code.toString());
+                        print(_passwordController.text);
+                        print(_confirmPasswordController.text);
                       },
                     )
                   ],

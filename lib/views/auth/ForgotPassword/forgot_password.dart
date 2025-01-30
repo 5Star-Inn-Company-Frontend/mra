@@ -35,7 +35,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       }
 
       final response = await ApiService.dio.post(
-        '/reset-password-request',
+        '/reset-password-request-app',
         data: {'email': email}
       );
 
@@ -144,7 +144,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
 
                   AppVerticalSpacing.verticalSpacingN,
                   MyText(
-                    title: 'Please enter your register email address to reset your password',
+                    title: 'Please enter your registered email address to reset your password',
                     size: 16, weight: FontWeight.w500, color: plugHeaderTextColor, align: TextAlign.center,
                   ),
 
@@ -177,12 +177,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       },
                       controller: _emailController,
                       cursorColor: plugHeaderTextColor.withOpacity(0.6),
-                      style: GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 14.sp, color: plugHeaderTextColor.withOpacity(0.6),),
+                      style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14.sp, color: plugHeaderTextColor.withOpacity(0.6),),
                       obscureText: false,
                       decoration: InputDecoration(
                         prefixIcon: Icon(Icons.mail_rounded, color: plugHeaderTextColor.withOpacity(0.6),),
                         hintText: 'Email Address',
-                        hintStyle: GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 14.sp,color: plugHeaderTextColor.withOpacity(0.6),),
+                        hintStyle: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14.sp,color: plugHeaderTextColor.withOpacity(0.6),),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(5),
                           borderSide: BorderSide(color: AppColors.plugPrimaryColor.withOpacity(0.4), width: 2,),

@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => TransactionsDataProvider()),
           ChangeNotifierProvider(create: (_) => TerminalProvider()),
           ChangeNotifierProvider(create: (_) => AirtimeProvider()),
-          ChangeNotifierProvider(create: (_) => CableProvider()),
+          // ChangeNotifierProvider(create: (_) => CableProvider()),
           ChangeNotifierProvider(create: (_) => PowerProvider()),
           ChangeNotifierProvider(create: (_) => TransferNotifier()),
           ChangeNotifierProvider(create: (_) => DataProvider()),

@@ -64,7 +64,7 @@ class CustomTextFormField extends StatelessWidget {
       readOnly: readonly,
       onTap: onTap,
       style: textStyle ??
-          GoogleFonts.inter(
+          GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
             color: plugHeaderTextColor,
             fontSize: 14.0,
@@ -72,7 +72,7 @@ class CustomTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         labelText: label,
-        hintStyle: GoogleFonts.inter(
+        hintStyle: GoogleFonts.poppins(
           fontWeight: FontWeight.w500,
           fontSize: 14,
           color: plugHeaderTextColor.withOpacity(0.6),
@@ -86,7 +86,7 @@ class CustomTextFormField extends StatelessWidget {
         // ),
         //     borderRadius: BorderRadius.circular(8)),
         // errorBorder: OutlineInputBorder(
-        //     borderSide: BorderSide(color: Colors.red),
+        //     borderSide: BorderSide(color: AppColors.plugPrimaryColor),
         //     borderRadius: BorderRadius.circular(10)),
 
         prefixIcon: prefixIcon,
@@ -162,7 +162,7 @@ class CustomInAppTextFormField extends StatelessWidget {
       readOnly: readonly,
       onTap: onTap,
       style: textStyle ??
-          GoogleFonts.inter(
+          GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
             color: plugHeaderTextColor,
             fontSize: 14.0,
@@ -171,7 +171,7 @@ class CustomInAppTextFormField extends StatelessWidget {
       decoration: InputDecoration(
         hintText: hintText,
         labelText: label,
-        hintStyle: GoogleFonts.inter(
+        hintStyle: GoogleFonts.poppins(
           fontWeight: FontWeight.w500,
           fontSize: 14,
           color: plugHeaderTextColor.withOpacity(0.6),
@@ -256,12 +256,12 @@ class HomeScreenCustomTextFormField extends StatelessWidget {
         readOnly: readonly,
         onTap: onTap,
         style: textStyle ??
-            GoogleFonts.inter(
+            GoogleFonts.poppins(
                 fontWeight: FontWeight.w500, color: plugBlack, fontSize: 16.0),
         decoration: InputDecoration(
           hintText: hintText,
           labelText: label,
-          hintStyle: GoogleFonts.inter(
+          hintStyle: GoogleFonts.poppins(
             fontWeight: FontWeight.w400,
             fontSize: 16,
             color: color ?? plugAshColor,
@@ -272,18 +272,18 @@ class HomeScreenCustomTextFormField extends StatelessWidget {
               const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: color ?? plugPrimaryColor,
+                color: color ?? AppColors.plugPrimaryColor,
               ),
               borderRadius: radius ?? BorderRadius.circular(10)),
           errorBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: Colors.red),
+              borderSide: BorderSide(color: AppColors.plugPrimaryColor),
               borderRadius: BorderRadius.circular(10)),
           focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
-                color: color ?? plugPrimaryColor,
+                color: color ?? AppColors.plugPrimaryColor,
               ),
               borderRadius: BorderRadius.circular(10)),
-          labelStyle: GoogleFonts.inter(
+          labelStyle: GoogleFonts.poppins(
               color: plugBlack, fontSize: 16, fontWeight: FontWeight.w700),
           prefixIcon: prefixIcon,
           suffix: suffixIcon,
@@ -315,7 +315,7 @@ class pinFied extends StatelessWidget {
         textInputAction: TextInputAction.next,
         enabled: true,
         cursorHeight: 30,
-        cursorColor: plugPrimaryColor,
+        cursorColor: AppColors.plugPrimaryColor,
         smartDashesType: SmartDashesType.enabled,
         textAlign: TextAlign.center,
         maxLength: 1,
@@ -335,7 +335,7 @@ class pinFied extends StatelessWidget {
           enabled: true,
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
-              color: plugPrimaryColor,
+              color: AppColors.plugPrimaryColor,
               width: 2,
             ),
           ),

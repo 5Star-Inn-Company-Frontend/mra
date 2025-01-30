@@ -21,13 +21,13 @@ class _AuthTfieldState extends State<AuthTfield> {
       validator: widget.validator,
       controller: widget.controller,
       cursorColor: plugHeaderTextColor.withOpacity(0.6),
-      style: GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 14.sp, color: plugHeaderTextColor.withOpacity(0.6),),
+      style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14.sp, color: plugHeaderTextColor.withOpacity(0.6),),
       obscureText: widget.obscureText,
       decoration: InputDecoration(
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.suffixIcon,
         hintText: widget.hintText,
-        hintStyle: GoogleFonts.inter(fontWeight: FontWeight.w500, fontSize: 14.sp,color: plugHeaderTextColor.withOpacity(0.6),),
+        hintStyle: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14.sp,color: plugHeaderTextColor.withOpacity(0.6),),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: BorderSide(color: AppColors.plugPrimaryColor.withOpacity(0.4), width: 2,),

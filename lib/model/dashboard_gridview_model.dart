@@ -20,7 +20,8 @@ List gridItems = <GridModel>[
   GridModel(
       image: 'assets/images/transact.png',
       title: 'Transfer',
-      route: const Transfer()),
+      route: const DashBoard()
+    ),
   GridModel(
       image: 'assets/images/bulb.png',
       title: 'Electricity',

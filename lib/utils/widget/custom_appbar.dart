@@ -1,4 +1,5 @@
 import 'package:clipboard/clipboard.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../res/import/import.dart';
 
 class CustomAppBar extends StatefulWidget {
@@ -11,6 +12,7 @@ class CustomAppBar extends StatefulWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
+  
   @override
   Widget build(BuildContext context) {
     //check time of day
@@ -131,7 +133,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         ),
 
         Positioned(
-          left: 50,
+          left: 30,
           top: 170,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -140,25 +142,26 @@ class _CustomAppBarState extends State<CustomAppBar> {
               MyText(title: 'Balance', size: 16, color: plugWhite, weight: FontWeight.w400,),
 
               const SizedBox(height: 4),
-              MyText(title: formattedAmount, size: 28, color: plugWhite, weight: FontWeight.w700,),
+              MyText(title: formattedAmount, size: 22.sp, color: plugWhite, weight: FontWeight.w700,),
               
-              AppVerticalSpacing.verticalSpacingN,
+              Gap(10.h),
               Container(
                 color: Colors.white,
-                width: 179,
+                width: 200,
                 height: 2,
               ),
               
-              AppVerticalSpacing.verticalSpacingN,
+              Gap(15.h),
               Row(
                 children: [
                   MyText(
-                    title: vacctsData?.data[0].accountNumber ?? 'No Account Number',
-                    // title: '0123456789', 
-                    size: 20, color: plugWhite, weight: FontWeight.w700,
+                    title: vacctsData != null && vacctsData.data.isNotEmpty
+                    ? vacctsData.data[0].accountNumber
+                    : 'No Account Number',
+                    size: 15.sp, color: plugWhite, weight: FontWeight.w700,
                   ),
 
-                  const Gap(8),
+                  Gap(12.w),
                   TouchableOpacity(
                     onTap: () async {
                       if (vacctsData != null && vacctsData.data.isNotEmpty) {
@@ -189,9 +192,25 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
               AppVerticalSpacing.verticalSpacingS,
               MyText(
-                title: '${vacctsData?.data[0].provider} | ${vacctsData?.data[0].accountName}',
+                title: vacctsData != null && vacctsData.data.isNotEmpty
+                ? 'Bank Name: ${vacctsData.data[0].provider}'
+                : 'No Bank Name',
+                size: 12.sp,
                 color: AppColors.white,
+                maxLines: 1,
+                textOverflow: TextOverflow.ellipsis
               ),
+
+              Gap(5.h),
+              MyText(
+                title: vacctsData != null && vacctsData.data.isNotEmpty
+                ? 'Account Name: ${vacctsData.data[0].accountName}'
+                : 'No Account Name',
+                size: 12.sp,
+                color: AppColors.white,
+                maxLines: 1,
+                textOverflow: TextOverflow.ellipsis
+              ), 
 
               // AppVerticalSpacing.verticalSpacingS,
               // MyText(
@@ -227,18 +246,18 @@ class CustomDrawer extends StatelessWidget {
                 height: 133,
                 color: AppColors.plugPrimaryColor,
               ),
+              // Positioned(
+              //   left: 30,
+              //   top: 60,
+              //   child: CircleAvatar(
+              //     radius: 20,
+              //     backgroundColor: Colors.white,
+              //     // backgroundImage:
+              //         // NetworkImage(userData?.profilePhotoUrl ?? ''),
+              //   ),
+              // ),
               Positioned(
-                left: 30,
-                top: 60,
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Colors.white,
-                  // backgroundImage:
-                      // NetworkImage(userData?.profilePhotoUrl ?? ''),
-                ),
-              ),
-              Positioned(
-                left: 85,
+                left: 20,
                 top: 65,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

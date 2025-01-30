@@ -5,7 +5,7 @@ import 'package:mra/constant/text.dart';
 import 'package:mra/core/navigators/router_names.dart';
 import 'package:mra/res/import/import.dart';
 import 'package:mra/utils/ui_helpers.dart';
-import 'package:mra/views/CableTv/changeNotifier/cableNotifier.dart';
+import 'package:mra/views/CableTv/changeNotifier/cable_notifier.dart';
 import 'package:provider/provider.dart';
 
 class CableConfirmation extends StatelessWidget {
