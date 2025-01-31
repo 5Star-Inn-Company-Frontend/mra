@@ -142,7 +142,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               MyText(title: 'Balance', size: 16, color: plugWhite, weight: FontWeight.w400,),
 
               const SizedBox(height: 4),
-              MyText(title: formattedAmount, size: 22.sp, color: plugWhite, weight: FontWeight.w700,),
+              MyText(title: formattedAmount, size: 22.sp, color: plugWhite, weight: FontWeight.w600,),
               
               Gap(10.h),
               Container(
@@ -158,7 +158,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     title: vacctsData != null && vacctsData.data.isNotEmpty
                     ? vacctsData.data[0].accountNumber
                     : 'No Account Number',
-                    size: 15.sp, color: plugWhite, weight: FontWeight.w700,
+                    size: 15.sp, color: plugWhite, weight: FontWeight.w600,
                   ),
 
                   Gap(12.w),

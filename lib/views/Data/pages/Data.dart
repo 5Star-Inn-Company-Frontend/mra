@@ -6,6 +6,7 @@ import 'package:mra/views/Airtime/model/airtime_provider_model.dart';
 import 'package:mra/views/Airtime/service/airtime_service.dart';
 import 'package:mra/views/Data/model/dataPlans.dart';
 import 'package:mra/views/Data/model/data_provider_model.dart';
+import 'package:mra/views/Data/model/data_types_model.dart';
 import 'package:mra/views/Data/pages/data_pin.dart';
 import 'package:mra/views/Transfer/constants/textField.dart';
 import '../../../res/import/import.dart';
@@ -46,40 +47,32 @@ class _DataState extends State<Data> {
     });
   }
 
-  Future<DataPlans> loadDataPlans(String service) async {
+  // DataTypesModel? _dataTypes;
+  late Future<DataTypesModel?> futureDataTypes;
+
+  Future<DataTypesModel?> loadDataTypes(String service) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
 
-    // print(token);
     try {
       final response = await ApiService.dio.get('/internet-plans/$service',
           options: Options(headers: {'Authorization': 'Bearer $token'}));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        // print(response.data);
-        final plans = DataPlans.fromJson(response.data);
-
-        if (response.data['success'] == true) {
-          if (mounted) {
-            setState(() {
-              _dataPlans = plans;
-            });
-          }
-        }
-
-        print(_dataPlans?.data.runtimeType);
-
-        print(_dataPlans);
+        return DataTypesModel.fromJson(response.data);
       }
-    } on DioException catch (e) {
+    }  on DioException catch (e) {
+      if (DioExceptionType.badResponse == e.type) {
+        throw Exception('Unable to fetch data types');
+      }
       if (DioExceptionType.connectionError == e.type ||
           DioExceptionType.connectionTimeout == e.type ||
           DioExceptionType.receiveTimeout == e.type ||
           DioExceptionType.sendTimeout == e.type) {
-        return DataPlans(
-            success: false, message: 'Network Exception', data: []);
+        throw Exception('Unable to make requests, try again');
       }
     }
-    return DataPlans(success: false, message: "", data: []);
+
+    return null;
   }
 
 
@@ -112,9 +105,7 @@ class _DataState extends State<Data> {
 
 
   String provider = "MTN";
-  int currentIndex = 0;
-  // Future<DataPlans>? futureDataPlans;
-  // late Future<DataProviderModel?> futureData;
+  String service = "MTN";
 
   Future<List<Contact>> getContacts() async {
     bool isGranted = await Permission.contacts.status.isGranted;
@@ -135,6 +126,7 @@ class _DataState extends State<Data> {
     super.initState();
     getContacts();
     selectedRadioTile;
+    futureDataTypes = loadDataTypes(service);
     futureDataProvider = loadAirtimeProvider();
     // futureDataPlans = loadDataPlans('AIRTEL');
     // futureData = loadData(provider, 'SME');
@@ -413,6 +405,47 @@ class _DataState extends State<Data> {
 
                         AppVerticalSpacing.verticalSpacingN,
                         MyText(
+                          title: 'Select Data Type',
+                          fonts: GoogleFonts.roboto(
+                            fontWeight: FontWeight.w400,
+                            fontSize: 14,
+                            color: plugTextColor,
+                          ),
+                        ),
+
+                        Gap(10.h),
+                        FutureBuilder<DataTypesModel?>(
+                          future: futureDataTypes,
+                          builder: (context, snapshot) {
+                          if (snapshot.connectionState == ConnectionState.waiting) {
+                            return Center(child: CircularProgressIndicator());
+                          } else if (snapshot.hasError) {
+                            return Center(child: Text('Error: ${snapshot.error}'));
+                          } else if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
+                            return Center(child: Text('No cable plans available'));
+                          } else {
+                            final dataTypes = snapshot.data!;
+                            return SizedBox(
+                              height: 120.h,
+                              width: double.maxFinite,
+                              child: GridView.count(
+                                crossAxisCount: 4,
+                                crossAxisSpacing: 5.0,
+                                mainAxisSpacing: 0.0,
+                                childAspectRatio: 0.7,
+                                children: [
+                                  _buildDataTypesItem(dataTypes.data.first as String, 0),
+                                  _buildDataTypesItem('gotv', 1),
+                                  _buildDataTypesItem('startimes', 2),
+                                  _buildDataTypesItem('showmax', 3),
+                                ],
+                              ),
+                            );
+                          }}
+                        ),
+                        
+                        AppVerticalSpacing.verticalSpacingN,
+                        MyText(
                           title: 'Select Data Plan',
                           fonts: GoogleFonts.roboto(
                             fontWeight: FontWeight.w400,
@@ -509,6 +542,38 @@ class _DataState extends State<Data> {
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+
+  int currentIndex = 0;
+
+  void _changeService(String selectedService, int index) {
+    setState(() {
+      service = selectedService;
+      currentIndex = index;
+      futureDataTypes = loadDataTypes(service);
+    });
+  }
+
+  _buildDataTypesItem(String title, int index) {
+    return GestureDetector(
+      onTap: () => _changeService(title, index),
+      child: Container(
+        padding: EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
+        decoration: BoxDecoration(
+          border: Border.all(
+            width: 2,
+            color: currentIndex == index ? AppColors.plugPrimaryColor : AppColors.white,
+          ),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: MyText(
+          title: title.toUpperCase(),
+          size: 12,
+          color: plugSecondaryTextColor,
+          weight: FontWeight.bold,
         ),
       ),
     );

@@ -1,16 +1,7 @@
-import 'package:another_flushbar/flushbar.dart';
-import 'package:flutter/material.dart';
-
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
-import 'package:mra/constant/text.dart';
 import 'package:mra/res/import/import.dart';
-import 'package:mra/utils/ui_helpers.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
-import 'package:mra/views/Account/changeNotifiers/user_data_provider.dart';
-import 'package:mra/views/CableTv/changeNotifier/cable_notifier.dart';
-import 'package:mra/views/CableTv/model/cablePayment.dart';
-import 'package:provider/provider.dart';
 
 class CablePin extends StatefulWidget {
   const CablePin({super.key});
@@ -32,6 +23,7 @@ class _CablePinState extends State<CablePin> {
   Widget build(BuildContext context) {
     final user = Provider.of<UserDataProvider>(context, listen: true);
     final cableNotifier = Provider.of<CableProvider>(context, listen: true);
+
     return Scaffold(
       appBar: PlugAppBarTwo(title: ''),
       body: SafeArea(
@@ -44,6 +36,7 @@ class _CablePinState extends State<CablePin> {
               fontSize: 32,
               fontWeight: FontWeight.w700,
             ),
+            
             Gap(screenHeight(context) * 0.06),
             OTPTextField(
               controller: otpController,

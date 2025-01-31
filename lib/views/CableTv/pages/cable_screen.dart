@@ -377,6 +377,7 @@
 // }
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/CableTv/model/cable_plans_model.dart';
@@ -405,6 +406,7 @@ class _CableTvState extends State<CableTv> {
 
   CableValidateModel? _validateCableSub;
 
+  CablePlans? _cablePlans;
   late Future<CablePlans?> futureCablePlans;
 
   @override
@@ -514,6 +516,8 @@ class _CableTvState extends State<CableTv> {
 
   @override
   Widget build(BuildContext context) {
+    // final cableNotifier = Provider.of<CableProvider>(context, listen: true);
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const PlugAppBarTwo(title: "CABLE TV"),
@@ -525,7 +529,7 @@ class _CableTvState extends State<CableTv> {
               children: [
                 MyText(
                   title: 'Select TV Provider',
-                  size: 14,
+                  size: 14, 
                   color: plugSecondaryTextColor,
                 ),
                 Gap(20.h),
@@ -538,8 +542,8 @@ class _CableTvState extends State<CableTv> {
                     mainAxisSpacing: 0.0,
                     childAspectRatio: 0.7,
                     children: [
-                      _buildGridItem('gotv', 'assets/images/bills/Gotv-Payment.jpg', 0),
-                      _buildGridItem('dstv', 'assets/images/bills/Pay-DSTV-Subscription.jpg', 1),
+                      _buildGridItem('dstv', 'assets/images/bills/Pay-DSTV-Subscription.jpg', 0),
+                      _buildGridItem('gotv', 'assets/images/bills/Gotv-Payment.jpg', 1),
                       _buildGridItem('startimes', 'assets/images/bills/Startimes-Subscription.jpg', 2),
                       _buildGridItem('showmax', 'assets/images/bills/ShowMax.jpg', 3),
                     ],
@@ -651,7 +655,44 @@ class _CableTvState extends State<CableTv> {
                   },
                 ),
 
-                AppVerticalSpacing.verticalSpacingS,
+                Gap(20.h),
+                // CustomButtonWithIconRight(
+                //   icon: Visibility(
+                //     visible: _isLoading ? true : false,
+                //     child: Container(
+                //       margin: const EdgeInsets.only(left: 10),
+                //       width: 30,
+                //       height: 20, 
+                //       child: const CupertinoActivityIndicator(
+                //         color: AppColors.white,
+                //       )
+                //     )
+                //   ),
+                //   onPressed: () async {
+                //     if (isCustomer == false) {
+                //       setState(() {
+                //         _isLoading = true;
+                //       });
+                //       validateCableSub(tvNumber, service);
+                //     } else {
+                //       // final random = Random();
+                //       // final refId = 'ref${random.nextInt(999999999)}d';
+                //       final cablePlans = _cablePlans!.data[selectedRadioTile];
+                //       await cableNotifier.purchaseTv(
+                //         cablePlans.id, // networkID
+                //         tvNumber, //number
+                //         context
+                //         // cableNotifier.setProvider(service);
+                //         // cableNotifier.setRefId(refId);
+                //         // cableNotifier.setRechargeCode(tvPackageCode.toString());
+                //         // cableNotifier.setIucNumber(tvNumber);
+                //       );
+                //     }
+                //     print('$service, ${cableNotifier.refId}, $tvNumber');
+                //   },
+                //   title: isCustomer ? 'Send' : 'Verify',
+                //   gradient: gradient2,
+                // ),
               ],
             );
           },

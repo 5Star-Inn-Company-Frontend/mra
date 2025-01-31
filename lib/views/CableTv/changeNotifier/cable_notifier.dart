@@ -7,12 +7,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mra/constant/app_colors.dart';
 import 'package:mra/constant/loader.dart';
 import 'package:mra/core/network/api_client.dart';
-import 'package:mra/views/Airtime/pages/airtime_pin.dart';
-import 'package:mra/views/CableTv/model/cablePayment.dart';
-import 'package:mra/views/CableTv/pages/cableConfirmation.dart';
-import 'package:mra/views/CableTv/pages/cablePin.dart';
+import 'package:mra/views/CableTv/model/cable_payment_model.dart';
+import 'package:mra/views/CableTv/pages/cable_confirmation.dart';
+import 'package:mra/views/CableTv/pages/cable_pin.dart';
 
 class CableProvider with ChangeNotifier {
   String? _provider;
@@ -69,21 +69,20 @@ class CableProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<CablePayment> purchaseTv(
-      CablePayment payment, BuildContext context) async {
+  Future<CablePaymentModel?> purchaseTv(int networkID, int phone, BuildContext context) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
     if (pinAuthenticated == true) {
       try {
-        setPaymentLoading(true);
+        setPaymentLoading(true); 
         if (isPaymentLoading == true) {
           showCupertinoDialog(
-              context: context,
-              builder: (context) {
-                return const Loading();
-              });
+            context: context,
+            builder: (context) {
+              return const Loading();
+            });
         }
-        final response = await ApiService.dio.post('/cabletv-pay',
-            data: json.encode(payment.toJson()),
+        final response = await ApiService.dio.post('/purchase-tv',
+            data: {'networkID': networkID, 'phone': phone},
             options: Options(headers: {'Authorization': 'Bearer $token'}));
 
         if (response.statusCode == 200 || response.statusCode == 201) {
@@ -93,21 +92,19 @@ class CableProvider with ChangeNotifier {
           }
           setPinAuth(false);
           print(response.data);
-          if (response.data['success'] == true) {
+          if (response.data['status'] == true) {
             Navigator.of(context).push(
-              MaterialPageRoute(
-                  builder: (context) => const CableConfirmation()),
+              MaterialPageRoute(builder: (context) => const CableConfirmation()),
             );
           } else {
-            // ignore: use_build_context_synchronously
             Flushbar(
-                    message: "Unable to pay tv subscription, try again ",
-                    flushbarStyle: FlushbarStyle.GROUNDED,
-                    isDismissible: true,
-                    flushbarPosition: FlushbarPosition.TOP,
-                    duration: const Duration(seconds: 2),
-                    backgroundColor: Colors.red)
-                .show(context);
+                message: "Unable to pay tv subscription, try again ",
+                flushbarStyle: FlushbarStyle.GROUNDED,
+                isDismissible: true,
+                flushbarPosition: FlushbarPosition.TOP,
+                duration: const Duration(seconds: 2),
+                backgroundColor: AppColors.plugPrimaryColor)
+            .show(context);
           }
         }
       } on DioException catch (e) {
@@ -122,7 +119,7 @@ class CableProvider with ChangeNotifier {
                   isDismissible: true,
                   flushbarPosition: FlushbarPosition.TOP,
                   duration: const Duration(seconds: 2),
-                  backgroundColor: Colors.red)
+                  backgroundColor: AppColors.plugPrimaryColor)
               .show(context);
         }
         if (DioExceptionType.connectionError == e.type ||
@@ -135,7 +132,7 @@ class CableProvider with ChangeNotifier {
                   isDismissible: true,
                   flushbarPosition: FlushbarPosition.TOP,
                   duration: const Duration(seconds: 2),
-                  backgroundColor: Colors.red)
+                  backgroundColor: AppColors.plugPrimaryColor)
               .show(context);
         }
       }
@@ -147,7 +144,6 @@ class CableProvider with ChangeNotifier {
       );
     }
 
-    return CablePayment(
-        code: null, number: null, provider: null, reference: null);
+    return null;
   }
 }

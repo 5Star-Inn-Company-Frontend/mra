@@ -15,6 +15,7 @@ class CablePlans {
 }
 
 class CablePlan {
+  int id;
   String type;
   String name;
   String code;
@@ -22,6 +23,7 @@ class CablePlan {
   String discount;
 
   CablePlan({
+    required this.id,
     required this.type,
     required this.name,
     required this.code,
@@ -31,6 +33,7 @@ class CablePlan {
 
   factory CablePlan.fromJson(Map<String, dynamic> json) {
     return CablePlan(
+      id: json['id'],
       type: json['type'],
       name: json['name'],
       code: json['code'],

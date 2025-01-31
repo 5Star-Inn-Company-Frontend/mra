@@ -12,6 +12,13 @@ subprojects {
 subprojects {
     project.evaluationDependsOn(":app")
 }
+// subprojects {
+//     afterEvaluate {
+//         if (it.name == "flutter_inappwebview_android") {
+//             it.android.buildTypes.release.minifyEnabled = false
+//         }
+//     }
+// }
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
