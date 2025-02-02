@@ -1,6 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-
+import 'package:mra/views/Data/model/data_purchase_model.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:mra/constant/text.dart';
@@ -9,7 +9,6 @@ import 'package:mra/utils/widget/gap.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Account/changeNotifiers/user_data_provider.dart';
 import 'package:mra/views/Data/changeNotifier/data_notifier.dart';
-import 'package:mra/views/Data/model/buyData.dart';
 import 'package:provider/provider.dart';
 
 class DataPin extends StatelessWidget {
@@ -20,6 +19,7 @@ class DataPin extends StatelessWidget {
     OtpFieldController otpController = OtpFieldController();
     final user = Provider.of<UserDataProvider>(context, listen: true);
     final dataNotifier = Provider.of<DataProvider>(context, listen: true);
+    
     return Scaffold(
       appBar: const PlugAppBarTwo(title: 'Data'),
       body: SafeArea(
@@ -50,11 +50,12 @@ class DataPin extends StatelessWidget {
                 // if (pin == user.userData?.data?.transactionPin) {
                 //   dataNotifier.setPinAuth(true);
                 //   dataNotifier.purchaseData(
-                //       BuyData(
-                //           number: dataNotifier.number,
-                //           planId: dataNotifier.planId,
-                //           provider: dataNotifier.provider,
-                //           reference: dataNotifier.reference),
+                //       DataPurchaseModel(
+                //         number: dataNotifier.number,
+                //         planId: dataNotifier.planId,
+                //         provider: dataNotifier.provider,
+                //         reference: dataNotifier.reference
+                //       ),
                 //       context);
                 // } else {
                 //   Flushbar(

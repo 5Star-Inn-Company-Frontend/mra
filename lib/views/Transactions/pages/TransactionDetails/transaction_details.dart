@@ -3,7 +3,7 @@ import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Transactions/model/transactions.dart';
 import 'package:screenshot/screenshot.dart';
 import 'dart:ui' as ui;
-import 'package:share_plus/share_plus.dart';
+// import 'package:share_plus/share_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import '../../../../res/import/import.dart';
@@ -62,17 +62,17 @@ class _TransactionDetailsState extends State<TransactionDetails> {
   }
 
   void _shareScreenshot() async {
-    final imageBytes = await capture(global);
-    if (imageBytes != null) {
-      final directory = await getTemporaryDirectory();
-      final file = File('${directory.path}/screenshot.png');
-      await file.writeAsBytes(imageBytes.buffer.asUint8List());
+    // final imageBytes = await capture(global);
+    // if (imageBytes != null) {
+    //   final directory = await getTemporaryDirectory();
+    //   final file = File('${directory.path}/screenshot.png');
+    //   await file.writeAsBytes(imageBytes.buffer.asUint8List());
 
-      // ignore: deprecated_member_use
-      await Share.shareXFiles([XFile(file.path)],
-          subject: 'Transaction receipt',
-          text: 'Check out Transaction receipt');
-    }
+    //   // ignore: deprecated_member_use
+    //   await Share.shareXFiles([XFile(file.path)],
+    //       subject: 'Transaction receipt',
+    //       text: 'Check out Transaction receipt');
+    // }
   }
 
   @override

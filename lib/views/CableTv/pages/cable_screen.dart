@@ -645,7 +645,7 @@ class _CableTvState extends State<CableTv> {
                               setState(() {
                                 selectedRadioTile = value!;
                                 tvPackageCode = cablePlans.data[index].code;
-                              });
+                              } );
                             },
                             activeColor: AppColors.plugPrimaryColor,
                           );

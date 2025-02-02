@@ -1,12 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:mra/constant/fonts.dart';
-import 'package:mra/constant/text.dart';
-import 'package:mra/core/navigators/router_names.dart';
 import 'package:mra/res/import/import.dart';
-import 'package:mra/utils/ui_helpers.dart';
-import 'package:mra/views/Data/changeNotifier/data_notifier.dart';
-import 'package:provider/provider.dart';
 
 class DataConfirmation extends StatelessWidget {
   const DataConfirmation({super.key});
@@ -14,7 +7,7 @@ class DataConfirmation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final dataNotifier = Provider.of<DataProvider>(context, listen: true);
-    print(dataNotifier.number);
+    // print(dataNotifier.number);
     return Scaffold(
       backgroundColor: const Color(0xffFFFFFF),
       body: Padding(
@@ -50,10 +43,10 @@ class DataConfirmation extends StatelessWidget {
                         const TextSpan(
                             text: 'data to ',
                             style: TextStyle(fontWeight: FontWeight.w300)),
-                        TextSpan(
-                            text:
-                                '${dataNotifier.planName} - ${dataNotifier.number}',
-                            style: const TextStyle(fontWeight: FontWeight.w600))
+                        // TextSpan(
+                        //     text:
+                        //         '${dataNotifier.planName} - ${dataNotifier.number}',
+                        //     style: const TextStyle(fontWeight: FontWeight.w600))
                       ])),
             ),
             Gap(screenHeight(context) * 0.2),

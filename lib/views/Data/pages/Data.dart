@@ -1,13 +1,10 @@
-import 'dart:math';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Airtime/model/airtime_provider_model.dart';
 import 'package:mra/views/Airtime/service/airtime_service.dart';
-import 'package:mra/views/Data/model/dataPlans.dart';
-import 'package:mra/views/Data/model/data_provider_model.dart';
+import 'package:mra/views/Data/model/data_plans_model.dart';
 import 'package:mra/views/Data/model/data_types_model.dart';
-import 'package:mra/views/Data/pages/data_pin.dart';
 import 'package:mra/views/Transfer/constants/textField.dart';
 import '../../../res/import/import.dart';
 
@@ -21,13 +18,10 @@ class Data extends StatefulWidget {
 class _DataState extends State<Data> {
   TextEditingController controller = TextEditingController();
   TextEditingController phonecontroller = TextEditingController();
-
   final _formKey = GlobalKey<FormState>();
 
-  late Future<AirtimeProviderModel?> futureDataProvider;
-
-  DataPlans? _dataPlans;
-  DataProviderModel? _dataProviderModel;
+  int? selectedProviderIndex;
+  int? selectedDataTypeIndex;
 
   int? selectedRadioTile;
 
@@ -36,6 +30,9 @@ class _DataState extends State<Data> {
 
   bool isVisible = false;
   bool isValid = true;
+
+  String packageType = 'SME';
+  String provider = "MTN";
 
   String _country = 'Nigeria';
   String _countryCode = '234';
@@ -47,17 +44,20 @@ class _DataState extends State<Data> {
     });
   }
 
-  // DataTypesModel? _dataTypes;
   late Future<DataTypesModel?> futureDataTypes;
+  late Future<AirtimeProviderModel?> futureDataProvider;
+  late Future<DataPlansModel?> futureDataPlans;
 
   Future<DataTypesModel?> loadDataTypes(String service) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
 
     try {
-      final response = await ApiService.dio.get('/internet-plans/$service',
-          options: Options(headers: {'Authorization': 'Bearer $token'}));
+      final response = await ApiService.dio.get(
+        '/types-data/$service',
+        options: Options(headers: {'Authorization': 'Bearer $token'}));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
+        print('data type: ${response.data}');
         return DataTypesModel.fromJson(response.data);
       }
     }  on DioException catch (e) {
@@ -75,22 +75,20 @@ class _DataState extends State<Data> {
     return null;
   }
 
-
-  Future<DataProviderModel?> loadData(String networkType, String packageType) async {
+  Future<DataPlansModel?> loadDataPlans(String service, String packageType) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
 
-    print(token);
     try {
       final response = await ApiService.dio.get(
-        '/list-data/$networkType/$packageType',
+        '/list-data/$service/$packageType',
           options: Options(headers: {'Authorization': 'Bearer $token'}));
 
       if (response.statusCode == 200 || response.statusCode == 201) {
-        return DataProviderModel.fromJson(response.data);
+        return DataPlansModel.fromJson(response.data);
       }
     } on DioException catch (e) {
       if (DioExceptionType.badResponse == e.type) {
-        throw Exception('Unable to fetch Providers');
+        throw Exception('Unable to fetch Data Plans');
       }
       if (DioExceptionType.connectionError == e.type ||
           DioExceptionType.connectionTimeout == e.type ||
@@ -102,10 +100,6 @@ class _DataState extends State<Data> {
 
     return null;
   }
-
-
-  String provider = "MTN";
-  String service = "MTN";
 
   Future<List<Contact>> getContacts() async {
     bool isGranted = await Permission.contacts.status.isGranted;
@@ -121,19 +115,17 @@ class _DataState extends State<Data> {
     return [];
   }
 
+
   @override
   void initState() {
     super.initState();
     getContacts();
     selectedRadioTile;
-    futureDataTypes = loadDataTypes(service);
+    futureDataTypes = loadDataTypes(provider);
     futureDataProvider = loadAirtimeProvider();
-    // futureDataPlans = loadDataPlans('AIRTEL');
-    // futureData = loadData(provider, 'SME');
+    futureDataPlans = loadDataPlans(provider, packageType);
   }
 
-  String? dataPlan;
-  String? dataPlan2;
   @override
   Widget build(BuildContext context) {
     // final dataNotifier = Provider.of<DataProvider>(context, listen: false);
@@ -182,8 +174,9 @@ class _DataState extends State<Data> {
                                     return GestureDetector(
                                       onTap: () {
                                         setState(() {
-                                          currentIndex = index;
+                                          selectedProviderIndex = index;
                                           provider = snapshot.data?.data[index].network ?? "MTN";
+                                          futureDataTypes = loadDataTypes(provider);
                                         });
 
                                         print(snapshot.data?.data[index].network);
@@ -193,7 +186,7 @@ class _DataState extends State<Data> {
                                         decoration: BoxDecoration(
                                           border: Border.all(
                                             width: 2,
-                                            color: currentIndex == index ? AppColors.plugPrimaryColor : AppColors.white
+                                            color: selectedProviderIndex == index ? AppColors.plugPrimaryColor : AppColors.white
                                           ),
                                           borderRadius: BorderRadius.circular(10)
                                         ),
@@ -213,7 +206,7 @@ class _DataState extends State<Data> {
                                             Text(
                                               snapshot.data!.data[index].network,
                                               style: GoogleFonts.poppins(
-                                                color: currentIndex == index ? AppColors.plugPrimaryColor : Colors.black,
+                                                color: selectedProviderIndex == index ? AppColors.plugPrimaryColor : Colors.black,
                                                 fontSize: 13.sp,
                                                 fontWeight: FontWeight.w700,
                                               ),
@@ -426,25 +419,23 @@ class _DataState extends State<Data> {
                           } else {
                             final dataTypes = snapshot.data!;
                             return SizedBox(
-                              height: 120.h,
+                              height: 75.h,
                               width: double.maxFinite,
                               child: GridView.count(
-                                crossAxisCount: 4,
-                                crossAxisSpacing: 5.0,
-                                mainAxisSpacing: 0.0,
-                                childAspectRatio: 0.7,
+                                crossAxisCount: 3,
+                                crossAxisSpacing: 3.0,
+                                mainAxisSpacing: 3.0,
+                                childAspectRatio: 3,
                                 children: [
-                                  _buildDataTypesItem(dataTypes.data.first as String, 0),
-                                  _buildDataTypesItem('gotv', 1),
-                                  _buildDataTypesItem('startimes', 2),
-                                  _buildDataTypesItem('showmax', 3),
+                                  for (var i = 0; i < dataTypes.data.length; i++)
+                                    _buildDataTypesItem(dataTypes.data[i], i),
                                 ],
                               ),
                             );
                           }}
                         ),
                         
-                        AppVerticalSpacing.verticalSpacingN,
+                        Gap(10.h),
                         MyText(
                           title: 'Select Data Plan',
                           fonts: GoogleFonts.roboto(
@@ -454,48 +445,53 @@ class _DataState extends State<Data> {
                           ),
                         ),
 
-                        Visibility(
-                          // visible: _dataPlans?.data?.length != null ? true : false,
-                          visible: _dataProviderModel?.data.length != null ? true : false,
-                          child: GridView.builder(
-                            padding: EdgeInsets.zero,
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(parent: ScrollPhysics()),
-                            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 200,
-                              childAspectRatio: 4 / 2,
-                              crossAxisSpacing: 10,
-                              mainAxisSpacing: 1
-                            ),
-                            itemCount: _dataProviderModel?.data.length ?? 0,
-                            itemBuilder: (context, index) {
-                              return RadioListTile(
-                                contentPadding: EdgeInsets.zero,
-                                value: index,
-                                groupValue: selectedRadioTile,
-                                title: TextSemiBold(
-                                  '${_dataPlans?.data?[index].name?.split('-').first} ${_dataPlans?.data?[index].name?.split('-').last}',
-                                  textAlign: TextAlign.left,
+                        FutureBuilder(
+                          future: futureDataPlans,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState == ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Center(child: Text('Error: ${snapshot.error}'));
+                            } else if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
+                              return Center(child: Text('No data plans available'));
+                            } else {
+                              final dataPlans = snapshot.data!;
+                              return Visibility(
+                                visible: dataPlans.data.isNotEmpty ? true : false,
+                                child: ListView.builder(
+                                  padding: EdgeInsets.zero,
+                                  shrinkWrap: true,
+                                  physics: const NeverScrollableScrollPhysics(parent: ScrollPhysics()),
+                                  itemCount: dataPlans.data.length,
+                                  itemBuilder: (context, index) {
+                                    return RadioListTile(
+                                      contentPadding: EdgeInsets.zero,
+                                      value: index,
+                                      groupValue: selectedRadioTile,
+                                      title: TextSemiBold(
+                                        dataPlans.data[index].name,
+                                        textAlign: TextAlign.left,
+                                      ),
+                                      subtitle: TextSemiBold('Price: N${dataPlans.data[index].amount}'),
+                                      onChanged: (value) {
+                                        setSelectedRadioTile(value!);
+                                        setState(() {
+                                          selectedPlan = dataPlans.data[index].id;
+                                          selectedPlanName = dataPlans.data[index].name;
+                                        });
+                                        print(dataPlans.data[index].amount);
+                                        print(value);
+                                      },
+                                      activeColor: AppColors.plugPrimaryColor,
+                                    );
+                                  },
                                 ),
-                                subtitle: TextSemiBold('Price: N${_dataPlans?.data?[index].amount}'),
-                                onChanged: (value) {
-                                  setSelectedRadioTile(value!);
-                                  setState(() {
-                                    selectedPlan = _dataPlans?.data?[index].id;
-                                    selectedPlanName = _dataPlans?.data?[index].name;
-                                  });
-                                  print(_dataPlans?.data?[index].amount);
-                                  print(value);
-                                },
-                                activeColor: AppColors.plugPrimaryColor,
                               );
-                            },
-                          ),
+                            }
+                          },
                         ),
 
-                        // const Spacer(),
-                        Gap(screenHeight(context) * 0.1),
-
+                        Gap(30.h),
                         // CustomButtonWithIconRight(
                         //   onPressed: () async {
                         //     if (selectedRadioTile != null && phonecontroller.text.length != 10 || phonecontroller.text.length != 11 &&
@@ -503,9 +499,8 @@ class _DataState extends State<Data> {
                         //       final random = Random();
                         //       final refId = 'ref${random.nextInt(999999999)}d';
                         //       dataNotifier.setDataPayment(
+                        //         ne,
                         //         phonecontroller.text,
-                        //         selectedPlan!.toInt(),
-                        //         provider,
                         //         refId,
                         //         selectedPlanName.toString()
                         //       );
@@ -520,7 +515,7 @@ class _DataState extends State<Data> {
                         //         message: 'Pls select a data plan, to continue',
                         //         duration: Duration(seconds: 3),
                         //         isDismissible: true,
-                        //         backgroundColor: Colors.red,
+                        //         backgroundColor: AppColors.plugPrimaryColor,
                         //       ).show(context);
                         //     } 
                         //     else if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
@@ -528,7 +523,7 @@ class _DataState extends State<Data> {
                         //         message: 'Input a valid phone number, to continue',
                         //         duration: Duration(seconds: 3),
                         //         isDismissible: true,
-                        //         backgroundColor: Colors.red,
+                        //         backgroundColor: AppColors.plugPrimaryColor,
                         //       ).show(context);
                         //     }
                         //   },
@@ -547,30 +542,29 @@ class _DataState extends State<Data> {
     );
   }
 
-  int currentIndex = 0;
 
-  void _changeService(String selectedService, int index) {
+  void _changeDataType(String selectedService, int index) {
     setState(() {
-      service = selectedService;
-      currentIndex = index;
-      futureDataTypes = loadDataTypes(service);
+      packageType = selectedService;
+      selectedDataTypeIndex = index;
+      futureDataPlans = loadDataPlans(provider, packageType);
     });
   }
 
-  _buildDataTypesItem(String title, int index) {
+  _buildDataTypesItem(DataCategory dataCategory, int index) {
     return GestureDetector(
-      onTap: () => _changeService(title, index),
+      onTap: () => _changeDataType(dataCategory.category, index),
       child: Container(
-        padding: EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
+        padding: EdgeInsets.only(top: 5, bottom: 5, left: 5, right: 5),
         decoration: BoxDecoration(
           border: Border.all(
             width: 2,
-            color: currentIndex == index ? AppColors.plugPrimaryColor : AppColors.white,
+            color: selectedDataTypeIndex == index ? AppColors.plugPrimaryColor : AppColors.white,
           ),
           borderRadius: BorderRadius.circular(10),
         ),
         child: MyText(
-          title: title.toUpperCase(),
+          title: dataCategory.category,
           size: 12,
           color: plugSecondaryTextColor,
           weight: FontWeight.bold,

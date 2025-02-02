@@ -15,8 +15,7 @@ class DataTypesModel {
       message: json['message'] ?? '',
       data: (json['data'] as List<dynamic>?)
               ?.map((item) => DataCategory.fromJson(item))
-              .toList() ??
-          [],
+              .toList() ?? [],
     );
   }
 }

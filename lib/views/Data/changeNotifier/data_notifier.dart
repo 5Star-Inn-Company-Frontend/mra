@@ -1,32 +1,26 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:mra/res/import/import.dart';
-import 'package:mra/views/Data/model/buyData.dart';
+import 'package:mra/views/Data/model/data_purchase_model.dart';
 import 'package:mra/views/Data/pages/data_confirmation.dart';
 // import 'package:mra/views/Electricity/pages/powerConfirmation.dart';
 // import 'package:mra/views/Electricity/pages/powerPin.dart';
 
 class DataProvider with ChangeNotifier {
-  String? _number;
-  int? _planId;
-  String? _provider;
-  String? _reference;
+  String? _networkID;
+  String? _phone;
+  // String? _planName;
 
-  String? _planName;
+  String? get networkID => _networkID;
+  String? get phone => _phone;
+  // String? get provider => _provider;
+  // String? get reference => _reference;
 
-  String? get number => _number;
-  int? get planId => _planId;
-  String? get provider => _provider;
-  String? get reference => _reference;
+  // String? get planName => _planName;
 
-  String? get planName => _planName;
-
-  void setDataPayment(String number, int planId, String provider, String reference, String planName) {
-    _number = number;
-    _planId = planId;
-    _provider = provider;
-    _reference = reference;
-    _planName = planName;
+  void setDataPayment(String networkID, String phone) {
+    _networkID = networkID;
+    _phone = phone;
 
     notifyListeners();
   }
@@ -49,7 +43,7 @@ class DataProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<BuyData> purchaseData(BuyData payment, BuildContext context) async {
+  Future<DataPurchaseModel?> purchaseData(BuildContext context) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
 
     if (pinAuthenticated == true) {
@@ -66,7 +60,10 @@ class DataProvider with ChangeNotifier {
 
         final response = await ApiService.dio.post(
           '/purchase-data',
-          data: json.encode(payment.toJson()),
+          data: json.encode({
+            'networkID': networkID,
+            'phone': phone,
+          }),
           options: Options(headers: {'Authorization': 'Bearer $token'}
           )
         );
@@ -79,7 +76,7 @@ class DataProvider with ChangeNotifier {
           setPinAuth(false);
           print(response.data);
 
-          if (response.data['success'] == true) {
+          if (response.data['status'] == true) {
             Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => const DataConfirmation()),
             );
@@ -132,6 +129,6 @@ class DataProvider with ChangeNotifier {
 
     notifyListeners();
 
-    return BuyData(number: null, planId: null, provider: null, reference: null);
+    return null;
   }
 }

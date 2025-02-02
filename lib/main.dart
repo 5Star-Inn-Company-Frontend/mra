@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           ChangeNotifierProvider(create: (_) => AirtimeProvider()),
           // ChangeNotifierProvider(create: (_) => CableProvider()),
           ChangeNotifierProvider(create: (_) => PowerProvider()),
-          ChangeNotifierProvider(create: (_) => TransferNotifier()),
+          // ChangeNotifierProvider(create: (_) => TransferNotifier()),
           ChangeNotifierProvider(create: (_) => DataProvider()),
           // StreamProvider<InternetConnectionStatus>(
           //   create: (_) {return InternetConnectionChecker.createInstance().onStatusChange;},

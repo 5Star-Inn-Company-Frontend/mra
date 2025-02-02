@@ -1,19 +1,19 @@
-class DataProviderModel {
+class DataPlansModel {
   final bool status;
   final String message;
-  final List<DataProvider> data;
+  final List<DataPlansData> data;
 
-  DataProviderModel({
+  DataPlansModel({
     required this.status,
     required this.message,
     required this.data,
   });
 
-  factory DataProviderModel.fromJson(Map<String, dynamic> json) {
-    return DataProviderModel(
+  factory DataPlansModel.fromJson(Map<String, dynamic> json) {
+    return DataPlansModel(
       status: json['status'],
       message: json['message'],
-      data: List<DataProvider>.from(json['data'].map((x) => DataProvider.fromJson(x))),
+      data: List<DataPlansData>.from(json['data'].map((x) => DataPlansData.fromJson(x))),
     );
   }
 
@@ -26,14 +26,16 @@ class DataProviderModel {
   }
 }
 
-class DataProvider {
+class DataPlansData {
+  final int id;
   final String name;
   final String category;
   final int amount;
   final String network;
   final String price;
 
-  DataProvider({
+  DataPlansData({
+    required this.id,
     required this.name,
     required this.category,
     required this.amount,
@@ -41,8 +43,9 @@ class DataProvider {
     required this.price,
   });
 
-  factory DataProvider.fromJson(Map<String, dynamic> json) {
-    return DataProvider(
+  factory DataPlansData.fromJson(Map<String, dynamic> json) {
+    return DataPlansData(
+      id: json['id'],
       name: json['name'],
       category: json['category'],
       amount: json['amount'],
@@ -53,6 +56,7 @@ class DataProvider {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'name': name,
       'category': category,
       'amount': amount,
