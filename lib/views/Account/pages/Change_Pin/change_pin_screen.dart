@@ -79,8 +79,8 @@ class _ChangePinState extends State<ChangePin> {
                             if (val!.isEmpty) {
                               return ("Input your new pin");
                             }
-                            if (val.length != 4) {
-                              return ("Pin Characters must be 4");
+                            if (val.length != 5) {
+                              return ("Pin Characters must be 5");
                             }
                             return null;
                           },
@@ -185,7 +185,7 @@ class _ChangePinState extends State<ChangePin> {
             isDismissible: true,
             flushbarPosition: FlushbarPosition.TOP,
             duration: const Duration(seconds: 2),
-            backgroundColor: Colors.red,
+            backgroundColor: AppColors.plugPrimaryColor,
           ).show(context);
         }
       }

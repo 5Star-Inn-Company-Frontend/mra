@@ -24,10 +24,10 @@ List drawerList = <DrawerModel>[
       image: 'assets/images/dash_icon4.png',
       title: 'Data',
       route: const Data()),
-  DrawerModel(
-      image: 'assets/images/dash_icon5.png',
-      title: 'Terminal',
-      route: POS_Terminal()),
+  // DrawerModel(
+  //     image: 'assets/images/dash_icon5.png',
+  //     title: 'Terminal',
+  //     route: POS_Terminal()),
   DrawerModel(
       image: 'assets/images/dash_icon6.png',
       title: 'Settings',

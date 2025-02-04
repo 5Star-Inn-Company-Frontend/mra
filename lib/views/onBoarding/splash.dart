@@ -1,7 +1,7 @@
 // import 'package:another_flushbar/flushbar.dart';
 // import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mra/constant/logo.dart';
-import 'package:mra/views/wrapper.dart';
+// import 'package:mra/views/wrapper.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../res/import/import.dart';
@@ -22,7 +22,8 @@ class _SplashState extends State<Splash> {
     Timer(
       const Duration(seconds: 4),
       () => Navigator.pushReplacement(context,
-          MaterialPageRoute(builder: (context) => Wrapper()
+          // MaterialPageRoute(builder: (context) => Wrapper()
+          MaterialPageRoute(builder: (context) => OnBoardingScreen()
         )
       )
     );
@@ -80,7 +81,7 @@ class _SplashState extends State<Splash> {
                   child: MyText(
                     title: "We offer you the most affordable and most cheapest data, airtime, Dstv, Gotv and Startimes subscription in\nseconds anywhere and anytime",
                     size: 18,
-                    color: plugPrimaryColor,
+                    color: AppColors.plugPrimaryColor,
                     align: TextAlign.center,
                   ),
                 ),

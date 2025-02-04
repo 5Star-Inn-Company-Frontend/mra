@@ -1,7 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Transactions/pages/transaction_statement.dart';
-
 import '../../res/import/import.dart';
 
 class TransactionScreen extends StatelessWidget {

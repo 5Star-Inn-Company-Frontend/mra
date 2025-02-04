@@ -19,7 +19,7 @@ const Color plugLightAshColor = Color(0xffC4C4C4);
 const Color plugAshColor = Color(0xff797878);
 final LinearGradient gradient2 = LinearGradient(
   colors: [
-    plugPrimaryColor,
-    plugSecondaryColor,
+    AppColors.plugPrimaryColor,
+    AppColors.plugTextColor,
   ],
 ); //begin: Alignment.bottomCenter, end: Alignment.topCenter);

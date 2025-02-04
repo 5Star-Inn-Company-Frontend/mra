@@ -63,7 +63,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
     final amount = double.parse(balance);
 
     // Format the balance
-    final formattedAmount = "\u{20A6}${amount.toStringAsFixed(2).replaceAllMapped(
+    final formattedAmount = "₦${amount.toStringAsFixed(2).replaceAllMapped(
       RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => "${m[1]},"
     )}";
 
@@ -142,7 +142,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
               MyText(title: 'Balance', size: 16, color: plugWhite, weight: FontWeight.w400,),
 
               const SizedBox(height: 4),
-              MyText(title: formattedAmount, size: 22.sp, color: plugWhite, weight: FontWeight.w600,),
+              Text(
+                formattedAmount,
+                style: GoogleFonts.roboto(fontSize: 22.sp,  color: plugWhite, fontWeight: FontWeight.w800, letterSpacing: 0.7),
+              ),
               
               Gap(10.h),
               Container(
@@ -193,7 +196,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               AppVerticalSpacing.verticalSpacingS,
               MyText(
                 title: vacctsData != null && vacctsData.data.isNotEmpty
-                ? 'Bank Name: ${vacctsData.data[0].provider}'
+                ? vacctsData.data[0].provider.toUpperCase()
                 : 'No Bank Name',
                 size: 12.sp,
                 color: AppColors.white,
@@ -204,7 +207,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
               Gap(5.h),
               MyText(
                 title: vacctsData != null && vacctsData.data.isNotEmpty
-                ? 'Account Name: ${vacctsData.data[0].accountName}'
+                ? vacctsData.data[0].accountName
                 : 'No Account Name',
                 size: 12.sp,
                 color: AppColors.white,
@@ -269,7 +272,7 @@ class CustomDrawer extends StatelessWidget {
                       color: plugWhite,
                     ),
                     MyText(
-                      title: 'Mega Reseller App is made for you',
+                      title: 'Mega Reseller App, made for you',
                       weight: FontWeight.w600,
                       size: 13,
                       color: plugWhite,
@@ -346,7 +349,7 @@ class CustomDrawer extends StatelessWidget {
             ),
             trailing: const Icon(
               Icons.arrow_forward_ios_outlined,
-              color: AppColors.plugPrimaryColor,
+              color: Colors.black,
             ),
           ),
           const Divider(

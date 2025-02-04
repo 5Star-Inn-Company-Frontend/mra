@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:mra/constant/app_colors.dart';
 import 'package:mra/core/network/api_client.dart';
 import 'package:mra/views/Account/model/profile_model.dart';
 import 'package:mra/views/Account/model/vaccts_model.dart';
@@ -85,7 +86,7 @@ class UserDataProvider with ChangeNotifier {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 2),
-          backgroundColor: Colors.red
+          backgroundColor: AppColors.plugPrimaryColor
         ).show(context);
       }
       if (DioExceptionType.connectionError == e.type ||
@@ -129,14 +130,14 @@ class UserDataProvider with ChangeNotifier {
         ),
       );
 
-      print('Vaccts API response: ${response.data}'); // Debugging line
+      // print('Vaccts API response: ${response.data}'); // Debugging line
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         final vacctsData = VacctsModel.fromJson(response.data);
 
         setUserAccountData(vacctsData);
 
-        print('Vaccts data loaded successfully: $vacctsData');
+        // print('Vaccts data loaded successfully: $vacctsData');
         return vacctsData;
 
       } 
@@ -165,7 +166,6 @@ class UserDataProvider with ChangeNotifier {
     return null;
   }
 
-  
 
   Future<Wallet?> loadWallet(BuildContext context) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
@@ -180,6 +180,7 @@ class UserDataProvider with ChangeNotifier {
         final walletData = Wallet.fromJson(response.data);
         setWalletData(walletData);
         print('Wallet data loaded successfully: $walletData');
+        print(response.data[0].name);
         
         return walletData;
 
@@ -192,7 +193,7 @@ class UserDataProvider with ChangeNotifier {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 2),
-          backgroundColor: Colors.red,
+          backgroundColor: AppColors.plugPrimaryColor,
         ).show(context);
       }
     } on DioException catch (e) {
@@ -208,7 +209,7 @@ class UserDataProvider with ChangeNotifier {
                 isDismissible: true,
                 flushbarPosition: FlushbarPosition.TOP,
                 duration: const Duration(seconds: 2),
-                backgroundColor: Colors.red)
+                backgroundColor: AppColors.plugPrimaryColor)
             .show(context);
       }
       if ([
@@ -224,7 +225,7 @@ class UserDataProvider with ChangeNotifier {
                 isDismissible: true,
                 flushbarPosition: FlushbarPosition.TOP,
                 duration: const Duration(seconds: 2),
-                backgroundColor: Colors.red)
+                backgroundColor: AppColors.plugPrimaryColor)
             .show(context);
       }
     } catch (e) {
@@ -235,7 +236,7 @@ class UserDataProvider with ChangeNotifier {
         isDismissible: true,
         flushbarPosition: FlushbarPosition.TOP,
         duration: const Duration(seconds: 2),
-        backgroundColor: Colors.red,
+        backgroundColor: AppColors.plugPrimaryColor,
       ).show(context);
     }
 

@@ -1,8 +1,8 @@
+import 'package:mra/views/Airtime/model/airtime_provider_model.dart';
 import 'package:otp_text_field/otp_text_field.dart';
 import 'package:otp_text_field/style.dart';
 import 'package:mra/res/import/import.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
-import 'package:mra/views/Airtime/model/airtimePayment.dart';
 
 class AirtimePin extends StatefulWidget {
   const AirtimePin({super.key});
@@ -13,6 +13,9 @@ class AirtimePin extends StatefulWidget {
 
 class _AirtimePinState extends State<AirtimePin> {
   OtpFieldController otpController = OtpFieldController();
+
+  AirtimeProviderModel? providersData;
+  int currentIndex = 0;
 
   @override
   void initState() {
@@ -28,8 +31,7 @@ class _AirtimePinState extends State<AirtimePin> {
     return Scaffold(
       appBar: PlugAppBarTwo(title: ''),
       body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
+        child: Padding(padding: const EdgeInsets.fromLTRB(20, 30, 20, 0),
         child: Column(
           children: [
             TextBold(
@@ -37,10 +39,12 @@ class _AirtimePinState extends State<AirtimePin> {
               fontSize: 32,
               fontWeight: FontWeight.w700,
             ),
+
             Gap(screenHeight(context) * 0.06),
+
             OTPTextField(
               controller: otpController,
-              length: 4,
+              length: 5,
               width: MediaQuery.of(context).size.width,
               fieldWidth: 40,
               style: TextStyle(fontSize: 17),
@@ -53,23 +57,25 @@ class _AirtimePinState extends State<AirtimePin> {
                 otpController.clear();
                 // print(user.userData!.transactionPin);
                 // if (pin == user.userData?.transactionPin) {
-                if (pin == "1234") {
+                if (pin == "12345") {
                   airtimePaymentNotifier.setPinAuth(true);
 
                   airtimePaymentNotifier.purchaseAirtime(
-                      AirtimePayment(
-                          amount: airtimePaymentNotifier.rechargeAmount,
-                          number: airtimePaymentNotifier.phoneNumber,
-                          provider: airtimePaymentNotifier.provider,
-                          reference: airtimePaymentNotifier.refId),
-                      context);
-                } else {
+                    AirtimePayment(
+                      networkID: providersData!.data[currentIndex].id,
+                      amount: airtimePaymentNotifier.rechargeAmount!,
+                      phone: airtimePaymentNotifier.phoneNumber!,
+                    ),
+                    context
+                  );
+                } 
+                else {
                   Flushbar(
                     duration: Duration(seconds: 2),
                     message: "Wrong Transaction Pin, try again.",
                   ).show(context);
                 }
-                print("Completed: " + pin);
+                print("Completed: $pin");
               },
             )
           ],

@@ -17,7 +17,7 @@ class AirtimeConfirmation extends StatelessWidget {
           children: [
             Center(
               child: TextBold(
-                "Airtime Transfered",
+                "Airtime Transferred",
                 textAlign: TextAlign.center,
                 fontSize: 26,
                 fontWeight: FontWeight.w700,
@@ -27,26 +27,28 @@ class AirtimeConfirmation extends StatelessWidget {
             const Gap(20),
             Center(
               child: RichText(
-                  textAlign: TextAlign.center,
-                  text: TextSpan(
-                      text: 'You have successfully ',
-                      style: const TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.w300,
-                          fontFamily: AppFonts.poppins,
-                          fontSize: 15),
-                      children: <TextSpan>[
-                        const TextSpan(
-                            text: 'transferred ',
-                            style: TextStyle(fontWeight: FontWeight.w600)),
-                        const TextSpan(
-                            text: 'Airtime ',
-                            style: TextStyle(fontWeight: FontWeight.w300)),
-                        TextSpan(
-                            text:
-                                '${airtimeNotifier.provider} ${airtimeNotifier.rechargeAmount.toString()} - ${airtimeNotifier.phoneNumber}',
-                            style: const TextStyle(fontWeight: FontWeight.w600))
-                      ])),
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: 'You have successfully ',
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.w300,
+                      fontFamily: AppFonts.poppins,
+                      fontSize: 15),
+                  children: <TextSpan>[
+                    const TextSpan(
+                        text: 'transferred ',
+                        style: TextStyle(fontWeight: FontWeight.w600)),
+                    const TextSpan(
+                        text: 'Airtime ',
+                        style: TextStyle(fontWeight: FontWeight.w300)),
+                    TextSpan(
+                        text:
+                            '${airtimeNotifier.provider} ${airtimeNotifier.rechargeAmount.toString()} - ${airtimeNotifier.phoneNumber}',
+                        style: const TextStyle(fontWeight: FontWeight.w600))
+                  ]
+                )
+              ),
             ),
             Gap(screenHeight(context) * 0.2),
             CustomButtonWithIconRight(

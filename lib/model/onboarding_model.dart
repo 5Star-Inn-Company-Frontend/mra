@@ -62,7 +62,7 @@ final List<OnBoard> demoData = [
     image: 'assets/images/image 3.png',
     title: "Pay bills fast and securely",
     description:
-        "We make transferring of airtime,\n Data, Cable Tv, and Electricity  easy\n with ",
+        "We make transferring of airtime,\nData, Cable Tv, and Electricity easy\nwith ",
     description2: '',
     title2: '',
     subtitle: '',

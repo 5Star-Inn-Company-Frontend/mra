@@ -55,7 +55,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                   child: MyText(
                     title: 'Skip',
                     weight: FontWeight.w400,
-                    color: const Color(0xffcc0b1426),
+                    color: AppColors.plugTextColor,
                     size: 14,
                   ),
                 ),
@@ -99,75 +99,74 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       dotHeight: 12,
                       dotWidth: 12,
                       fixedCenter: true,
-                      dotColor: Color(0xffDD4712),
-                      activeDotColor: Color(0xffDD4712),
+                      dotColor: AppColors.plugPrimaryColor,
+                      activeDotColor: AppColors.plugPrimaryColor,
                     ),
                   ),
                   selectedIndex == 0 || selectedIndex == 1
-                      ? InkWell(
-                          onTap: () {
-                            _controller.nextPage(
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.ease,
-                            );
-                          },
-                          child: customBbox(
-                            color: const Color(0xffDD4712),
-                            width: 91,
-                            height: 39,
-                            radius: BorderRadius.circular(5),
-                            widget: Center(
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  MyText(
-                                    title: 'NEXT',
-                                    color: Colors.white,
-                                    size: 16,
-                                  ),
-                                  const Icon(
-                                    Icons.arrow_forward_ios_outlined,
-                                    color: Colors.white,
-                                  ),
-                                ],
+                  ? InkWell(
+                      onTap: () {
+                        _controller.nextPage(
+                          duration: const Duration(milliseconds: 300),
+                          curve: Curves.ease,
+                        );
+                      },
+                      child: customBbox(
+                        color: AppColors.plugPrimaryColor,
+                        width: 91,
+                        height: 39,
+                        radius: BorderRadius.circular(20),
+                        widget: Center(
+                          child: Row(
+                            mainAxisAlignment:
+                                MainAxisAlignment.spaceEvenly,
+                            children: [
+                              MyText(
+                                title: 'NEXT',
+                                color: Colors.white,
+                                size: 16,
                               ),
-                            ),
+                              const Icon(
+                                Icons.arrow_forward_ios_outlined,
+                                color: Colors.white,
+                              ),
+                            ],
                           ),
-                        )
-                      : selectedIndex == 2
-                          ? GestureDetector(
-                              onTap: () {
-                                _storeOnboardInfo();
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => const Wrapper()));
-                              },
-                              child: customBbox(
-                                color: const Color(0xffDD4712),
-                                width: 142,
-                                height: 39,
-                                radius: BorderRadius.circular(5),
-                                widget: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    MyText(
-                                      title: 'Get Started',
-                                      size: 16,
-                                      color: Colors.white,
-                                      weight: FontWeight.w500,
-                                    ),
-                                    const Icon(
-                                      Icons.arrow_forward_ios,
-                                      color: Colors.white,
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            )
-                          : const SizedBox.shrink(),
+                        ),
+                      ),
+                    )
+                  : selectedIndex == 2
+                  ? GestureDetector(
+                      onTap: () {
+                        _storeOnboardInfo();
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const Wrapper()));
+                      },
+                      child: customBbox(
+                        color: AppColors.plugPrimaryColor,
+                        width: 142,
+                        height: 39,
+                        radius: BorderRadius.circular(20),
+                        widget: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            MyText(
+                              title: 'Login',
+                              size: 16,
+                              color: Colors.white,
+                              weight: FontWeight.w500,
+                            ),
+                            const Icon(
+                              Icons.arrow_forward_ios,
+                              color: Colors.white,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : const SizedBox.shrink(),
                 ],
               ),
             ],

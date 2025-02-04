@@ -17,7 +17,7 @@ class PowerProviderModel {
     );
   }
 
-  toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'status': status,
       'message': message,
@@ -27,18 +27,16 @@ class PowerProviderModel {
 }
 
 class PowerProviderData {
-  final String id;
+  final int id;
   final String name;
   final String code;
   final String discount;
-  final int status;
 
   PowerProviderData({
     required this.id,
     required this.name, 
     required this.code, 
     required this.discount,
-    required this.status,
   });
 
   factory PowerProviderData.fromJson(Map<String, dynamic> json) {
@@ -47,17 +45,15 @@ class PowerProviderData {
       name: json['name'],
       code: json['code'],
       discount: json['discount'],
-      status: json['status'],
     );
   }
 
-  toJson() {
+  Map<String, dynamic> toJson() {
     return {
       'id': id,
       'name': name,
       'code': code,
       'discount': discount,
-      'status': status,
     };
   }
 }

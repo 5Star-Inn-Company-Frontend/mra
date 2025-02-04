@@ -1,7 +1,6 @@
 import 'dart:math';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
-import 'package:mra/views/Airtime/model/airtimePayment.dart';
 import 'package:mra/views/Airtime/model/airtime_provider_model.dart';
 import 'package:mra/views/Airtime/service/airtime_service.dart';
 import '../../../res/import/import.dart';
@@ -41,7 +40,6 @@ class _AirtimeState extends State<Airtime> {
   @override
   void initState() {
     getContacts();
-
     super.initState();
     futureAirtimeProvider = loadAirtimeProvider();
   }
@@ -350,8 +348,10 @@ class _AirtimeState extends State<Airtime> {
 
                               await airtimePaymentNotifier.purchaseAirtime(
                                 AirtimePayment(
-                                  amount: amount, number: phoneController.text, provider: provider, reference: refId
-                                ),
+                                  networkID: providersData!.data[currentIndex].id,
+                                  amount: amount, 
+                                  phone: phoneController.text,
+                                ), 
                                 context
                               );
                               airtimePaymentNotifier.setProvider(provider);

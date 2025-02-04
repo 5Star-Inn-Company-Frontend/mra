@@ -29,33 +29,31 @@ class _ElectricityState extends State<Electricity> {
   int? subAmount; 
   String minAmount = "500";
 
-  String powerCode = "IKEDC";
+  String powerCode = "ikeja-electric";
 
   bool isCustomer = false;
 
   bool _isLoading = false;
 
   // PowerProviderModel? providersData;
-  late Future<PowerProviderModel?> futureProvider;
-
+  late Future<PowerProviderModel?> futurePowerProvider;
   PowerValidateModel? _validatePowerSub;
-
   String provider = "IKEDC";
-
-  String selectedProviderId = '';
+  int selectedProviderId = 1;
 
 
   @override
   void initState() {
     super.initState();
-    futureProvider = loadPowerProvider();
-    String provider = "IKEDC";
+    futurePowerProvider = loadPowerProvider();
+    provider = "IKEDC";
   }
 
   @override
   Widget build(BuildContext context) {
     final powerNotifier = Provider.of<PowerProvider>(context, listen: true);
     int limitAmount = int.parse(minAmount.toString());
+    
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: const PlugAppBarTwo(
@@ -84,22 +82,20 @@ class _ElectricityState extends State<Electricity> {
                           color: plugSecondaryTextColor,
                         ),
   
-                        AppVerticalSpacing.verticalSpacingS,
-                        AppVerticalSpacing.verticalSpacingS,
-                        AppVerticalSpacing.verticalSpacingS,
+                        Gap(10.h),
                         SizedBox(
-                          height: 250,
+                          height: 220,
                           width: double.maxFinite,
-                          child: FutureBuilder(
-                              future: futureProvider,
+                          child: FutureBuilder<PowerProviderModel?>(
+                              future: futurePowerProvider,
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   return GridView.builder(
                                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 4, // Number of columns in the grid
                                       crossAxisSpacing: 10.0, // Spacing between columns
-                                      mainAxisSpacing: 0.0, // Spacing between rows
-                                      childAspectRatio: 0.8, // Aspect ratio  
+                                      mainAxisSpacing: 5.0, // Spacing between rows
+                                      childAspectRatio: 0.7, // Aspect ratio  
                                     ),
                                     itemCount: snapshot.data!.data.length,
                                     itemBuilder: (context, index) {
@@ -109,11 +105,10 @@ class _ElectricityState extends State<Electricity> {
                                             currentIndex = index;
                                             provider = snapshot.data?.data[index].name ?? 'IKEDC';
                                             // minAmount = snapshot.data ?.data?[index].minAmount ?? '500';
-                                            powerCode = snapshot.data?.data[index].code ?? "IKEDC";
-                                            selectedProviderId = snapshot.data?.data[index].id ?? '';
+                                            powerCode = snapshot.data?.data[index].code ?? "ikeja-electric";
+                                            selectedProviderId = (snapshot.data?.data[index].id ?? 1);
                                           });
                                           print(snapshot.data?.data[index].name);
-                                          print(snapshot.data?.data[index].code);
                                         },
                                         child: Container(
                                           padding: EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
@@ -143,16 +138,16 @@ class _ElectricityState extends State<Electricity> {
                                                 ? Image.asset('assets/images/bills/Kaduna-Electric-KAEDCO.jpg')
                                                 : snapshot.data!.data[index].code == 'abuja-electric'
                                                 ? Image.asset('assets/images/bills/Abuja-Electric.jpg')
-                                                : snapshot.data!.data[index].code == 'enugu-electric'
-                                                ? Image.asset('assets/images/bills/9mobile-Airtime.jpg')
+                                                // : snapshot.data!.data[index].code == 'enugu-electric'
+                                                // ? Image.asset('assets/images/bills/9mobile-Airtime.jpg')
                                                 : Container(),
-                                              // SizedBox(height: 10),
+
                                               Text(
                                                 snapshot.data!.data[index].name,
                                                 style: GoogleFonts.poppins(
-                                                  color: currentIndex == index ? AppColors.plugPrimaryColor : Colors.black,
-                                                  fontSize: 13.sp,
-                                                  fontWeight: FontWeight.w700,
+                                                  color: Colors.black,
+                                                  fontSize: 13.5.sp,
+                                                  fontWeight: FontWeight.w500,
                                                 ),
                                               ),
                                             ],
@@ -161,16 +156,31 @@ class _ElectricityState extends State<Electricity> {
                                       );
                                     },
                                   );
-                                } else {
+                                } 
+                                else if (snapshot.connectionState == ConnectionState.waiting) {
                                   return Center(child: CircularProgressIndicator());
+                                }
+                                else if (snapshot.hasError) {
+                                  return Center(child: Text('Error: ${snapshot.error}'));
+                                } 
+                                else if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
+                                  return Center(child: Text('No cable plans available'));
+                                }
+                                else {
+                                  return Text(
+                                    'Something went wrong',
+                                    style: GoogleFonts.poppins(
+                                      color: Colors.black,
+                                      fontSize: 13.5.sp,
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  );
                                 }
                               },
                             ),
                         ),
 
-                        AppVerticalSpacing.verticalSpacingS,
-                        AppVerticalSpacing.verticalSpacingS,
-                        AppVerticalSpacing.verticalSpacingS,
+                        Gap(30.h),
                         MyText(
                           title: 'Meter Number',
                           size: 14,
@@ -178,7 +188,7 @@ class _ElectricityState extends State<Electricity> {
                           weight: FontWeight.w400,
                         ),
 
-                        AppVerticalSpacing.verticalSpacingS,
+                        Gap(10.h),
                         Form(
                           key: _formKey,
                           child: Column(
@@ -337,8 +347,9 @@ class _ElectricityState extends State<Electricity> {
     );
   }
 
+
   //validate cable data
-  Future<PowerValidateModel?> validatePowerSub(int meterNumber, String powerProvider, String providerId) async {
+  Future<PowerValidateModel?> validatePowerSub(int meterNumber, String powerProvider, int providerId) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
     setState(() {
       _isLoading == true;
@@ -400,7 +411,4 @@ class _ElectricityState extends State<Electricity> {
     }
     return null;
   }
-
-
-
 }
