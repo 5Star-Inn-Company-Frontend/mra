@@ -60,4 +60,9 @@ class WalletData {
       'status': status,
     };
   }
+
+  @override
+  String toString() {
+    return 'WalletData(id: $id, userId: $userId, name: $name, balance: $balance, status: $status)';
+  }
 }

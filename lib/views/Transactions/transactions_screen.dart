@@ -29,7 +29,7 @@ class TransactionScreen extends StatelessWidget {
     }
 
     final transactionData = Provider.of<TransactionsDataProvider>(context, listen: false).transactionsData;
-    if (transactionData!.data!.isEmpty) {
+    if (transactionData!.data.isEmpty) {
       return Scaffold(
         appBar: const PlugAppBarTwo(title: 'Transaction History'),
         body: Center(
@@ -66,14 +66,14 @@ class TransactionScreen extends StatelessWidget {
                 height: MediaQuery.of(context).size.height,
                 width: double.maxFinite,
                 child: ListView.builder(
-                    itemCount: transactionData.data?.length,
+                    itemCount: transactionData.data.length,
                     itemBuilder: (context, index) {
-                      final data = transactionData.data?[index];
-                      String dateString = data!.createdAt.toString();
+                      final data = transactionData.data[index];
+                      String dateString = data.createdAt.toString();
                       DateTime dateTime = DateTime.parse(dateString);
-                      String title = capitalize(data.bills?.serviceType.toString() ?? '');
+                      String title = capitalize(data.title);
                       String time = formatDate(data.updatedAt.toString());
-                      final amount = double.parse(data.amount ?? '');
+                      final amount = double.parse(data.amount.toString());
                       String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
                       final formattedAmount = "\u{20A6}${amount.toStringAsFixed(2).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => "${m[1]},")}";
                       return Column(
@@ -84,15 +84,14 @@ class TransactionScreen extends StatelessWidget {
                                 context,
                                 MaterialPageRoute(
                                   builder: (_) => TransactionDetails(
-                                    image: data.bills?.provider,
+                                    // image: data?.bills?.provider,
                                     description: data.remark,
-                                    fee: data.bills?.fee,
-                                    to: data.bills?.recipient,
+                                    fee: data.charges,
+                                    to: data.recipient,
                                     reference: data.reference,
                                     date: formattedDate,
                                     time: time,
-                                    transactionStatus: data.bills?.errorMsg,
-                                    from: data.bills?.provider,
+                                    // from: data.provider,
                                     amount: formattedAmount,
                                     type: data.type,
                                     title: title,
@@ -131,12 +130,13 @@ class TransactionScreen extends StatelessWidget {
                             trailing: Column(
                               crossAxisAlignment: CrossAxisAlignment.end,
                               children: [
-                                MyText(
-                                  title: data.type == 'debit' ? '- $formattedAmount' : '+ $formattedAmount',
-                                  // data.amount,
-                                  weight: FontWeight.w500,
-                                  size: 18,
-                                  color: data.type == 'debit' ? const Color(0xffFF0000) : const Color(0xff11D100),
+                                Text(
+                                  data.type == 'debit' ? '- $formattedAmount' : '+ $formattedAmount',
+                                  style: GoogleFonts.roboto(
+                                    color: data.type == 'debit' ? const Color(0xffFF0000) : const Color(0xff11D100),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                                 ),
                                 const Gap(5),
                                 MyText(

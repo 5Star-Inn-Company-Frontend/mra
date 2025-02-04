@@ -1,6 +1,7 @@
 // import 'package:another_flushbar/flushbar.dart';
 // import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'package:mra/constant/logo.dart';
+import 'package:mra/views/wrapper.dart';
 // import 'package:mra/views/wrapper.dart';
 // import 'package:shared_preferences/shared_preferences.dart';
 
@@ -22,8 +23,8 @@ class _SplashState extends State<Splash> {
     Timer(
       const Duration(seconds: 4),
       () => Navigator.pushReplacement(context,
-          // MaterialPageRoute(builder: (context) => Wrapper()
-          MaterialPageRoute(builder: (context) => OnBoardingScreen()
+          MaterialPageRoute(builder: (context) => Wrapper()
+          // MaterialPageRoute(builder: (context) => OnBoardingScreen()
         )
       )
     );

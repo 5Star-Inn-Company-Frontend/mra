@@ -28,6 +28,7 @@ class _AirtimeState extends State<Airtime> {
 
   bool isLoading = false;
   String provider = "MTN";
+  int providerID = 1;
 
   // String? _errorMsg;
 
@@ -107,9 +108,10 @@ class _AirtimeState extends State<Airtime> {
                                         setState(() {
                                           currentIndex = index;
                                           provider = snapshot.data?.data[index].network ?? 'MTN';
+                                          providerID = snapshot.data?.data[index].id ?? 1;
                                         });
-
                                         print(snapshot.data?.data[index].network);
+                                        print(snapshot.data?.data[index].id);
                                       },
                                       child: Container(
                                         padding: EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
@@ -136,7 +138,7 @@ class _AirtimeState extends State<Airtime> {
                                             Text(
                                               snapshot.data!.data[index].network,
                                               style: GoogleFonts.poppins(
-                                                color: currentIndex == index ? AppColors.plugPrimaryColor : Colors.black,
+                                                color: Colors.black,
                                                 fontSize: 13.sp,
                                                 fontWeight: FontWeight.w700,
                                               ),
@@ -344,11 +346,12 @@ class _AirtimeState extends State<Airtime> {
                               final random = Random();
                               final refId = 'ref${random.nextInt(999999999)}d';
 
-                              print(refId);
+                              print('reference id: $refId');
 
                               await airtimePaymentNotifier.purchaseAirtime(
                                 AirtimePayment(
-                                  networkID: providersData!.data[currentIndex].id,
+                                  // networkID: providersData!.data[currentIndex].id,
+                                  networkID: providerID,
                                   amount: amount, 
                                   phone: phoneController.text,
                                 ), 
@@ -358,6 +361,7 @@ class _AirtimeState extends State<Airtime> {
                               airtimePaymentNotifier.setRechargeAmount(amount);
                               airtimePaymentNotifier.setPhoneNumber(phoneController.text);
                               airtimePaymentNotifier.setRefId(refId);
+                              airtimePaymentNotifier.setNetworkID(providerID);
                               user.loadWallet(context);
                             }
                           },

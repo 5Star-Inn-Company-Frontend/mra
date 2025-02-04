@@ -1,18 +1,19 @@
 import 'package:flutter/rendering.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
-import 'package:mra/views/Transactions/model/transactions.dart';
+import 'package:mra/views/Transactions/model/transaction_model.dart';
 import 'package:screenshot/screenshot.dart';
 import 'dart:ui' as ui;
 // import 'package:share_plus/share_plus.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+// import 'package:path_provider/path_provider.dart';
+// import 'dart:io';
 import '../../../../res/import/import.dart';
 
 class TransactionDetails extends StatefulWidget {
   const TransactionDetails(
-      {super.key,
+    {
+      super.key,
       this.transactions,
-      this.image,
       this.from,
       this.description,
       this.date,
@@ -23,9 +24,11 @@ class TransactionDetails extends StatefulWidget {
       this.to,
       this.type,
       this.title,
-      this.transactionStatus});
-  final Transactions? transactions;
-  final String? image;
+      this.transactionStatus
+    }
+  );
+  
+  final TransactionModel? transactions;
   final String? from;
   final String? to;
   final String? date;
@@ -34,7 +37,7 @@ class TransactionDetails extends StatefulWidget {
   final String? type;
   final String? reference;
   final String? transactionStatus;
-  final String? fee;
+  final int? fee;
   final String? description;
   final String? title;
 
@@ -49,11 +52,9 @@ class _TransactionDetailsState extends State<TransactionDetails> {
 
   Future<ByteData?> capture(GlobalKey key) async {
     try {
-      RenderRepaintBoundary boundary =
-          key.currentContext!.findRenderObject() as RenderRepaintBoundary;
+      RenderRepaintBoundary boundary = key.currentContext!.findRenderObject() as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-      ByteData? byteData =
-          await image.toByteData(format: ui.ImageByteFormat.png);
+      ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
       return byteData;
     } catch (e) {
       print(e);
@@ -101,22 +102,26 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                           fontSize: 14,
                         ),
                       ),
-                      Gap(10),
+
+                      Gap(10.h),
                       MyText(
-                          title: widget.type == 'debit'
-                              ? '- ${widget.amount}'
-                              : '+ ${widget.amount}',
-                          weight: FontWeight.w500,
-                          size: 18,
-                          color: widget.type == 'debit'
-                              ? const Color(0xffFF0000)
-                              : const Color(0xff11D100)),
+                        title: widget.type == 'debit'
+                            ? '- ${widget.amount}'
+                            : '+ ${widget.amount}',
+                        weight: FontWeight.w500,
+                        size: 18,
+                        color: widget.type == 'debit'
+                            ? const Color(0xffFF0000)
+                            : const Color(0xff11D100)
+                      ),
+
                       MyText(
                         title: widget.title,
                         weight: FontWeight.w500,
                         size: 18,
                         color: plugBlack,
                       ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -132,10 +137,12 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                           )
                         ],
                       ),
+
                       Gap(screenHeight(context) * 0.008),
                       const Divider(
                         color: AppColors.plugTextColor,
                       ),
+
                       Gap(screenHeight(context) * 0.017),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -152,10 +159,12 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                           )
                         ],
                       ),
+
                       Gap(screenHeight(context) * 0.008),
                       const Divider(
                         color: AppColors.plugTextColor,
                       ),
+
                       Gap(screenHeight(context) * 0.017),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -182,10 +191,12 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                           )
                         ],
                       ),
+
                       Gap(screenHeight(context) * 0.008),
                       const Divider(
                         color: AppColors.plugTextColor,
                       ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -206,10 +217,12 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                           )
                         ],
                       ),
+
                       Gap(screenHeight(context) * 0.008),
                       const Divider(
                         color: AppColors.plugTextColor,
                       ),
+
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -221,15 +234,11 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                           Gap(screenHeight(context) * 0.05),
                           Flexible(
                             child: TextSemiBold(
-                              widget.transactionStatus ==
-                                      'TRANSACTION SUCCESSFUL'
-                                  ? "Successful"
-                                  : "Unsucessful",
+                              widget.transactionStatus == 'TRANSACTION SUCCESSFUL' ? "Successful" : "Unsucessful",
                               textAlign: TextAlign.end,
-                              color: widget.transactionStatus ==
-                                      'TRANSACTION SUCCESSFUL'
-                                  ? const Color(0xff11D100)
-                                  : const Color(0xffFF0000),
+                              color: widget.transactionStatus == 'TRANSACTION SUCCESSFUL'
+                              ? const Color(0xff11D100)
+                              : const Color(0xffFF0000),
                               maxLines: 3,
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
@@ -237,10 +246,12 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                           )
                         ],
                       ),
+
                       Gap(screenHeight(context) * 0.008),
                       const Divider(
                         color: AppColors.plugTextColor,
                       ),
+                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -261,10 +272,12 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                           )
                         ],
                       ),
+
                       Gap(screenHeight(context) * 0.008),
                       const Divider(
                         color: AppColors.plugTextColor,
                       ),
+                      
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -285,6 +298,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                           )
                         ],
                       ),
+
                       Gap(screenHeight(context) * 0.008),
                       const Divider(
                         color: AppColors.plugTextColor,
@@ -292,6 +306,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                     ],
                   ),
                 ),
+                
                 AppVerticalSpacing.verticalSpacingXS,
                 CustomButtonWithIconRight(
                   onPressed: () async {
@@ -308,6 +323,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
     );
   }
 }
+
 
 class TransactionsDetailsInfo extends StatelessWidget {
   final String title;

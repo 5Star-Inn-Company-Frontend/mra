@@ -3,20 +3,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:mra/core/network/api_client.dart';
-import 'package:mra/views/Transactions/model/transactions.dart';
+import 'package:mra/views/Transactions/model/transaction_model.dart';
 
 class TransactionsDataProvider with ChangeNotifier {
-  Transactions? _transactionsData;
+  TransactionModel? _transactionsData;
+  TransactionModel? get transactionsData => _transactionsData;
 
-  Transactions? get transactionsData => _transactionsData;
-
-  void setTransactionsData(Transactions transactionsData) {
+  void setTransactionsData(TransactionModel transactionsData) {
     _transactionsData = transactionsData;
     notifyListeners();
   }
 
   bool _isLoading = false;
-
   bool get isLoading => _isLoading;
 
   void setLoading(bool value) {
@@ -24,23 +22,25 @@ class TransactionsDataProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Transactions?> loadTransactionData(BuildContext context) async {
+  Future<TransactionModel?> loadTransactionData(BuildContext context) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
 
-    print('token from transaction: $token');
     try {
       setLoading(true);
       final response = await ApiService.dio.get(
         '/transaction-history',
-        options: Options(headers: {'Authorization': 'Bearer $token'}));
+        options: Options(headers: {'Authorization': 'Bearer $token'})
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         setLoading(false);
-        print(response.data);
+        // print('transaction data: ${response.data}');
         
-        final userData = Transactions.fromJson(response.data);
-        setTransactionsData(userData);
-        print('transactions loaded successfully: $userData');
+        final transactionData = TransactionModel.fromJson(response.data);
+        setTransactionsData(transactionData);
+        // print('transactions loaded successfully: $transactionData');
+      
+        return transactionData;
       }
     } catch (e) {}
   }

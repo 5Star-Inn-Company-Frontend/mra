@@ -100,7 +100,7 @@ class UserDataProvider with ChangeNotifier {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 2),
-          backgroundColor: Colors.red)
+          backgroundColor: AppColors.plugPrimaryColor)
       .show(context);
       }
     } 
@@ -157,7 +157,7 @@ class UserDataProvider with ChangeNotifier {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 2),
-          backgroundColor: Colors.red
+          backgroundColor: AppColors.plugPrimaryColor
         ).show(context);
       }
     } finally {
@@ -180,7 +180,7 @@ class UserDataProvider with ChangeNotifier {
         final walletData = Wallet.fromJson(response.data);
         setWalletData(walletData);
         print('Wallet data loaded successfully: $walletData');
-        print(response.data[0].name);
+        print('wallet data: ${response.data['data']}');
         
         return walletData;
 

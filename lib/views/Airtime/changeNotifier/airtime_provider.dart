@@ -208,11 +208,13 @@ class AirtimeProvider with ChangeNotifier {
   int? _rechargeAmount;
   String? _phoneNumber;
   String? _refId;
+  int? _networkId;
 
   String? get refId => _refId;
   String? get provider => _provider;
   int? get rechargeAmount => _rechargeAmount;
   String? get phoneNumber => _phoneNumber;
+  int? get networkId => _networkId;
 
   void setProvider(String provider) {
     _provider = provider;
@@ -231,6 +233,11 @@ class AirtimeProvider with ChangeNotifier {
 
   void setRefId(String refId) {
     _refId = refId;
+    notifyListeners();
+  }
+
+  void setNetworkID(int id) {
+    _networkId = id;
     notifyListeners();
   }
 

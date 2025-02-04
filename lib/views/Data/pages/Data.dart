@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
@@ -5,6 +7,7 @@ import 'package:mra/views/Airtime/model/airtime_provider_model.dart';
 import 'package:mra/views/Airtime/service/airtime_service.dart';
 import 'package:mra/views/Data/model/data_plans_model.dart';
 import 'package:mra/views/Data/model/data_types_model.dart';
+import 'package:mra/views/Data/pages/data_pin.dart';
 import 'package:mra/views/Transfer/constants/textField.dart';
 import '../../../res/import/import.dart';
 
@@ -25,7 +28,7 @@ class _DataState extends State<Data> {
 
   int? selectedRadioTile;
 
-  int? selectedPlan;
+  int? selectedPlanId;
   String? selectedPlanName;
 
   bool isVisible = false;
@@ -128,7 +131,8 @@ class _DataState extends State<Data> {
 
   @override
   Widget build(BuildContext context) {
-    // final dataNotifier = Provider.of<DataProvider>(context, listen: false);
+    final user = Provider.of<UserDataProvider>(context, listen: true);
+    final dataNotifier = Provider.of<DataProvider>(context, listen: false);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -476,11 +480,12 @@ class _DataState extends State<Data> {
                                       onChanged: (value) {
                                         setSelectedRadioTile(value!);
                                         setState(() {
-                                          selectedPlan = dataPlans.data[index].id;
+                                          selectedPlanId = dataPlans.data[index].id;
                                           selectedPlanName = dataPlans.data[index].name;
                                         });
                                         print(dataPlans.data[index].amount);
-                                        print(value);
+                                        print(selectedPlanId);
+                                        print(selectedPlanName);
                                       },
                                       activeColor: AppColors.plugPrimaryColor,
                                     );
@@ -492,44 +497,59 @@ class _DataState extends State<Data> {
                         ),
 
                         Gap(30.h),
-                        // CustomButtonWithIconRight(
-                        //   onPressed: () async {
-                        //     if (selectedRadioTile != null && phonecontroller.text.length != 10 || phonecontroller.text.length != 11 &&
-                        //       _formKey.currentState!.validate()) {
-                        //       final random = Random();
-                        //       final refId = 'ref${random.nextInt(999999999)}d';
-                        //       dataNotifier.setDataPayment(
-                        //         ne,
-                        //         phonecontroller.text,
-                        //         refId,
-                        //         selectedPlanName.toString()
-                        //       );
-                        //       await Navigator.of(context).push(
-                        //         MaterialPageRoute(
-                        //           builder: (context) => const DataPin(),
-                        //         ),
-                        //       );
-                        //     } 
-                        //     else if (selectedRadioTile == null) {
-                        //       Flushbar(
-                        //         message: 'Pls select a data plan, to continue',
-                        //         duration: Duration(seconds: 3),
-                        //         isDismissible: true,
-                        //         backgroundColor: AppColors.plugPrimaryColor,
-                        //       ).show(context);
-                        //     } 
-                        //     else if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
-                        //       Flushbar(
-                        //         message: 'Input a valid phone number, to continue',
-                        //         duration: Duration(seconds: 3),
-                        //         isDismissible: true,
-                        //         backgroundColor: AppColors.plugPrimaryColor,
-                        //       ).show(context);
-                        //     }
-                        //   },
-                        //   title: 'SEND',
-                        //   gradient: gradient2,
-                        // ),
+                        CustomButtonWithIconRight(
+                          onPressed: () async {
+                            if (selectedRadioTile != null && phonecontroller.text.length != 10 || phonecontroller.text.length != 11 &&
+                              _formKey.currentState!.validate()) {
+                              final random = Random();
+                              final refId = 'ref${random.nextInt(999999999)}d';
+
+                              await dataNotifier.purchaseData(
+                                DataPayment(
+                                  networkID: selectedPlanId.toString(), phone: phonecontroller.text
+                                ),
+                                context
+                              );
+                              
+                              dataNotifier.setDataPayment(
+                                selectedPlanId.toString(),
+                                phonecontroller.text,
+                              );
+                              dataNotifier.setNetworkID(selectedPlanId.toString());
+                              dataNotifier.setPhone(phonecontroller.text);
+                              dataNotifier.setReference(refId);
+                              dataNotifier.setProvider(provider);
+                              dataNotifier.setPlanName(selectedPlanName.toString());
+
+                              user.loadWallet(context);
+
+                              // await Navigator.of(context).push(
+                              //   MaterialPageRoute(
+                              //     builder: (context) => const DataPin(),
+                              //   ),
+                              // );
+                            } 
+                            else if (selectedRadioTile == null) {
+                              Flushbar(
+                                message: 'Pls select a data plan, to continue',
+                                duration: Duration(seconds: 3),
+                                isDismissible: true,
+                                backgroundColor: AppColors.plugPrimaryColor,
+                              ).show(context);
+                            } 
+                            else if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
+                              Flushbar(
+                                message: 'Input a valid phone number, to continue',
+                                duration: Duration(seconds: 3),
+                                isDismissible: true,
+                                backgroundColor: AppColors.plugPrimaryColor,
+                              ).show(context);
+                            }
+                          },
+                          // title: 'SEND',
+                          title: dataNotifier.isPaymentLoading ? "Processing" : "Send",
+                          gradient: gradient2,
+                        ),
                       ],
                     ),
                   ),

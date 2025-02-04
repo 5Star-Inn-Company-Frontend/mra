@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import '../../res/import/import.dart';
 
@@ -48,8 +49,7 @@ class _DashBoardState extends State<DashBoard> {
                       title: 'Quick actions', weight: FontWeight.w600, size: 20, color: plugBlack,
                     ),
 
-                    Gap(screenHeight(context) * 0.018),
-
+                    Gap(10.h),
                     // gridview
                     Container(
                       width: double.infinity,
@@ -71,6 +71,10 @@ class _DashBoardState extends State<DashBoard> {
                           var gridDetails = gridItems[i];
                           return InkWell(
                             onTap: () {
+                              // Prevent multiple navigation attempts
+                              if (Navigator.canPop(context)) {
+                                return;
+                              }
                               Navigator.push(
                                 context, MaterialPageRoute(builder: (_) => gridDetails.route),
                               );
@@ -136,21 +140,21 @@ class _DashBoardState extends State<DashBoard> {
                     Gap(screenHeight(context) * 0.025),
 
                     Visibility(
-                      visible: transactionData!.data == [] ? false : true,
+                      visible: transactionData?.data == [] ? false : true,
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: transactionData.data!.length > 3 ? 3 : transactionData.data?.length,
+                        itemCount: transactionData!.data.length > 3 ? 3 : transactionData.data.length,
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         itemBuilder: (context, index) {
-                          final data = transactionData.data?[index];
-                          String dateString = data?.createdAt.toString() ?? '';
+                          final data = transactionData.data[index];
+                          String dateString = data.createdAt.toString();
                           DateTime dateTime = DateTime.parse(dateString);
                           
-                          String title = capitalize(data?.bills?.serviceType.toString() ?? '');
-                          String time = formatDate(data?.updatedAt.toString() ?? '');
+                          String title = capitalize(data.title);
+                          String time = formatDate(data.updatedAt.toString());
                           
-                          final amount = double.parse(data?.amount ?? '');
+                          final amount = double.parse(data.amount.toString());
                           String formattedDate = DateFormat('dd MMM yyyy').format(dateTime);
                           final formattedAmount = "\u{20A6}${amount.toStringAsFixed(2).replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (Match m) => "${m[1]},")}";
                           
@@ -162,17 +166,16 @@ class _DashBoardState extends State<DashBoard> {
                                     context,
                                     MaterialPageRoute(
                                       builder: (_) => TransactionDetails(
-                                        image: data?.bills?.provider,
-                                        description: data?.remark,
-                                        fee: data?.bills?.fee,
-                                        to: data?.bills?.recipient,
-                                        reference: data?.reference,
+                                        // image: data?.bills?.provider,
+                                        description: data.remark,
+                                        fee: data.charges,
+                                        to: data.recipient,
+                                        reference: data.reference,
                                         date: formattedDate,
                                         time: time,
-                                        transactionStatus: data?.bills?.errorMsg,
-                                        from: data?.bills?.provider,
+                                        // from: data.provider,
                                         amount: formattedAmount,
-                                        type: data?.type,
+                                        type: data.type,
                                         title: title,
                                       )
                                     )
@@ -206,16 +209,25 @@ class _DashBoardState extends State<DashBoard> {
                                 trailing: Column(
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
-                                    MyText(
-                                      title: data?.type == 'debit'
-                                      ? '- $formattedAmount'
-                                      : '+ $formattedAmount',
-                                      // data.amount,
-                                      weight: FontWeight.w500,
-                                      size: 18,
-                                      color: data?.type == 'debit'
-                                      ? const Color(0xffFF0000)
-                                      : const Color(0xff11D100),
+                                    // MyText(
+                                    //   title: data.type == 'debit'
+                                    //   ? '- $formattedAmount'
+                                    //   : '+ $formattedAmount',
+                                    //   // data.amount,
+                                    //   weight: FontWeight.w500,
+                                    //   size: 18,
+                                    //   color: data.type == 'debit'
+                                    //   ? const Color(0xffFF0000)
+                                    //   : const Color(0xff11D100),
+                                    // ),
+
+                                    Text(
+                                      data.type == 'debit' ? '- $formattedAmount' : '+ $formattedAmount',
+                                      style: GoogleFonts.roboto(
+                                        color: data.type == 'debit' ? const Color(0xffFF0000) : const Color(0xff11D100),
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w500,
+                                      ),
                                     ),
 
                                     const Gap(5),
@@ -232,7 +244,7 @@ class _DashBoardState extends State<DashBoard> {
                     ),
 
                     Visibility(
-                      visible: transactionData.data!.isEmpty ? true : false,
+                      visible: transactionData.data.isEmpty ? true : false,
                       child: Center(
                         child: TextBold(
                           "No Transaction history yet!",

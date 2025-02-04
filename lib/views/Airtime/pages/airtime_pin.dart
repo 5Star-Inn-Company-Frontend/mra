@@ -14,9 +14,6 @@ class AirtimePin extends StatefulWidget {
 class _AirtimePinState extends State<AirtimePin> {
   OtpFieldController otpController = OtpFieldController();
 
-  AirtimeProviderModel? providersData;
-  int currentIndex = 0;
-
   @override
   void initState() {
     OtpFieldController otpController = OtpFieldController();
@@ -25,7 +22,7 @@ class _AirtimePinState extends State<AirtimePin> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserDataProvider>(context, listen: true);
+    // final user = Provider.of<UserDataProvider>(context, listen: true);
     final airtimePaymentNotifier = Provider.of<AirtimeProvider>(context, listen: true);
 
     return Scaffold(
@@ -62,7 +59,7 @@ class _AirtimePinState extends State<AirtimePin> {
 
                   airtimePaymentNotifier.purchaseAirtime(
                     AirtimePayment(
-                      networkID: providersData!.data[currentIndex].id,
+                      networkID: airtimePaymentNotifier.networkId!,
                       amount: airtimePaymentNotifier.rechargeAmount!,
                       phone: airtimePaymentNotifier.phoneNumber!,
                     ),

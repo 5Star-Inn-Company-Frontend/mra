@@ -17,11 +17,11 @@ List gridItems = <GridModel>[
       image: 'assets/images/airtime.png',
       title: 'Airtime',
       route: const Airtime()),
-  // GridModel(
-  //     image: 'assets/images/transact.png',
-  //     title: 'Transfer',
-  //     route: const DashBoard()
-  //   ),
+  GridModel(
+      image: 'assets/images/transact.png',
+      title: 'Transfer',
+      route: const DashBoard()
+    ),
   GridModel(
       image: 'assets/images/bulb.png',
       title: 'Electricity',
@@ -32,8 +32,8 @@ List gridItems = <GridModel>[
   GridModel(
       image: 'assets/images/cable.png', 
       title: 'Cable TV', route: CableTv()),
-  // GridModel(
-  //     image: 'assets/images/pos.png',
-  //     title: 'POS/ Terminal',
-  //     route: POS_Terminal()),
+  GridModel(
+      image: 'assets/images/pos.png',
+      title: 'POS/ Terminal',
+      route: POS_Terminal()),
 ];

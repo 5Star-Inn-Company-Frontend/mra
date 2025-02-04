@@ -43,8 +43,7 @@ class AirtimeConfirmation extends StatelessWidget {
                         text: 'Airtime ',
                         style: TextStyle(fontWeight: FontWeight.w300)),
                     TextSpan(
-                        text:
-                            '${airtimeNotifier.provider} ${airtimeNotifier.rechargeAmount.toString()} - ${airtimeNotifier.phoneNumber}',
+                        text: '${airtimeNotifier.provider} ${airtimeNotifier.rechargeAmount.toString()} to ${airtimeNotifier.phoneNumber}',
                         style: const TextStyle(fontWeight: FontWeight.w600))
                   ]
                 )

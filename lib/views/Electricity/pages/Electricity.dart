@@ -71,8 +71,7 @@ class _ElectricityState extends State<Electricity> {
                 ),
                 child: IntrinsicHeight(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 30.0, horizontal: 20),
+                    padding: const EdgeInsets.symmetric(vertical: 30.0, horizontal: 20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -291,8 +290,7 @@ class _ElectricityState extends State<Electricity> {
                             )
                           ),
                           onPressed: () async {
-                            if (_formKey.currentState!.validate() &&
-                                meterNo.text.length >= 10) {
+                            if (_formKey.currentState!.validate() && meterNo.text.length >= 10) {
                               if (isCustomer == false) {
                                 setState(() {
                                   _isLoading = true;
@@ -302,8 +300,8 @@ class _ElectricityState extends State<Electricity> {
                               else {
                                 int intValue = int.parse(amount.text.toString());
                                 final random = Random();
-                                final refId =
-                                    'ref${random.nextInt(999999999)}d';
+                                final refId = 'ref${random.nextInt(999999999)}d';
+                                
                                 if (intValue < limitAmount) {
                                   Flushbar(
                                     message: 'Minimum is ${limitAmount.toString()}',
