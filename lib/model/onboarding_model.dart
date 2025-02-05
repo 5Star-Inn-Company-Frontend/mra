@@ -71,6 +71,6 @@ final List<OnBoard> demoData = [
     subtitle4: '',
     subtitle5: '',
     subtitle6: '',
-    subtitle7: 'Mega Reseller App',
+    subtitle7: 'Option VTU',
   ),
 ];

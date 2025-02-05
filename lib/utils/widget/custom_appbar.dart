@@ -272,7 +272,7 @@ class CustomDrawer extends StatelessWidget {
                       color: plugWhite,
                     ),
                     MyText(
-                      title: 'Mega Reseller App, made for you',
+                      title: 'Option VTU, made for you',
                       weight: FontWeight.w600,
                       size: 13,
                       color: plugWhite,

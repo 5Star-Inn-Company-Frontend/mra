@@ -549,7 +549,7 @@ class _SignUpState extends State<SignUp> {
                     AppVerticalSpacing.verticalSpacingB,
                     MyText(
                       title:
-                          'By registering, you accept our Terms & Conditions\n and Privacy Policy. Your data will be security\n encrypted with Mega Reseller App',
+                          'By registering, you accept our Terms & Conditions\n and Privacy Policy. Your data will be security\n encrypted with Option VTU',
                       size: 14,
                       weight: FontWeight.w400,
                       color: plugTextColor,

@@ -5,6 +5,6 @@ class LogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('assets/images/appIcon.png');
+    return Image.asset('assets/images/option-vtu-bg.png');
   }
 }

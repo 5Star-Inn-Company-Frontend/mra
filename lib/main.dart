@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
-          title: 'Mega Reseller App',
+          title: 'Option VTU',
           theme: ThemeData(
             primaryColor: plugHeaderTextColor,
             primarySwatch: Colors.grey,
