@@ -44,7 +44,7 @@ class CableConfirmation extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.w300)),
                         TextSpan(
                             text:
-                                '${cableNotifier.code} - ${cableNotifier.phoneNumber.toString()}',
+                                '${cableNotifier.customerName} for ${cableNotifier.provider} - ${cableNotifier.phone.toString()}',
                             style: const TextStyle(fontWeight: FontWeight.w600))
                       ])),
             ),

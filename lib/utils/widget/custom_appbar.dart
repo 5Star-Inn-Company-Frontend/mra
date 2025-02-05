@@ -81,7 +81,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         Padding(
           padding: const EdgeInsets.only(top: 50.0),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
                 padding: const EdgeInsets.only(bottom: 80.0, left: 30),
@@ -93,17 +93,17 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 )
               ),
 
-              Padding(
-                padding: const EdgeInsets.only(bottom: 80.0, right: 30),
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context, MaterialPageRoute(builder: (_) => const Notifications())
-                    );
-                  },
-                  icon: const Icon(Icons.notifications, color: plugWhite, size: 40,),
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.only(bottom: 80.0, right: 30),
+              //   child: IconButton(
+              //     onPressed: () {
+              //       Navigator.push(
+              //         context, MaterialPageRoute(builder: (_) => const Notifications())
+              //       );
+              //     },
+              //     icon: const Icon(Icons.notifications, color: plugWhite, size: 40,),
+              //   ),
+              // ),
             ],
           ),
         ),

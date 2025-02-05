@@ -21,7 +21,7 @@ class _CablePinState extends State<CablePin> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserDataProvider>(context, listen: true);
+    // final user = Provider.of<UserDataProvider>(context, listen: true);
     final cableNotifier = Provider.of<CableProvider>(context, listen: true);
 
     return Scaffold(
@@ -40,7 +40,7 @@ class _CablePinState extends State<CablePin> {
             Gap(screenHeight(context) * 0.06),
             OTPTextField(
               controller: otpController,
-              length: 4,
+              length: 5,
               width: MediaQuery.of(context).size.width,
               fieldWidth: 40,
               style: TextStyle(fontSize: 17),
@@ -53,22 +53,27 @@ class _CablePinState extends State<CablePin> {
                 otpController.clear();
                 // print(user.userData!.data!.transactionPin);
                 // if (pin == user.userData?.data?.transactionPin) {
-                //   cableNotifier.setPinAuth(true);
-                //   print(cableNotifier.refId);
-                //   cableNotifier.purchaseTv(
-                //       CablePayment(
-                //           code: cableNotifier.code,
-                //           number: cableNotifier.phoneNumber,
-                //           provider: cableNotifier.provider,
-                //           reference: cableNotifier.refId),
-                //       context);
-                // } else {
-                //   Flushbar(
-                //     duration: const Duration(seconds: 2),
-                //     message: "Wrong Transaction Pin, try again.",
-                //   ).show(context);
-                // }
-                // print("Completed: " + pin);
+                if (pin == "12345") {
+                  cableNotifier.setPinAuth(true);
+                  print(cableNotifier.refId);
+
+                  await cableNotifier.purchaseCable(
+                    CablePayment(
+                      networkID: cableNotifier.networkId!,
+                      phone: cableNotifier.phone!,
+                    ),
+                    context                        
+                  );
+
+                  // print("Cable Payment: ${cableNotifier.networkId} - ${cableNotifier.phone}");
+
+                } else {
+                  Flushbar(
+                    duration: const Duration(seconds: 2),
+                    message: "Wrong Transaction Pin, try again.",
+                  ).show(context);
+                }
+                print("Completed: $pin");
               },
             )
           ],

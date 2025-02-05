@@ -120,6 +120,8 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                         weight: FontWeight.w500,
                         size: 18,
                         color: plugBlack,
+                        textOverflow: TextOverflow.ellipsis,
+                        maxLines: 1
                       ),
 
                       Row(

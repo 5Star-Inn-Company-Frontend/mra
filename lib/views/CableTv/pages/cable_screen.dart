@@ -377,6 +377,10 @@
 // }
 
 
+
+
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
@@ -399,14 +403,16 @@ class _CableTvState extends State<CableTv> {
   int selectedRadioTile = 0;
   int tvNumber = 0;
   String service = 'dstv'; // Default service
+  int? tvPackageId;
   String? tvPackageCode;
-  int? number;
+  String? tvPackageName;
+  // int? number;
   bool isCustomer = false;
   bool _isLoading = false;
 
   CableValidateModel? _validateCableSub;
 
-  CablePlans? _cablePlans;
+  // CablePlans? _cablePlans;
   late Future<CablePlans?> futureCablePlans;
 
   @override
@@ -516,7 +522,8 @@ class _CableTvState extends State<CableTv> {
 
   @override
   Widget build(BuildContext context) {
-    // final cableNotifier = Provider.of<CableProvider>(context, listen: true);
+    final user = Provider.of<UserDataProvider>(context, listen: true);
+    final cableNotifier = Provider.of<CableProvider>(context, listen: true);
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -644,8 +651,13 @@ class _CableTvState extends State<CableTv> {
                             onChanged: (value) {
                               setState(() {
                                 selectedRadioTile = value!;
+                                tvPackageId = cablePlans.data[index].id;
                                 tvPackageCode = cablePlans.data[index].code;
-                              } );
+                                tvPackageName = cablePlans.data[index].name;
+                              });
+                              print(tvPackageId);
+                              print(tvPackageCode);
+                              print(tvPackageName);
                             },
                             activeColor: AppColors.plugPrimaryColor,
                           );
@@ -656,43 +668,49 @@ class _CableTvState extends State<CableTv> {
                 ),
 
                 Gap(20.h),
-                // CustomButtonWithIconRight(
-                //   icon: Visibility(
-                //     visible: _isLoading ? true : false,
-                //     child: Container(
-                //       margin: const EdgeInsets.only(left: 10),
-                //       width: 30,
-                //       height: 20, 
-                //       child: const CupertinoActivityIndicator(
-                //         color: AppColors.white,
-                //       )
-                //     )
-                //   ),
-                //   onPressed: () async {
-                //     if (isCustomer == false) {
-                //       setState(() {
-                //         _isLoading = true;
-                //       });
-                //       validateCableSub(tvNumber, service);
-                //     } else {
-                //       // final random = Random();
-                //       // final refId = 'ref${random.nextInt(999999999)}d';
-                //       final cablePlans = _cablePlans!.data[selectedRadioTile];
-                //       await cableNotifier.purchaseTv(
-                //         cablePlans.id, // networkID
-                //         tvNumber, //number
-                //         context
-                //         // cableNotifier.setProvider(service);
-                //         // cableNotifier.setRefId(refId);
-                //         // cableNotifier.setRechargeCode(tvPackageCode.toString());
-                //         // cableNotifier.setIucNumber(tvNumber);
-                //       );
-                //     }
-                //     print('$service, ${cableNotifier.refId}, $tvNumber');
-                //   },
-                //   title: isCustomer ? 'Send' : 'Verify',
-                //   gradient: gradient2,
-                // ),
+                CustomButtonWithIconRight(
+                  icon: Visibility(
+                    visible: _isLoading ? true : false,
+                    child: Container(
+                      margin: const EdgeInsets.only(left: 10),
+                      width: 30,
+                      height: 20, 
+                      child: const CupertinoActivityIndicator(
+                        color: AppColors.white,
+                      )
+                    )
+                  ),
+                  onPressed: () async {
+                    if (isCustomer == false) {
+                      setState(() {
+                        _isLoading = true;
+                      });
+                      validateCableSub(tvNumber, service);
+                    } else {
+                      final random = Random();
+                      final refId = 'ref${random.nextInt(999999999)}d';
+
+                      await cableNotifier.purchaseCable(
+                        CablePayment(
+                          networkID: tvPackageId.toString(),
+                          phone: tvNumber.toString(),
+                        ),
+                        context                        
+                      );
+
+                      cableNotifier.setProvider(service);
+                      cableNotifier.setRefId(refId);
+                      cableNotifier.setNetworkId(tvPackageId.toString());
+                      cableNotifier.setIucNumber(tvNumber.toString());
+                      cableNotifier.setCustomerName(customerName.text);
+
+                      user.loadWallet(context);
+                    }
+                    print('$service, ${cableNotifier.refId}, $tvNumber, $tvPackageId, $customerName');
+                  },
+                  title: isCustomer ? 'Send' : 'Verify',
+                  gradient: gradient2,
+                ),
               ],
             );
           },
@@ -700,6 +718,7 @@ class _CableTvState extends State<CableTv> {
       ),
     );
   }
+
 
   Widget _buildGridItem(String serviceName, String imagePath, int index) {
     return GestureDetector(

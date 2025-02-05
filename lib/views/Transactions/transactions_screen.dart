@@ -116,6 +116,8 @@ class TransactionScreen extends StatelessWidget {
                                   weight: FontWeight.w500,
                                   size: 18,
                                   color: plugBlack,
+                                  textOverflow: TextOverflow.ellipsis,
+                                  maxLines: 1
                                 ),
                                 const Gap(4),
                                 MyText(
