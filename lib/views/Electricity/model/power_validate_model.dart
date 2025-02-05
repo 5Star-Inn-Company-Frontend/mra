@@ -1,5 +1,5 @@
 class PowerValidateModel {
-  final String status;
+  final bool status;
   final String message;
   final String data;
 

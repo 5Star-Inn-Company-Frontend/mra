@@ -197,9 +197,11 @@ class _DashBoardState extends State<DashBoard> {
                                     MyText(
                                       title: title,
                                       weight: FontWeight.w500, size: 18, color: plugBlack,
+                                      textOverflow: TextOverflow.ellipsis,
+                                      maxLines: 1
                                     ),
 
-                                    const Gap(4),
+                                    const Gap(4), 
                                     MyText(
                                       title: time,
                                       weight: FontWeight.w400, size: 12, color: plugBlack,

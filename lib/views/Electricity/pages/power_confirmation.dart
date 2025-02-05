@@ -44,7 +44,7 @@ class PowerSuccessConfirmation extends StatelessWidget {
                             style: TextStyle(fontWeight: FontWeight.w300)),
                         TextSpan(
                             text:
-                                '${powerNotifier.provider} - ${powerNotifier.Number.toString()}',
+                                '${powerNotifier.provider} - ${powerNotifier.meterNumber.toString()}',
                             style: const TextStyle(fontWeight: FontWeight.w600))
                       ])),
             ),

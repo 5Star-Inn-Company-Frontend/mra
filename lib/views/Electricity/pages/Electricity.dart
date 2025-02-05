@@ -2,8 +2,6 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
-import 'package:mra/views/Electricity/model/powerPayment.dart';
-import 'package:mra/views/Electricity/model/powerValidate.dart';
 import 'package:mra/views/Electricity/model/power_provider_model.dart';
 import 'package:mra/views/Electricity/model/power_validate_model.dart';
 import 'package:mra/views/Electricity/services/power_service.dart';
@@ -24,7 +22,7 @@ class _ElectricityState extends State<Electricity> {
   int currentIndex = 0;
   final _formKey = GlobalKey<FormState>();
 
-  int tvNumber = 0;
+  int? meterNumber;
 
   int? subAmount; 
   String minAmount = "500";
@@ -32,10 +30,10 @@ class _ElectricityState extends State<Electricity> {
   String powerCode = "ikeja-electric";
 
   bool isCustomer = false;
-
   bool _isLoading = false;
 
-  // PowerProviderModel? providersData;
+  String meterType = 'prepaid';
+
   late Future<PowerProviderModel?> futurePowerProvider;
   PowerValidateModel? _validatePowerSub;
   String provider = "IKEDC";
@@ -51,6 +49,7 @@ class _ElectricityState extends State<Electricity> {
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserDataProvider>(context, listen: true);
     final powerNotifier = Provider.of<PowerProvider>(context, listen: true);
     int limitAmount = int.parse(minAmount.toString());
     
@@ -163,7 +162,7 @@ class _ElectricityState extends State<Electricity> {
                                   return Center(child: Text('Error: ${snapshot.error}'));
                                 } 
                                 else if (!snapshot.hasData || snapshot.data!.data.isEmpty) {
-                                  return Center(child: Text('No cable plans available'));
+                                  return Center(child: Text('No electricity plans available'));
                                 }
                                 else {
                                   return Text(
@@ -181,6 +180,40 @@ class _ElectricityState extends State<Electricity> {
 
                         Gap(30.h),
                         MyText(
+                          title: 'Payment Type',
+                          size: 14,
+                          color: plugSecondaryTextColor,
+                          weight: FontWeight.w400,
+                        ),
+
+                        Gap(10.h),
+                        Column(
+                          children: [
+                            RadioListTile<String>(
+                              title: const Text('Prepaid'),
+                              value: 'prepaid',
+                              groupValue: meterType,
+                              onChanged: (value) {
+                                setState(() {
+                                  meterType = value!;
+                                });
+                              },
+                            ),
+                            RadioListTile<String>(
+                              title: const Text('Postpaid'),
+                              value: 'postpaid',
+                              groupValue: meterType,
+                              onChanged: (value) {
+                                setState(() {
+                                  meterType = value!;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+
+                        Gap(10.h),
+                        MyText(
                           title: 'Meter Number',
                           size: 14,
                           color: plugSecondaryTextColor,
@@ -197,26 +230,26 @@ class _ElectricityState extends State<Electricity> {
                                 readonly: false,
                                 controller: meterNo,
                                 fillColor: const Color(0xffF5F5F5),
-                                hintText: 'Enter IUC number',
+                                hintText: 'Enter Meter Number',
                                 textInputType: TextInputType.number,
                                 validator: (val) {
-                                  if (val!.isEmpty && val.length >= 10) {
-                                    return ("IUC number must be 10 characters");
+                                  if (val!.isEmpty && val.length >= 11) {
+                                    return ("Meter Number must be 11 characters");
                                   }
                                   return null;
                                 },
                                 textInputAction: TextInputAction.done,
                                 onchanged: (val) {
-                                  if (_formKey.currentState!.validate() &&
-                                      meterNo.text.length >= 10) {
+                                  if (_formKey.currentState!.validate() && meterNo.text.length >= 11) {
                                     if (val!.isNotEmpty) {
                                       int intValue = int.parse(val.toString());
-                                      if (intValue.toString().length >= 10) {
+                                      if (intValue.toString().length >= 11) {
                                         setState(() {
-                                          tvNumber = intValue;
+                                          meterNumber = intValue;
                                         });
-                                        // validateCableSub(intValue, "DSTV");
+                                        validatePowerSub(selectedProviderId.toString(), meterType, intValue.toString());
                                       }
+                                      print('$selectedProviderId $meterType $intValue');
                                     }
                                   } else {
                                     setState(() {
@@ -235,23 +268,19 @@ class _ElectricityState extends State<Electricity> {
                                       obscureText: false,
                                       controller: customerName,
                                       readonly: false,
-                                      onchanged: (val) {
-                                        if (val!.isNotEmpty) {
-                                          int intValue = int.parse(val.toString());
-                                          setState(() {
-                                            subAmount = intValue;
-                                          });
-                                        }
-                                      },
-                                      validator: (val) {
-                                        if (val!.isEmpty) {
-                                          return ('Input amount');
-                                        }
-
-                                        // if (val.toString() < minAmount) {
-
-                                        // }
-                                      },
+                                      // onchanged: (val) {
+                                      //   if (val!.isNotEmpty) {
+                                      //     int intValue = int.parse(val.toString());
+                                      //     setState(() {
+                                      //       subAmount = intValue;
+                                      //     });
+                                      //   }
+                                      // },
+                                      // validator: (val) {
+                                      //   if (val!.isEmpty) {
+                                      //     return ('Input amount');
+                                      //   }
+                                      // },
                                       fillColor: const Color(0xffF5F5F5),
                                       hintText: _validatePowerSub?.data ?? '',
                                       textInputType: TextInputType.number,
@@ -259,15 +288,38 @@ class _ElectricityState extends State<Electricity> {
                                     ),
 
                                     Gap(screenHeight(context) * 0.02),
-                                    CustomInAppTextFormField(
-                                      obscureText: false,
+                                    TextFormField(
                                       controller: amount,
-                                      readonly: false,
-                                      fillColor: const Color(0xffF5F5F5),
-                                      hintText: '10,000',
-                                      textInputType: TextInputType.number,
+                                      keyboardType: TextInputType.number,
                                       textInputAction: TextInputAction.done,
+                                      decoration: InputDecoration(
+                                        hintText: 'Input amount here',
+                                        fillColor: const Color(0xffF5F5F5),
+                                        filled: true,
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.circular(10),
+                                          borderSide: BorderSide(
+                                            color: AppColors.plugPrimaryColor,
+                                          ),
+                                        ),
+                                      ),
+                                      validator: (val) {
+                                        if (val!.isEmpty) {
+                                          return ('Input amount');
+                                        }
+                                        return null;
+                                      },
+                                      onChanged: (val) {
+                                        if (val.isNotEmpty) {
+                                          int intValue = int.parse(val.toString());
+                                          setState(() {
+                                            subAmount = intValue;
+                                          });
+                                        }
+                                      },
                                     ),
+                                    
+                                    Gap(10.h)
                                   ],
                                 ),
                               ),
@@ -290,12 +342,12 @@ class _ElectricityState extends State<Electricity> {
                             )
                           ),
                           onPressed: () async {
-                            if (_formKey.currentState!.validate() && meterNo.text.length >= 10) {
+                            if (_formKey.currentState!.validate() && meterNo.text.length >= 11 && (meterType == 'prepaid' || meterType == 'postpaid') ) {
                               if (isCustomer == false) {
                                 setState(() {
                                   _isLoading = true;
                                 });
-                                validatePowerSub(tvNumber, provider, selectedProviderId);
+                                // validatePowerSub(tvNumber, provider, selectedProviderId);
                               } 
                               else {
                                 int intValue = int.parse(amount.text.toString());
@@ -309,23 +361,25 @@ class _ElectricityState extends State<Electricity> {
                                   ).show(context);
                                 } 
                                 else {
-                                  print(powerCode);
+                                  // print(powerCode);
                                   await powerNotifier.purchasePower(
                                     PowerPayment(
-                                      amount: intValue, 
-                                      code: powerCode, 
-                                      number: tvNumber, 
-                                      provider: provider, 
-                                      reference: refId, 
-                                      type: 'Prepaid'
+                                      networkID: selectedProviderId.toString(),
+                                      type: meterType,
+                                      phone: meterNo.text,
+                                      amount: intValue,
                                     ),
                                     context
                                   );
+                                  
+                                  powerNotifier.setNetworkId(selectedProviderId.toString());
                                   powerNotifier.setProvider(provider);
-                                  powerNotifier.setNumber(tvNumber);
+                                  powerNotifier.setMeterNumber(meterNo.text);
+                                  powerNotifier.setMeterType(meterType);
                                   powerNotifier.setRechargeAmount(intValue);
                                   powerNotifier.setRefId(refId);
-                                  powerNotifier.setCode(powerCode);
+
+                                  user.loadWallet(context);
                                 }
                               }
                             }
@@ -347,20 +401,22 @@ class _ElectricityState extends State<Electricity> {
 
 
   //validate cable data
-  Future<PowerValidateModel?> validatePowerSub(int meterNumber, String powerProvider, int providerId) async {
+  Future<PowerValidateModel?> validatePowerSub(String providerId, String meterType, String meterNumber) async {
     final token = await const FlutterSecureStorage().read(key: 'token');
     setState(() {
       _isLoading == true;
     });
 
     try {
-      final response = await ApiService.dio.post('/validate-electricity',
-          data: {
-            "id": providerId,
-            "type": "prepaid",
-            "phone": meterNumber.toInt()
-          },
-          options: Options(headers: {'Authorization': 'Bearer $token'}));
+      final response = await ApiService.dio.post(
+        '/validate-electricity',
+        data: {
+          "networkID": providerId,
+          "type": meterType,
+          "phone": meterNumber
+        },
+        options: Options(headers: {'Authorization': 'Bearer $token'})
+      );
 
       if (response.statusCode == 200 || response.statusCode == 201) {
         if (response.data['status'] == true) {
