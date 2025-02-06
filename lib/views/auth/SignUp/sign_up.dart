@@ -16,8 +16,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  bool _termsandconditions = false;
-
   final TextEditingController firstNameController = TextEditingController();
   final TextEditingController lastNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -29,11 +27,9 @@ class _SignUpState extends State<SignUp> {
   final TextEditingController confirmPasswordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-
+  bool _termsandconditions = false;
   bool _passwordVisible = true;
-
   bool isLoading = false;
-
   String? _errorMsg;
 
   void setLoading(bool value) {
@@ -84,10 +80,10 @@ class _SignUpState extends State<SignUp> {
       // debugging  
       // print("debugging: ${json.encode(user.toJson())}");
 
-      final Map<String, dynamic> payload = user.toJson();
-      print("Payload being sent to server: $payload");
+      // final Map<String, dynamic> payload = user.toJson();
+      // print("Payload being sent to server: $payload");
 
-      print("message: ${response.data}");
+      // print("message: ${response.data}");
       
       if (response.statusCode == 200) {
         setLoading(false);
@@ -148,7 +144,7 @@ class _SignUpState extends State<SignUp> {
           );
         }
 
-        if (response.data['success'] == true) {
+        if (response.data['status'] == true) {
           print(response.data);
           // showCupertinoDialog(
           //   context: context,
@@ -205,7 +201,7 @@ class _SignUpState extends State<SignUp> {
           //     );
           //   },
           // );
-        } else if (response.data['success'] == false) {
+        } else if (response.data['status'] == false) {
           print(response.data);
 
           Flushbar(
@@ -232,7 +228,7 @@ class _SignUpState extends State<SignUp> {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 4),
-          backgroundColor: Colors.red
+          backgroundColor: AppColors.plugPrimaryColor
         ).show(context);
       }
       if (error.response != null) {
@@ -249,7 +245,7 @@ class _SignUpState extends State<SignUp> {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 4),
-          backgroundColor: Colors.red
+          backgroundColor: AppColors.plugPrimaryColor
         ).show(context);
       }
     }
@@ -275,7 +271,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     return ResponsiveScreen(
       mobile: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.secondaryBackgroundColor,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -285,29 +281,25 @@ class _SignUpState extends State<SignUp> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        customBbox(
-                          width: 32,
-                          height: 32,
-                          shapes: BoxShape.circle,
-                          color: plugWhite,
-                          onPressed: () {
-                            widget.toggleView!(true);
-                          },
-                          shadowcolor: plugLightColor.withOpacity(0.7),
-                          widget: Center(
-                            child: Icon(
-                              Icons.arrow_back_ios_sharp,
-                              color: AppColors.plugPrimaryColor,
-                            ),
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: customBbox(
+                        width: 32,
+                        height: 32,
+                        shapes: BoxShape.circle,
+                        color: plugWhite,
+                        shadowcolor: plugLightColor.withOpacity(0.7),
+                        widget: Center(
+                          child: Icon(
+                            Icons.arrow_back_ios_sharp,
+                            color: AppColors.plugPrimaryColor,
                           ),
                         ),
-                        AppHorizontalSpacing.horizontalSpacingXXL,
-                        LogoWidget()
-                      ],
+                      ),
                     ),
+                    
+                    AppHorizontalSpacing.horizontalSpacingXXL,
+                    LogoWidget(),
                     
                     MyText(
                       title: 'Hello!',
@@ -318,7 +310,7 @@ class _SignUpState extends State<SignUp> {
 
                     AppVerticalSpacing.verticalSpacingN,
                     MyText(
-                      title: 'Create Your Account',
+                      title: 'Create your Account',
                       size: 16.sp,
                       weight: FontWeight.w500,
                       color: plugHeaderTextColor,
@@ -438,6 +430,23 @@ class _SignUpState extends State<SignUp> {
                     ),
                     
                     AppVerticalSpacing.verticalSpacingN,
+                    // AuthTfield(
+                    //   obscureText: false,
+                    //   controller: dobController,
+                    //   validator: (val) {
+                    //     if (val!.isEmpty) {
+                    //       return "Enter your date of birth";
+                    //     }
+                    //     return null;
+                    //   },
+                    //   hintText: 'DOB, YYYY-MM-DD',
+                    //   prefixIcon: Icon(
+                    //     Icons.calendar_today,
+                    //     color: plugHeaderTextColor.withOpacity(0.6),
+                    //   ),
+                    //   suffixIcon: SizedBox.shrink(),
+                    // ),
+
                     AuthTfield(
                       obscureText: false,
                       controller: dobController,
@@ -452,7 +461,20 @@ class _SignUpState extends State<SignUp> {
                         Icons.calendar_today,
                         color: plugHeaderTextColor.withOpacity(0.6),
                       ),
-                      suffixIcon: SizedBox.shrink(),
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.date_range),
+                        onPressed: () async {
+                          DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now(),
+                          );
+                          if (pickedDate != null) {
+                            dobController.text = "${pickedDate.toLocal()}".split(' ')[0];
+                          }
+                        },
+                      ),
                     ),
 
                     AppVerticalSpacing.verticalSpacingN,
@@ -538,7 +560,7 @@ class _SignUpState extends State<SignUp> {
                         }),
 
                         MyText(
-                          title: 'Accept  Terms of Use & Privacy Policy',
+                          title: 'Accept Terms of Use & Privacy Policy',
                           color: plugTextColor,
                           weight: FontWeight.w400,
                           size: 14,

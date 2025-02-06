@@ -65,7 +65,7 @@ class _SplashState extends State<Splash> {
   Widget build(BuildContext context) {
     return ResponsiveScreen(
       mobile: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 190, 190, 190),
+        backgroundColor: AppColors.secondaryBackgroundColor,
         body: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Align(

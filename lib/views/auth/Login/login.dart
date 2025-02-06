@@ -56,7 +56,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return ResponsiveScreen(
       mobile: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: AppColors.secondaryBackgroundColor,
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -88,8 +88,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     
                     MyText(title: 'Welcome Back', color: plugHeaderTextColor, size: 20.sp, weight: FontWeight.w700,),
                     
-                    AppVerticalSpacing.verticalSpacingN,
-                    MyText(title: 'Login Your Account', size: 16.sp,weight: FontWeight.w500, color: plugHeaderTextColor,),
+                    Gap(10.h),
+                    MyText(title: 'Login to your Account', size: 16.sp,weight: FontWeight.w500, color: plugHeaderTextColor,),
                     
                     AppVerticalSpacing.verticalSpacingN,
                     AuthTfield(
