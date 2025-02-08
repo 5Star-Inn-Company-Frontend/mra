@@ -271,7 +271,7 @@ class _TERMINALState extends State<TERMINAL> {
                       }
                       return const Center(
                         child: CircularProgressIndicator.adaptive(
-                          backgroundColor: AppColors.plugPrimaryColor,
+                          backgroundColor: Colors.red,
                         ),
                       );
                     },

@@ -95,7 +95,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                     children: [
                       CircleAvatar(
                         radius: 20,
-                        backgroundColor: AppColors.plugPrimaryColor,
+                        backgroundColor: Colors.red,
                         child: TextBold(
                           widget.title![0],
                           color: AppColors.white,
@@ -236,7 +236,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                           Gap(screenHeight(context) * 0.05),
                           Flexible(
                             child: TextSemiBold(
-                              widget.transactionStatus == 'TRANSACTION SUCCESSFUL' ? "Successful" : "Unsucessful",
+                              widget.transactionStatus == 'TRANSACTION SUCCESSFUL' ? "Successful" : "Unsuccessful",
                               textAlign: TextAlign.end,
                               color: widget.transactionStatus == 'TRANSACTION SUCCESSFUL'
                               ? const Color(0xff11D100)

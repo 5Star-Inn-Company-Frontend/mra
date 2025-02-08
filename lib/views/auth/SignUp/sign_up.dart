@@ -31,6 +31,8 @@ class _SignUpState extends State<SignUp> {
   bool _passwordVisible = true;
   bool isLoading = false;
   String? _errorMsg;
+  bool isMale = false;
+  bool isFemale = false;
 
   void setLoading(bool value) {
     setState(() {
@@ -104,9 +106,8 @@ class _SignUpState extends State<SignUp> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Image.asset(
-                        "assets/images/tick-card.png",
-                        width: screenWidth(context) * 0.2,
-                        height: screenHeight(context) * 0.1,
+                        "assets/images/insurance.png",
+                        width: 200.h
                       ),
                       AppVerticalSpacing.verticalSpacingN,
                       Text(
@@ -210,7 +211,7 @@ class _SignUpState extends State<SignUp> {
             isDismissible: true,
             flushbarPosition: FlushbarPosition.TOP,
             duration: const Duration(seconds: 2),
-            backgroundColor: AppColors.plugPrimaryColor,
+            backgroundColor: Colors.red,
           ).show(context);
         }
       }
@@ -228,7 +229,7 @@ class _SignUpState extends State<SignUp> {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 4),
-          backgroundColor: AppColors.plugPrimaryColor
+          backgroundColor: Colors.red
         ).show(context);
       }
       if (error.response != null) {
@@ -239,13 +240,18 @@ class _SignUpState extends State<SignUp> {
           Navigator.pop(context);
         }
 
+        String errorMessage = "Unable to complete registration";
+        if (error.response!.data is Map && error.response!.data.containsKey('error')) {
+          errorMessage = error.response!.data['error'];
+        }
+
         Flushbar(
-          message: "Unable to complete registration, ${error.response!.data}",
+          message: errorMessage,
           flushbarStyle: FlushbarStyle.GROUNDED,
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 4),
-          backgroundColor: AppColors.plugPrimaryColor
+          backgroundColor: Colors.red
         ).show(context);
       }
     }
@@ -283,16 +289,23 @@ class _SignUpState extends State<SignUp> {
                   children: [
                     Align(
                       alignment: Alignment.topLeft,
-                      child: customBbox(
-                        width: 32,
-                        height: 32,
-                        shapes: BoxShape.circle,
-                        color: plugWhite,
-                        shadowcolor: plugLightColor.withOpacity(0.7),
-                        widget: Center(
-                          child: Icon(
-                            Icons.arrow_back_ios_sharp,
-                            color: AppColors.plugPrimaryColor,
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context, MaterialPageRoute(builder: (_) => const LoginScreen())
+                          );
+                        },
+                        child: customBbox(
+                          width: 32,
+                          height: 32,
+                          shapes: BoxShape.circle,
+                          color: plugWhite,
+                          shadowcolor: plugLightColor.withOpacity(0.7),
+                          widget: Center(
+                            child: Icon(
+                              Icons.arrow_back_ios_sharp,
+                              color: AppColors.plugPrimaryColor,
+                            ),
                           ),
                         ),
                       ),
@@ -300,6 +313,8 @@ class _SignUpState extends State<SignUp> {
                     
                     AppHorizontalSpacing.horizontalSpacingXXL,
                     LogoWidget(),
+
+                    Gap(10.h),
                     
                     MyText(
                       title: 'Hello!',
@@ -308,7 +323,7 @@ class _SignUpState extends State<SignUp> {
                       weight: FontWeight.w700,
                     ),
 
-                    AppVerticalSpacing.verticalSpacingN,
+                    // Gap(5.h),
                     MyText(
                       title: 'Create your Account',
                       size: 16.sp,
@@ -354,6 +369,7 @@ class _SignUpState extends State<SignUp> {
 
                     AppVerticalSpacing.verticalSpacingN,
                     AuthTfield(
+                      keyboardType: TextInputType.phone,
                       obscureText: false,
                       controller: phoneController,
                       validator: (val) {
@@ -390,6 +406,7 @@ class _SignUpState extends State<SignUp> {
 
                     AppVerticalSpacing.verticalSpacingN,
                     AuthTfield(
+                      keyboardType: TextInputType.emailAddress,
                       controller: emailController,
                       obscureText: false,
                       validator: (val) {
@@ -412,24 +429,80 @@ class _SignUpState extends State<SignUp> {
                     ),
 
                     AppVerticalSpacing.verticalSpacingN,
-                    AuthTfield(
-                      obscureText: false,
-                      controller: genderController,
-                      validator: (val) {
-                        if (val!.isEmpty) {
-                          return "Enter your gender";
-                        }
-                        return null;
-                      },
-                      hintText: 'Gender',
-                      prefixIcon: Icon(
-                        Icons.person,
-                        color: plugHeaderTextColor.withOpacity(0.6),
-                      ),
-                      suffixIcon: SizedBox.shrink(),
+                    // AuthTfield(
+                    //   obscureText: false,
+                    //   controller: genderController,
+                    //   validator: (val) {
+                    //     if (val!.isEmpty) {
+                    //       return "Enter your gender";
+                    //     }
+                    //     return null;
+                    //   },
+                    //   hintText: 'Gender',
+                    //   prefixIcon: Icon(
+                    //     Icons.person,
+                    //     color: plugHeaderTextColor.withOpacity(0.6),
+                    //   ),
+                    //   suffixIcon: SizedBox.shrink(),
+                    // ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Gender',
+                          style: GoogleFonts.poppins(
+                            color: plugHeaderTextColor.withOpacity(0.6),
+                            fontSize: 15.sp,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: CheckboxListTile(
+                            title: const Text('Male'),
+                            value: isMale,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isMale = value!;
+                                if (isMale) {
+                                  isFemale = false;
+                                  genderController.text = 'Male';
+                                } else {
+                                  genderController.text = '';
+                                }
+                              });
+                            },
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                        Expanded(
+                          child: CheckboxListTile(
+                            title: const Text('Female'),
+                            value: isFemale,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isFemale = value!;
+                                if (isFemale) {
+                                  isMale = false;
+                                  genderController.text = 'Female';
+                                } else {
+                                  genderController.text = '';
+                                }
+                              });
+                            },
+                            controlAffinity: ListTileControlAffinity.leading,
+                          ),
+                        ),
+                      ],
                     ),
                     
-                    AppVerticalSpacing.verticalSpacingN,
+                    // AppVerticalSpacing.verticalSpacingN,
                     // AuthTfield(
                     //   obscureText: false,
                     //   controller: dobController,

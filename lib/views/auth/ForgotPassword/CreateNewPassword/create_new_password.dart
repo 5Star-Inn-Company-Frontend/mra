@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mra/views/auth/widget/auth_tfield.dart';
-import '../../../res/import/import.dart';
+import '../../../../res/import/import.dart';
 
 class CreateNewPassword extends StatefulWidget {
   final String? code;
@@ -12,7 +12,7 @@ class CreateNewPassword extends StatefulWidget {
 }
 
 class _CreateNewPasswordState extends State<CreateNewPassword> {
-  bool _rememberMe = false;
+  // final bool _rememberMe = false;
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _passwordController = TextEditingController();
@@ -20,11 +20,8 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
   // final bool _isDisabled = true;
 
   bool isLoading = false;
-
   String? _errorMsg;
-
   bool _passwordVisible = true;
-
   String otpCode = '';
 
   void setLoading(bool value) {
@@ -45,7 +42,12 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
 
       final response = await ApiService.dio.post(
         '/reset-password',
-        data: {'email': email, 'code': otp, 'password': password, 'password_confirmation': password}
+        data: {
+          'email': email,
+          'token': otp, 
+          'password': password,
+          'password_confirmation': password
+        }
       );
 
       if (response.statusCode == 200) {
@@ -70,7 +72,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
             isDismissible: true,
             flushbarPosition: FlushbarPosition.TOP,
             duration: const Duration(seconds: 2),
-            backgroundColor: AppColors.plugPrimaryColor,
+            backgroundColor: Colors.red,
           ).show(context);
         }
       }

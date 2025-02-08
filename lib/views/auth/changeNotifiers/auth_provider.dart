@@ -1,12 +1,6 @@
 import 'dart:convert';
-import 'package:another_flushbar/flushbar.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:mra/constant/app_colors.dart';
-import 'package:mra/constant/loader.dart';
-import 'package:mra/core/network/api_client.dart';
-import 'package:mra/views/auth/Login/Model/login_request.dart';
+import 'package:mra/res/import/import.dart';
 
 class AuthProvider with ChangeNotifier {
   final storage = const FlutterSecureStorage();
@@ -63,7 +57,7 @@ class AuthProvider with ChangeNotifier {
   //           isDismissible: true,
   //           flushbarPosition: FlushbarPosition.TOP,
   //           duration: const Duration(seconds: 2),
-  //           backgroundColor: AppColors.plugPrimaryColor
+  //           backgroundColor: Colors.red
   //         ).show(context);
 
   //         // Navigator.pushReplacement(context, 
@@ -83,7 +77,7 @@ class AuthProvider with ChangeNotifier {
   //           isDismissible: true,
   //           flushbarPosition: FlushbarPosition.TOP,
   //           duration: const Duration(seconds: 2),
-  //           backgroundColor: AppColors.plugPrimaryColor
+  //           backgroundColor: Colors.red
   //         ).show(context);
   //       } else {
   //       print('Error: Unexpected status code ${response.statusCode}');
@@ -94,7 +88,7 @@ class AuthProvider with ChangeNotifier {
   //         isDismissible: true,
   //         flushbarPosition: FlushbarPosition.TOP,
   //         duration: const Duration(seconds: 2),
-  //         backgroundColor: AppColors.plugPrimaryColor,
+  //         backgroundColor: Colors.red,
   //       ).show(context);
   //     }
   //       notifyListeners();
@@ -116,7 +110,7 @@ class AuthProvider with ChangeNotifier {
   //         isDismissible: true,
   //         flushbarPosition: FlushbarPosition.TOP,
   //         duration: const Duration(seconds: 2),
-  //         backgroundColor: AppColors.plugPrimaryColor
+  //         backgroundColor: Colors.red
   //       ).show(context);
   //     }
   //     // print(error.response!.data['message']['message']);
@@ -129,7 +123,7 @@ class AuthProvider with ChangeNotifier {
   //         isDismissible: true,
   //         flushbarPosition: FlushbarPosition.TOP,
   //         duration: const Duration(seconds: 2),
-  //         backgroundColor: AppColors.plugPrimaryColor,
+  //         backgroundColor: Colors.red,
   //       ).show(context);
   //     }
   //     notifyListeners();
@@ -169,7 +163,7 @@ class AuthProvider with ChangeNotifier {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 2),
-          backgroundColor: AppColors.plugPrimaryColor,
+          backgroundColor: Colors.red,
         ).show(context);
       } else {
         Flushbar(
@@ -178,7 +172,7 @@ class AuthProvider with ChangeNotifier {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 2),
-          backgroundColor: AppColors.plugPrimaryColor,
+          backgroundColor: Colors.red,
         ).show(context);
       }
     } on DioException catch (error) {
@@ -202,7 +196,7 @@ class AuthProvider with ChangeNotifier {
         isDismissible: true,
         flushbarPosition: FlushbarPosition.TOP,
         duration: const Duration(seconds: 2),
-        backgroundColor: AppColors.plugPrimaryColor,
+        backgroundColor: Colors.red,
       ).show(context);
     }
 

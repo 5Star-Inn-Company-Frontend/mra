@@ -120,7 +120,7 @@ class CableProvider with ChangeNotifier {
       isDismissible: true,
       flushbarPosition: FlushbarPosition.TOP,
       duration: const Duration(seconds: 2),
-      backgroundColor: AppColors.plugPrimaryColor,
+      backgroundColor: Colors.red,
     ).show(context);
   }
 

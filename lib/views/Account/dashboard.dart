@@ -140,14 +140,16 @@ class _DashBoardState extends State<DashBoard> {
                     Gap(screenHeight(context) * 0.025),
 
                     Visibility(
-                      visible: transactionData?.data == [] ? false : true,
+                      // visible: transactionData?.data == [] ? false : true,
+                      visible: transactionData != null && transactionData.data.isNotEmpty,
                       child: ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: transactionData!.data.length > 3 ? 3 : transactionData.data.length,
+                        // itemCount: transactionData!.data.length > 3 ? 3 : transactionData.data.length,
+                        itemCount: transactionData != null && transactionData.data.length > 3 ? 3 : transactionData?.data.length ?? 0,
                         shrinkWrap: true,
                         padding: EdgeInsets.zero,
                         itemBuilder: (context, index) {
-                          final data = transactionData.data[index];
+                          final data = transactionData!.data[index];
                           String dateString = data.createdAt.toString();
                           DateTime dateTime = DateTime.parse(dateString);
                           
@@ -184,7 +186,7 @@ class _DashBoardState extends State<DashBoard> {
 
                                 leading: CircleAvatar(
                                   radius: 20,
-                                  backgroundColor: AppColors.plugPrimaryColor,
+                                  backgroundColor: Colors.red,
                                   child: TextBold(
                                     title[0],
                                     color: AppColors.white, fontSize: 14,
@@ -246,7 +248,7 @@ class _DashBoardState extends State<DashBoard> {
                     ),
 
                     Visibility(
-                      visible: transactionData.data.isEmpty ? true : false,
+                      visible: transactionData!.data.isEmpty ? true : false,
                       child: Center(
                         child: TextBold(
                           "No Transaction history yet!",

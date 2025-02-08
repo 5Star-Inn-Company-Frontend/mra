@@ -7,7 +7,7 @@ class AppColors {
   static const Color plugTextColor = Color.fromRGBO(11, 20, 38, 0.8);
   static const Color primaryBrown = Color.fromRGBO(28, 4, 119, 0.5);
   static const Color textPrimaryColor = Color.fromRGBO(11, 20, 38, 0.8);
-  static const Color secondaryBackgroundColor = Color.fromARGB(255, 231, 231, 231);
+  static const Color secondaryBackgroundColor = Colors.white;
 
   // Primary color scratch
   static const Map<int, Color> colorScratch = {

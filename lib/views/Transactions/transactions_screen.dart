@@ -101,7 +101,7 @@ class TransactionScreen extends StatelessWidget {
                             },
                             leading: CircleAvatar(
                               radius: 20,
-                              backgroundColor: AppColors.plugPrimaryColor,
+                              backgroundColor: Colors.red,
                               child: TextBold(
                                 title[0],
                                 color: AppColors.white,

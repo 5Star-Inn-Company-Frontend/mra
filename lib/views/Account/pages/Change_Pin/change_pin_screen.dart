@@ -185,7 +185,7 @@ class _ChangePinState extends State<ChangePin> {
             isDismissible: true,
             flushbarPosition: FlushbarPosition.TOP,
             duration: const Duration(seconds: 2),
-            backgroundColor: AppColors.plugPrimaryColor,
+            backgroundColor: Colors.red,
           ).show(context);
         }
       }

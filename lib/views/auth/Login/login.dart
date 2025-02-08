@@ -66,29 +66,38 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Align(
-                      alignment: Alignment.topLeft,
-                      child: customBbox(
-                        width: 32,
-                        height: 32,
-                        shapes: BoxShape.circle,
-                        color: plugWhite,
-                        shadowcolor: plugLightColor.withOpacity(0.7),
-                        widget: Center(
-                          child: Icon(
-                            Icons.arrow_back_ios_sharp,
-                            color: AppColors.plugPrimaryColor,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Align(
+                    //   alignment: Alignment.topLeft,
+                    //   child: GestureDetector(
+                    //     onTap: () {
+                    //       Navigator.push(
+                    //         context, MaterialPageRoute(builder: (_) => const SignUp())
+                    //       );
+                    //     },
+                    //     child: customBbox(
+                    //       width: 32,
+                    //       height: 32,
+                    //       shapes: BoxShape.circle,
+                    //       color: plugWhite,
+                    //       shadowcolor: plugLightColor.withOpacity(0.7),
+                    //       widget: Center(
+                    //         child: Icon(
+                    //           Icons.arrow_back_ios_sharp,
+                    //           color: AppColors.plugPrimaryColor,
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     
                     AppHorizontalSpacing.horizontalSpacingXXL,
                     LogoWidget(),
+
+                    Gap(10.h),
                     
                     MyText(title: 'Welcome Back', color: plugHeaderTextColor, size: 20.sp, weight: FontWeight.w700,),
                     
-                    Gap(10.h),
+                    Gap(5.h),
                     MyText(title: 'Login to your Account', size: 16.sp,weight: FontWeight.w500, color: plugHeaderTextColor,),
                     
                     AppVerticalSpacing.verticalSpacingN,

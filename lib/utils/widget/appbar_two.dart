@@ -19,7 +19,7 @@ class PlugAppBarTwo extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: AppColors.plugPrimaryColor,
+      backgroundColor: Colors.red,
       leading: TouchableOpacity(
         onTap: () => Navigator.pop(context),
         child: const AppBackButton(),

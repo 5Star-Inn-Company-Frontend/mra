@@ -86,7 +86,7 @@ class UserDataProvider with ChangeNotifier {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 2),
-          backgroundColor: AppColors.plugPrimaryColor
+          backgroundColor: Colors.red
         ).show(context);
       }
       if (DioExceptionType.connectionError == e.type ||
@@ -100,7 +100,7 @@ class UserDataProvider with ChangeNotifier {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 2),
-          backgroundColor: AppColors.plugPrimaryColor)
+          backgroundColor: Colors.red)
       .show(context);
       }
     } 
@@ -157,7 +157,7 @@ class UserDataProvider with ChangeNotifier {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 2),
-          backgroundColor: AppColors.plugPrimaryColor
+          backgroundColor: Colors.red
         ).show(context);
       }
     } finally {
@@ -193,7 +193,7 @@ class UserDataProvider with ChangeNotifier {
           isDismissible: true,
           flushbarPosition: FlushbarPosition.TOP,
           duration: const Duration(seconds: 2),
-          backgroundColor: AppColors.plugPrimaryColor,
+          backgroundColor: Colors.red,
         ).show(context);
       }
     } on DioException catch (e) {
@@ -209,7 +209,7 @@ class UserDataProvider with ChangeNotifier {
                 isDismissible: true,
                 flushbarPosition: FlushbarPosition.TOP,
                 duration: const Duration(seconds: 2),
-                backgroundColor: AppColors.plugPrimaryColor)
+                backgroundColor: Colors.red)
             .show(context);
       }
       if ([
@@ -225,7 +225,7 @@ class UserDataProvider with ChangeNotifier {
                 isDismissible: true,
                 flushbarPosition: FlushbarPosition.TOP,
                 duration: const Duration(seconds: 2),
-                backgroundColor: AppColors.plugPrimaryColor)
+                backgroundColor: Colors.red)
             .show(context);
       }
     } catch (e) {
@@ -236,7 +236,7 @@ class UserDataProvider with ChangeNotifier {
         isDismissible: true,
         flushbarPosition: FlushbarPosition.TOP,
         duration: const Duration(seconds: 2),
-        backgroundColor: AppColors.plugPrimaryColor,
+        backgroundColor: Colors.red,
       ).show(context);
     }
 

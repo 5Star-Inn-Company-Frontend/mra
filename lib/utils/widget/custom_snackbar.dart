@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/views/wrapper.dart';
 
 import '../../res/import/import.dart';
@@ -16,27 +17,29 @@ class CreateNewPassWordDialog extends StatelessWidget {
         width: double.maxFinite,
         child: Column(
           children: [
-            Image.asset('assets/images/Sucess.png'),
+            Image.asset('assets/images/insurance.png', width: 200.w,),
+
             AppVerticalSpacing.verticalSpacingL,
             MyText(
               title: 'Congratulations!',
               weight: FontWeight.w700,
               size: 24,
-              color: plugPrimaryColor,
+              color: AppColors.plugPrimaryColor,
             ),
+
             AppVerticalSpacing.verticalSpacingN,
             MyText(
-              title:
-                  'You have successfully created a new password,\n click continue to go to the home page',
+              title: 'You have successfully created a new password,\n click continue to go to the home page',
               weight: FontWeight.w400,
               size: 14,
               color: plugTextColor,
               align: TextAlign.center,
             ),
+
             AppVerticalSpacing.verticalSpacingN,
             CustomButtonWithIconRight(
               title: 'Continue',
-              buttonColor: plugPrimaryColor,
+              buttonColor: AppColors.plugPrimaryColor,
               radius: BorderRadius.circular(5),
               onPressed: () {
                 Navigator.pushReplacement(context,

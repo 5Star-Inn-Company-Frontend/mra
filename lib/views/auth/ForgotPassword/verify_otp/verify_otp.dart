@@ -1,6 +1,7 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter_pin_code_fields/flutter_pin_code_fields.dart';
-import '../../../res/import/import.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../res/import/import.dart';
 
 class VerifyOtp extends StatefulWidget {
   final String? email;
@@ -67,7 +68,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
   //           isDismissible: true,
   //           flushbarPosition: FlushbarPosition.TOP,
   //           duration: const Duration(seconds: 2),
-  //           backgroundColor: AppColors.plugPrimaryColor,
+  //           backgroundColor: Colors.red,
   //         ).show(context);
   //       }
   //     }
@@ -179,7 +180,7 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     },
                   ),
 
-                  AppVerticalSpacing.verticalSpacingXXL,
+                  Gap(20.h),
                   BusyButton(
                     title: "Continue",
                     disabled: otpCode.length < 5 ? true : false,
@@ -197,11 +198,11 @@ class _VerifyOtpState extends State<VerifyOtp> {
                     },
                   ),
 
-                  AppVerticalSpacing.verticalSpacingN,
-                  MyText(
-                    onTap: () {},
-                    title: 'Otp will be sent to your email address ', weight: FontWeight.w400, size: 14, color: plugTextColor,
-                  ),
+                  // AppVerticalSpacing.verticalSpacingN,
+                  // MyText(
+                  //   onTap: () {},
+                  //   title: 'Otp will be sent to your email address ', weight: FontWeight.w400, size: 14, color: plugTextColor,
+                  // ),
                 ],
               ),
             ),

@@ -6,6 +6,6 @@ class LogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('assets/images/option-vtu-bg.png', width: 200.w);
+    return Image.asset('assets/images/logobig.jpg', width: 200.w);
   }
 }

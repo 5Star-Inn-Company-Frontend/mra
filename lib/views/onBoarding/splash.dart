@@ -1,5 +1,6 @@
 // import 'package:another_flushbar/flushbar.dart';
 // import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/constant/logo.dart';
 import 'package:mra/views/wrapper.dart';
 // import 'package:mra/views/wrapper.dart';
@@ -66,18 +67,16 @@ class _SplashState extends State<Splash> {
     return ResponsiveScreen(
       mobile: Scaffold(
         backgroundColor: AppColors.secondaryBackgroundColor,
-        body: Padding(
+        body: Padding(  
           padding: const EdgeInsets.all(10.0),
           child: Align(
             alignment: Alignment.center,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 LogoWidget(),
-                const SizedBox(
-                  height: 5,
-                ),
+                Gap(20.h),
                 Center(
                   child: MyText(
                     title: "We offer you the most affordable and most cheapest data, airtime, Dstv, Gotv and Startimes subscription in\nseconds anywhere and anytime",

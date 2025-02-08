@@ -105,7 +105,7 @@
 //               isDismissible: true,
 //               flushbarPosition: FlushbarPosition.TOP,
 //               duration: const Duration(seconds: 2),
-//               backgroundColor: AppColors.plugPrimaryColor)
+//               backgroundColor: Colors.red)
 //           .show(context);
 //           }
 //         }
@@ -121,7 +121,7 @@
 //                   isDismissible: true,
 //                   flushbarPosition: FlushbarPosition.TOP,
 //                   duration: const Duration(seconds: 2),
-//                   backgroundColor: AppColors.plugPrimaryColor)
+//                   backgroundColor: Colors.red)
 //               .show(context);
 //         }
 //         if (DioExceptionType.connectionError == e.type ||
@@ -134,7 +134,7 @@
 //                   isDismissible: true,
 //                   flushbarPosition: FlushbarPosition.TOP,
 //                   duration: const Duration(seconds: 2),
-//                   backgroundColor: AppColors.plugPrimaryColor)
+//                   backgroundColor: Colors.red)
 //               .show(context);
 //         }
 //       }
@@ -299,7 +299,7 @@ class AirtimeProvider with ChangeNotifier {
       isDismissible: true,
       flushbarPosition: FlushbarPosition.TOP,
       duration: const Duration(seconds: 2),
-      backgroundColor: AppColors.plugPrimaryColor,
+      backgroundColor: Colors.red,
     ).show(context);
   }
 

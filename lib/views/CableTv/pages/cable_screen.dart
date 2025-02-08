@@ -99,7 +99,7 @@
 //           // ignore: use_build_context_synchronously
 //           Flushbar(
 //             message: response.data['message'],
-//             backgroundColor: AppColors.plugPrimaryColor,
+//             backgroundColor: Colors.red,
 //             flushbarPosition: FlushbarPosition.TOP,
 //             duration: const Duration(seconds: 2),
 //             flushbarStyle: FlushbarStyle.GROUNDED,
@@ -485,7 +485,7 @@ class _CableTvState extends State<CableTv> {
           // ignore: use_build_context_synchronously
           Flushbar(
             message: response.data['message'],
-            backgroundColor: AppColors.plugPrimaryColor,
+            backgroundColor: Colors.red,
             flushbarPosition: FlushbarPosition.TOP,
             duration: const Duration(seconds: 2),
             flushbarStyle: FlushbarStyle.GROUNDED,

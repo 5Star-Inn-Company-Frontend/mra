@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Account/pages/Password_Settings/service/update_password.dart';
-import 'package:mra/views/Account/pages/Password_Settings/widgets/passwordSuccess.dart';
+import 'package:mra/views/Account/pages/Password_Settings/widgets/password_success.dart';
 
 import '../../../../../res/import/import.dart';
 

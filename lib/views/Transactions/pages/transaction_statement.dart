@@ -18,7 +18,7 @@ class TransactionStateMent extends StatelessWidget {
                 Center(
                   child: CircleAvatar(
                     radius: 50,
-                    backgroundColor: AppColors.plugPrimaryColor,
+                    backgroundColor: Colors.red,
                     child: Image.asset("assets/images/notebook.png"),
                   ),
                 ),

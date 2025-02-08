@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/constant/text.dart';
-import 'package:mra/utils/ui_helpers.dart';
 
 class PasswordSuccess extends StatelessWidget {
   const PasswordSuccess({super.key});
@@ -14,8 +14,8 @@ class PasswordSuccess extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Image.asset(
-            "assets/images/Sucess.png",
-            width: screenWidth(context) * 0.24,
+            "assets/images/insurance.png",
+            width: 200.w
           ),
           TextBold(
             "Congratulations your password has been set Successfully",

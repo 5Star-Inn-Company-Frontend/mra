@@ -60,7 +60,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             isDismissible: true,
             flushbarPosition: FlushbarPosition.TOP,
             duration: const Duration(seconds: 2),
-            backgroundColor: AppColors.plugPrimaryColor,
+            backgroundColor: Colors.red,
           ).show(context);
         }
       }
@@ -197,7 +197,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     )
                   ),
 
-                  AppVerticalSpacing.verticalSpacingXXL,
+                  Gap(20.h),
                   BusyButton(
                     title: "Continue",
                     disabled: _isDisabled,

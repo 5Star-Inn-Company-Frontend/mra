@@ -227,7 +227,7 @@ class _DataState extends State<Data> {
                               }
                               return const Center(
                                 child: CircularProgressIndicator.adaptive(
-                                  backgroundColor: AppColors.plugPrimaryColor,
+                                  backgroundColor: Colors.red,
                                 ),
                               );
                             },
@@ -534,7 +534,7 @@ class _DataState extends State<Data> {
                                 message: 'Pls select a data plan, to continue',
                                 duration: Duration(seconds: 3),
                                 isDismissible: true,
-                                backgroundColor: AppColors.plugPrimaryColor,
+                                backgroundColor: Colors.red,
                               ).show(context);
                             } 
                             else if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
@@ -542,7 +542,7 @@ class _DataState extends State<Data> {
                                 message: 'Input a valid phone number, to continue',
                                 duration: Duration(seconds: 3),
                                 isDismissible: true,
-                                backgroundColor: AppColors.plugPrimaryColor,
+                                backgroundColor: Colors.red,
                               ).show(context);
                             }
                           },

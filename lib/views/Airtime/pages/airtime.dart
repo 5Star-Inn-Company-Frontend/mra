@@ -155,7 +155,7 @@ class _AirtimeState extends State<Airtime> {
                               }
                               return const Center(
                                 child: CircularProgressIndicator.adaptive(
-                                  backgroundColor: AppColors.plugPrimaryColor,
+                                  backgroundColor: Colors.red,
                                 ),
                               );
                             },

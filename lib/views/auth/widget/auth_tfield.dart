@@ -8,7 +8,8 @@ class AuthTfield extends StatefulWidget {
   final TextEditingController? controller;
   final String? Function(String?)? validator;
   final bool obscureText;
-  const AuthTfield({super.key, required this.hintText, required this.prefixIcon, this.controller, this.validator, required this.obscureText, required this.suffixIcon});
+  final TextInputType? keyboardType;
+  const AuthTfield({super.key, required this.hintText, required this.prefixIcon, this.controller, this.validator, required this.obscureText, required this.suffixIcon, this.keyboardType});
 
   @override
   State<AuthTfield> createState() => _AuthTfieldState();
@@ -23,6 +24,7 @@ class _AuthTfieldState extends State<AuthTfield> {
       cursorColor: plugHeaderTextColor.withOpacity(0.6),
       style: GoogleFonts.poppins(fontWeight: FontWeight.w500, fontSize: 14.sp, color: plugHeaderTextColor.withOpacity(0.6),),
       obscureText: widget.obscureText,
+      keyboardType: widget.keyboardType,
       decoration: InputDecoration(
         prefixIcon: widget.prefixIcon,
         suffixIcon: widget.suffixIcon,

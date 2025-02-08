@@ -366,7 +366,7 @@ class CustomDrawer extends StatelessWidget {
 //   return PreferredSize(
 //     preferredSize: const Size.fromHeight(60),
 //     child: AppBar(
-//       backgroundColor: AppColors.plugPrimaryColor,
+//       backgroundColor: Colors.red,
 //       iconTheme: IconThemeData(color: Colors.white, size: 30),
 //       automaticallyImplyLeading: false,
 //       title: Row(

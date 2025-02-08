@@ -109,7 +109,7 @@ class DataProvider with ChangeNotifier {
   //                   isDismissible: true,
   //                   flushbarPosition: FlushbarPosition.TOP,
   //                   duration: const Duration(seconds: 2),
-  //                   backgroundColor: AppColors.plugPrimaryColor)
+  //                   backgroundColor: Colors.red)
   //               .show(context);
   //         }
   //       }
@@ -125,7 +125,7 @@ class DataProvider with ChangeNotifier {
   //                 isDismissible: true,
   //                 flushbarPosition: FlushbarPosition.TOP,
   //                 duration: const Duration(seconds: 2),
-  //                 backgroundColor: AppColors.plugPrimaryColor)
+  //                 backgroundColor: Colors.red)
   //             .show(context);
   //       }
   //       if (DioExceptionType.connectionError == e.type ||
@@ -138,7 +138,7 @@ class DataProvider with ChangeNotifier {
   //                 isDismissible: true,
   //                 flushbarPosition: FlushbarPosition.TOP,
   //                 duration: const Duration(seconds: 2),
-  //                 backgroundColor: AppColors.plugPrimaryColor)
+  //                 backgroundColor: Colors.red)
   //             .show(context);
   //       }
   //     }
@@ -203,7 +203,7 @@ class DataProvider with ChangeNotifier {
       isDismissible: true,
       flushbarPosition: FlushbarPosition.TOP,
       duration: const Duration(seconds: 2),
-      backgroundColor: AppColors.plugPrimaryColor,
+      backgroundColor: Colors.red,
     ).show(context);
   }
 
