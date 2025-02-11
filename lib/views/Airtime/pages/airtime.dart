@@ -155,7 +155,7 @@ class _AirtimeState extends State<Airtime> {
                               }
                               return const Center(
                                 child: CircularProgressIndicator.adaptive(
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: AppColors.plugPrimaryColor,
                                 ),
                               );
                             },
@@ -196,6 +196,9 @@ class _AirtimeState extends State<Airtime> {
                                                 validator: (val) {
                                                   if (val!.isEmpty || val.length < 10) {
                                                     return ("Input your 11 digits phone number");
+                                                  }
+                                                  if (val.length == 10 && val[0] != '0') {
+                                                    phoneController.text = '0$val';
                                                   }
                                                   return null;
                                                 },
@@ -341,6 +344,7 @@ class _AirtimeState extends State<Airtime> {
                         Spacer(),
                         CustomButtonWithIconRight(
                           onPressed: () async {
+                            print(phoneController.text);
                             if (_formKey.currentState!.validate()) {
                               final amount = int.parse(amountController.text.trim());
                               final random = Random();

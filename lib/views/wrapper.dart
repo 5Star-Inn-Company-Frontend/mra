@@ -18,8 +18,7 @@ class _WrapperState extends State<Wrapper> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<AuthProvider>(context, listen: true);
-    // final internet =
-    //     Provider.of<InternetConnectionStatus>(context, listen: true);
+    // final internet = Provider.of<InternetConnectionStatus>(context, listen: true);
     // if (internet == InternetConnectionStatus.disconnected) {
     //   return const NoInternet();
     // }

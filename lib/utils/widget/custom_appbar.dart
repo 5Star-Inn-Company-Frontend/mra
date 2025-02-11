@@ -334,7 +334,7 @@ class CustomDrawer extends StatelessWidget {
             onTap: () async {
               await user.logout();
               // ignore: use_build_context_synchronously
-              Navigator.popAndPushNamed(context, Routes.wrapper);
+              Navigator.pushNamedAndRemoveUntil(context, Routes.wrapper, (Route<dynamic> route) => false);
             },
             leading: Image.asset(
               'assets/images/dash_icon7.png',

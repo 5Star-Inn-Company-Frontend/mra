@@ -160,7 +160,7 @@ class _CreateNewPasswordState extends State<CreateNewPassword> {
 
                     AppVerticalSpacing.verticalSpacingN,
                     MyText(
-                      title: 'Please enter your register email address to reset your password',
+                      title: 'Enter your new password',
                       size: 16, weight: FontWeight.w500, color: plugTextColor,
                     ),
                     

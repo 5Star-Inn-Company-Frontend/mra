@@ -51,8 +51,34 @@ class _SetFingerPrintState extends State<SetFingerPrint> {
         ).show(context);
       }
     }
-    setState(() {});
+    setState(() {
+      _isAuthenticated = true;
+    });
   }
+
+  // final LocalAuthentication auth = LocalAuthentication();
+  // bool _isAuthenticated = false;
+
+  // Future<void> _authenticate() async {
+  //   try {
+  //     bool isAuthenticated = await auth.authenticate(
+  //       localizedReason: 'Scan your fingerprint to login',
+  //       options: const AuthenticationOptions(
+  //         biometricOnly: true,
+  //         useErrorDialogs: true,
+  //         stickyAuth: true,
+  //       ),
+  //     );
+
+  //     if (isAuthenticated) {
+  //       setState(() {
+  //         _isAuthenticated = true;
+  //       });
+  //     }
+  //   } catch (e) {
+  //     print("Authentication Error: $e");
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -87,9 +113,7 @@ class _SetFingerPrintState extends State<SetFingerPrint> {
 
                   AppVerticalSpacing.verticalSpacingL,
                   MyText(
-                    title: _isAuthenticated
-                        ? "Fingerprint has been set!"
-                        : 'Set Your Finger Print',
+                    title: _isAuthenticated ? "Fingerprint has been set!" : 'Set Your Finger Print',
                     color: plugHeaderTextColor, size: 24, weight: FontWeight.w700,
                   ),
 

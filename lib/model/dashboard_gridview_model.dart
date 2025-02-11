@@ -1,4 +1,5 @@
 import 'package:mra/res/import/import.dart';
+import 'package:mra/views/Transfer/pages/default_page.dart';
 
 class GridModel {
   final String image;
@@ -20,7 +21,7 @@ List gridItems = <GridModel>[
   GridModel(
       image: 'assets/images/transact.png',
       title: 'Transfer',
-      route: const DashBoard()
+      route: const DefaultPage(),
     ),
   GridModel(
       image: 'assets/images/bulb.png',

@@ -227,7 +227,7 @@ class _DataState extends State<Data> {
                               }
                               return const Center(
                                 child: CircularProgressIndicator.adaptive(
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: AppColors.plugPrimaryColor,
                                 ),
                               );
                             },

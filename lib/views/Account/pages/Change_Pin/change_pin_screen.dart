@@ -60,6 +60,7 @@ class _ChangePinState extends State<ChangePin> {
                             return null;
                           },
                           readonly: false,
+                          textInputType: TextInputType.number,
                           textInputAction: TextInputAction.next,
                         ),
 
@@ -85,6 +86,7 @@ class _ChangePinState extends State<ChangePin> {
                             return null;
                           },
                           readonly: false,
+                          textInputType: TextInputType.number,
                           textInputAction: TextInputAction.next,
                         ),
 
@@ -104,13 +106,13 @@ class _ChangePinState extends State<ChangePin> {
                             if (val!.isEmpty) {
                               return ("Input to confirm pin");
                             }
-                            if (_confirmPasswordController.text !=
-                                _newPinController.text) {
+                            if (_confirmPasswordController.text != _newPinController.text) {
                               return ("Pin does not match");
                             }
                             return null;
                           },
                           readonly: false,
+                          textInputType: TextInputType.number,
                           textInputAction: TextInputAction.done,
                         ),
                         

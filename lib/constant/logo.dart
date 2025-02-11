@@ -6,6 +6,9 @@ class LogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('assets/images/logobig.jpg', width: 200.w);
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: Image.asset('assets/images/logobig.jpg', width: 200.w)
+    );
   }
 }
