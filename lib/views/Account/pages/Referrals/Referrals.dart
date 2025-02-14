@@ -24,7 +24,7 @@ class Referrals extends StatelessWidget {
               ),
               AppVerticalSpacing.verticalSpacingD,
               customBbox(
-                borderColor: plugPrimaryColor,
+                borderColor: AppColors.plugPrimaryColor,
                 radius: BorderRadius.circular(8),
                 widget: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -65,7 +65,7 @@ class Referrals extends StatelessWidget {
               ),
               AppVerticalSpacing.verticalSpacingD,
               customBbox(
-                borderColor: plugPrimaryColor,
+                borderColor: AppColors.plugPrimaryColor,
                 radius: BorderRadius.circular(8),
                 widget: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
