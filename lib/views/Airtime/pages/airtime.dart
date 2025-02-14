@@ -235,20 +235,21 @@ class _AirtimeState extends State<Airtime> {
                                                     itemCount: contacts!.length,
                                                     itemBuilder: (context, i) {
                                                       Contact contact = snapshot.data![i];
-                                                      phoneController.text = contact.phones[0].number;
+                                                      // phoneController.text = contact.phones[0].number;
 
                                                       return InkWell(
                                                         onTap: () {
                                                           setState(() {
                                                             contact;
+                                                            phoneController.text = contact.phones[0].number;
                                                           });
                                                           Navigator.pop(context);
                                                         },
                                                         child: Padding(
-                                                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                                                          padding: const EdgeInsets.symmetric(horizontal: 16),
                                                           child: Column(
                                                             children: [
-                                                              AppVerticalSpacing.verticalSpacingD,
+                                                              Gap(10.h),
                                                               Container(
                                                                 padding: const EdgeInsets.all(10),
                                                                 height: 70,
@@ -262,7 +263,7 @@ class _AirtimeState extends State<Airtime> {
                                                                       child: Icon(Icons.person, color: plugTetTextColor,),
                                                                     ),
 
-                                                                    AppHorizontalSpacing.horizontalSpacingS,
+                                                                    Gap(20.w),
                                                                     Column(
                                                                       crossAxisAlignment: CrossAxisAlignment.start,
                                                                       children: [
@@ -276,7 +277,7 @@ class _AirtimeState extends State<Airtime> {
                                                                           title: contact.phones[0].number,
                                                                           size: 16,
                                                                           color: plugBlack,
-                                                                          weight: FontWeight.w700,
+                                                                          weight: FontWeight.w600,
                                                                         ),
                                                                       ],
                                                                     ),

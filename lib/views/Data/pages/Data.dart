@@ -7,7 +7,6 @@ import 'package:mra/views/Airtime/model/airtime_provider_model.dart';
 import 'package:mra/views/Airtime/service/airtime_service.dart';
 import 'package:mra/views/Data/model/data_plans_model.dart';
 import 'package:mra/views/Data/model/data_types_model.dart';
-import 'package:mra/views/Data/pages/data_pin.dart';
 import 'package:mra/views/Transfer/constants/textField.dart';
 import '../../../res/import/import.dart';
 
@@ -37,8 +36,8 @@ class _DataState extends State<Data> {
   String packageType = 'SME';
   String provider = "MTN";
 
-  String _country = 'Nigeria';
-  String _countryCode = '234';
+  String country = 'Nigeria';
+  String countryCode = '234';
   String? formattedCode;
 
   setSelectedRadioTile(int val) {
@@ -277,12 +276,12 @@ class _DataState extends State<Data> {
                                       textInputAction: TextInputAction.next,
                                       onChanged: (phone) {
                                         setState(() {
-                                          _countryCode = phone.countryCode;
+                                          countryCode = phone.countryCode;
                                         });
                                       },
-                                      onCountryChanged: (country) {
+                                      onCountryChanged: (countryValue) {
                                         setState(() {
-                                          _country = country.name;
+                                          country = countryValue.name;
                                         });
                                       },
                                     ),
@@ -320,10 +319,13 @@ class _DataState extends State<Data> {
                                                     itemCount: contacts!.length,
                                                     itemBuilder: (context, i) {
                                                       Contact contact = snapshot.data![i];
-                                                      controller.text = contact.phones[0].number;
+                                                      // controller.text = contact.phones[0].number;
                                                       return InkWell(
                                                         onTap: () {
-                                                          setState(() {contact;});
+                                                          setState(() {
+                                                            contact;
+                                                            controller.text = contact.phones[0].number;
+                                                          });
                                                           Navigator.pop(context);
                                                         },
                                                         child: Padding(
