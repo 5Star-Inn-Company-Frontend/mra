@@ -1,4 +1,6 @@
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:local_auth/local_auth.dart';
+import 'package:local_auth/error_codes.dart' as auth_error;
 import 'package:mra/constant/logo.dart';
 import 'package:mra/views/auth/widget/auth_tfield.dart';
 
@@ -13,6 +15,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  late final LocalAuthentication auth;
+  bool _supportState = false;
+
+
   final _storage = FlutterSecureStorage();
 
   bool rememberMe = false;
@@ -32,6 +38,13 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+    auth = LocalAuthentication();
+    auth.isDeviceSupported().then((isSupported) {
+      setState(() {
+        _supportState = isSupported;
+      });
+    }); 
+
     _passwordVisible = true;
     _storage.read(key: 'email').then((value) {
       if (value != null) {
@@ -48,6 +61,36 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     });
+  }
+
+  Future<void> _getAvailableBiometrics() async {
+    List<BiometricType> availableBiometrics = await auth.getAvailableBiometrics();
+    print(availableBiometrics);
+  }
+
+  Future<bool> _authenticate() async {
+    try {
+      bool authenticated = await auth.authenticate(
+        localizedReason: 'Authenticate with biometrics',
+         options: const AuthenticationOptions(
+          biometricOnly: true, useErrorDialogs: true, stickyAuth: true
+        ));
+      return authenticated;
+    } on PlatformException catch (e) {
+      if (e.code == auth_error.notAvailable) {
+        Flushbar(
+          title: "Error!!",
+          message: "Fingerprint is not available",
+        ).show(context);
+      }
+      if (e.code == auth_error.notEnrolled) {
+        Flushbar(
+          title: "Error!!",
+          message: "Fingerprint is not enrolled",
+        ).show(context);
+      }
+      return false;
+    }
   }
 
   @override
@@ -181,7 +224,29 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         InkWell(
-                          onTap: () {Navigator.pushNamed(context, Routes.setFingerPrint);},
+                          onTap: () async {
+                            if (_supportState) {
+                              bool authenticated = await _authenticate();
+                              if (authenticated) {
+                                if (_formKey.currentState!.validate()) {
+                                  await authProvider.login(
+                                    LoginRequest(email: emailController.text, password: passwordContoller.text),
+                                    context
+                                  );
+                                  saveUserDetails();
+                                }
+                              }
+                            } else {
+                              Flushbar(
+                                title: 'Error',
+                                message: 'Fingerprint is not supported on this device',
+                                duration: const Duration(seconds: 3),
+                                icon: Icon(Icons.error, color: Colors.red,),
+                                flushbarPosition: FlushbarPosition.TOP,
+                              ).show(context);
+                            }
+                            // Navigator.pushNamed(context, Routes.setFingerPrint);
+                          },
                           child: Icon(Icons.fingerprint, color: AppColors.plugPrimaryColor, size: 40.sp,),
                         ),
 
