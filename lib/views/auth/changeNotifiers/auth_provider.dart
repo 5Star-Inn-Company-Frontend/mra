@@ -16,7 +16,7 @@ class AuthProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String get errormsg => _errormsg!;
+  String get errormsg => _errormsg;
   String get token => _token!;
   bool get isAuthenticated => _token != null;
 
