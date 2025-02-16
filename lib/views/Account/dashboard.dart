@@ -56,7 +56,6 @@ class _DashBoardState extends State<DashBoard> {
                       ),
           
                       Gap(10.h),
-                      // gridview
                       Container(
                         width: double.infinity,
                         decoration: BoxDecoration(
@@ -69,9 +68,9 @@ class _DashBoardState extends State<DashBoard> {
                           itemCount: gridItems.length,
                           padding: EdgeInsets.zero,
                           gridDelegate:const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
+                            crossAxisCount: 4,
                             crossAxisSpacing: 10,
-                            mainAxisSpacing: 11,
+                            mainAxisSpacing: 10,
                           ),
                           itemBuilder: (ctx, i) {
                             var gridDetails = gridItems[i];
@@ -86,8 +85,8 @@ class _DashBoardState extends State<DashBoard> {
                                 );
                               },
                               child: Container(
-                                height: 70,
-                                width: 100,
+                                // height: 70,
+                                // width: 100,
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(20),
@@ -254,7 +253,8 @@ class _DashBoardState extends State<DashBoard> {
                       ),
           
                       Visibility(
-                        visible: transactionData!.data.isEmpty ? true : false,
+                        // visible: transactionData.data.isEmpty ? true : false,
+                        visible: transactionData != null && transactionData.data.isEmpty,
                         child: Center(
                           child: TextBold(
                             "No Transaction history yet!",
