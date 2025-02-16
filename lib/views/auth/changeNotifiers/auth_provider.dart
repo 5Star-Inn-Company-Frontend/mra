@@ -6,7 +6,7 @@ class AuthProvider with ChangeNotifier {
   final storage = const FlutterSecureStorage();
 
   String? _token;
-  String? _errormsg;
+  String _errormsg = '';
 
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -43,6 +43,7 @@ class AuthProvider with ChangeNotifier {
           // if (isLoading == false) {
           //   Navigator.pop(context);
           // }
+
 
           setLoading(false);
           if (Navigator.canPop(context)) {
