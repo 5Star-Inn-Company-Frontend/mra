@@ -77,12 +77,13 @@ class _DashBoardState extends State<DashBoard> {
                             return InkWell(
                               onTap: () {
                                 // Prevent multiple navigation attempts
-                                if (Navigator.canPop(context)) {
-                                  return;
-                                }
-                                Navigator.push(
-                                  context, MaterialPageRoute(builder: (_) => gridDetails.route),
-                                );
+                                // if (Navigator.canPop(context)) {
+                                //   return;
+                                // }
+                                // Navigator.push(
+                                //   context, MaterialPageRoute(builder: (_) => gridDetails.route),
+                                // );
+                                Navigator.pushNamed(context, gridDetails.route);
                               },
                               child: Container(
                                 // height: 70,

@@ -4,7 +4,7 @@ import 'package:mra/res/import/import.dart';
 class GridModel {
   final String image;
   final String title;
-  final Widget route;
+  final String route;
 
   GridModel({
     required this.image,
@@ -17,11 +17,11 @@ List gridItems = <GridModel>[
   GridModel(
     image: 'assets/images/airtime.png',
     title: 'Airtime',
-    route: const Airtime()
+    route: Routes.airtime
   ),
   GridModel(
     image: 'assets/images/data.png',
-    title: 'Data', route: const Data()
+    title: 'Data', route: Routes.data
   ),
   // GridModel(
   //     image: 'assets/images/transact.png',
@@ -31,11 +31,11 @@ List gridItems = <GridModel>[
   GridModel(
     image: 'assets/images/bulb.png',
     title: 'Electricity',
-    route: Electricity()
+    route: Routes.electricity
   ), 
   GridModel(
     image: 'assets/images/cable.png', 
-    title: 'Cable TV', route: CableTv()
+    title: 'Cable TV', route: Routes.cableTv
   ),
 // GridModel(
   //     image: 'assets/images/pos.png',

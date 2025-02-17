@@ -288,6 +288,7 @@ class CustomDrawer extends StatelessWidget {
               ),
             ],
           ),
+
           SizedBox(
             height: 480,
             width: double.maxFinite,
@@ -302,9 +303,9 @@ class CustomDrawer extends StatelessWidget {
                       ListTile(
                         onTap: () {
                           Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (_) => drawerItems.route));
+                            context,
+                            MaterialPageRoute(builder: (_) => drawerItems.route)
+                          );
                         },
                         leading: Image.asset(
                           drawerItems.image,
@@ -330,6 +331,7 @@ class CustomDrawer extends StatelessWidget {
                   );
                 }),
           ),
+          
           ListTile(
             onTap: () async {
               await user.logout();

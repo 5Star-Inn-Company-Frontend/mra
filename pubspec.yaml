@@ -60,7 +60,7 @@ dependencies:
   flutter_svg: ^2.0.17
   dropdown_button2: ^2.3.9
   file_picker: ^9.0.0
-  saf: ^1.0.3+4
+  
 
 dev_dependencies:
   flutter_test:
