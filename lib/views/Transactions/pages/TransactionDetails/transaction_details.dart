@@ -2,9 +2,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Transactions/model/transaction_model.dart';
 import 'package:screenshot/screenshot.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:saf/saf.dart';
 import 'dart:io';
 // import 'dart:ui' as ui;
-import 'package:path_provider/path_provider.dart';
+// import 'package:path_provider/path_provider.dart';
 import '../../../../res/import/import.dart';
 
 class TransactionDetails extends StatefulWidget {
@@ -48,41 +50,8 @@ class _TransactionDetailsState extends State<TransactionDetails> {
 
   GlobalKey global = GlobalKey();
 
-  // Future<ByteData?> capture(GlobalKey key) async {
-  //   try {
-  //     RenderRepaintBoundary boundary = key.currentContext!.findRenderObject() as RenderRepaintBoundary;
-  //     ui.Image image = await boundary.toImage(pixelRatio: 3.0);
-  //     ByteData? byteData = await image.toByteData(format: ui.ImageByteFormat.png);
-  //     return byteData;
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   return null;
-  // }
 
-  // void _shareScreenshot() async {
-    // final imageBytes = await capture(global);
-    // if (imageBytes != null) {
-    //   final directory = await getTemporaryDirectory();
-    //   final file = File('${directory.path}/screenshot.png');
-    //   await file.writeAsBytes(imageBytes.buffer.asUint8List());
-    //   // ignore: deprecated_member_use
-    //   await Share.shareXFiles([XFile(file.path)],
-    //       subject: 'Transaction receipt',
-    //       text: 'Check out Transaction receipt');
-    // }
-  // }
 
-  Future<void> saveReceipt() async {
-    final directory = await getApplicationDocumentsDirectory();
-    final file = File("${directory.path}/option-vtu-receipt.png");
-
-    Uint8List? image = await screenshotController.capture();
-    if (image != null) {
-      await file.writeAsBytes(image);
-      print("Receipt saved at: ${file.path}");
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +113,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                             fontWeight: FontWeight.w400,
                           ),
                           TextSemiBold(
-                            "${userData?.firstname}",
+                            "${userData?.firstname} ${userData?.lastname}",
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
                           )
@@ -322,7 +291,7 @@ class _TransactionDetailsState extends State<TransactionDetails> {
                 
                 AppVerticalSpacing.verticalSpacingXS,
                 CustomButtonWithIconRight(
-                  onPressed: saveReceipt,
+                  onPressed: () {},
                   title: 'Download',
                   gradient: gradient2,
                 )
