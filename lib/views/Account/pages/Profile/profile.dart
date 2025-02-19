@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import '../../../../res/import/import.dart';
 
@@ -25,6 +26,7 @@ class Profile extends StatelessWidget {
               //         NetworkImage(userData?.profilePhotoUrl ?? ''),
               //   ),
               // ),
+
               AppVerticalSpacing.verticalSpacingL,
               MyText(
                 title: 'First Name',
@@ -33,12 +35,8 @@ class Profile extends StatelessWidget {
                 size: 14,
               ),
               AppVerticalSpacing.verticalSpacingD,
-              HomeScreenCustomTextFormField(
-                obscureText: false,
-                hintText: userData?.firstname,
-                readonly: false,
-                textInputAction: TextInputAction.next,
-              ),
+              _buildProfileItem(userData?.firstname ?? ''),
+
               AppVerticalSpacing.verticalSpacingN,
               MyText(
                 title: 'Last Name',
@@ -47,12 +45,8 @@ class Profile extends StatelessWidget {
                 size: 14,
               ),
               AppVerticalSpacing.verticalSpacingD,
-              HomeScreenCustomTextFormField(
-                obscureText: false,
-                hintText: userData?.lastname,
-                readonly: false,
-                textInputAction: TextInputAction.next,
-              ),
+              _buildProfileItem(userData?.lastname ?? ''),
+              
               AppVerticalSpacing.verticalSpacingN,
               MyText(
                 title: 'Phone Number',
@@ -61,12 +55,8 @@ class Profile extends StatelessWidget {
                 size: 14,
               ),
               AppVerticalSpacing.verticalSpacingD,
-              HomeScreenCustomTextFormField(
-                obscureText: false,
-                readonly: false,
-                hintText: userData?.phone ?? '',
-                textInputAction: TextInputAction.done,
-              ),
+              _buildProfileItem(userData?.phone ?? ''),
+
               AppVerticalSpacing.verticalSpacingN,
               MyText(
                 title: 'Email Address',
@@ -75,12 +65,8 @@ class Profile extends StatelessWidget {
                 size: 14,
               ),
               AppVerticalSpacing.verticalSpacingD,
-              HomeScreenCustomTextFormField(
-                obscureText: false,
-                hintText: userData?.email ?? '',
-                readonly: false,
-                textInputAction: TextInputAction.done,
-              ),
+              _buildProfileItem(userData?.email ?? ''),
+
               AppVerticalSpacing.verticalSpacingN,
               MyText(
                 title: 'Date of birth',
@@ -89,15 +75,26 @@ class Profile extends StatelessWidget {
                 size: 14,
               ),
               AppVerticalSpacing.verticalSpacingD,
-              HomeScreenCustomTextFormField(
-                obscureText: false,
-                hintText: userData?.dob,
-                readonly: false,
-                textInputAction: TextInputAction.done,
-              ),
+              _buildProfileItem(userData?.dob ?? ''),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildProfileItem(String text) {
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10.h),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: AppColors.plugPrimaryColor, width: 1),
+      ),
+      child: Text(
+        text,
+        style: GoogleFonts.poppins(color: Colors.black54, fontSize: 11.sp),
       ),
     );
   }
