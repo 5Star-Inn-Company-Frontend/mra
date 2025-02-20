@@ -44,9 +44,9 @@ class _DashBoardState extends State<DashBoard> {
               children: [
                 const CustomAppBar(),
                 
-                AppVerticalSpacing.verticalSpacingM,
+                Gap(20.h),
                 Padding(
-                  padding:const EdgeInsets.symmetric(vertical: 170, horizontal: 20),
+                  padding:const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -146,7 +146,6 @@ class _DashBoardState extends State<DashBoard> {
                       Gap(screenHeight(context) * 0.025),
           
                       Visibility(
-                        // visible: transactionData?.data == [] ? false : true,
                         visible: transactionData != null && transactionData.data.isNotEmpty,
                         child: ListView.builder(
                           physics: const NeverScrollableScrollPhysics(),

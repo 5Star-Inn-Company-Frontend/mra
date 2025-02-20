@@ -34,8 +34,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
       });
     }
 
-    // final String terminalData;
-
     //user provider
     // final userProvider = Provider.of<UserDataProvider>(context, listen: true);
     // final userData = userProvider.userData?.data;
@@ -75,16 +73,16 @@ class _CustomAppBarState extends State<CustomAppBar> {
           height: 200,
           color: AppColors.plugPrimaryColor,
           width: MediaQuery.of(context).size.width,
-          radius: const BorderRadius.only(bottomLeft: Radius.circular(71), bottomRight: Radius.circular(71),),
+          radius: BorderRadius.only(bottomLeft: Radius.circular(71.r), bottomRight: Radius.circular(71.r),),
         ),
 
         Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: Row(
+          padding: const EdgeInsets.only(top: 50.0,),
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Padding(
-                padding: const EdgeInsets.only(bottom: 80.0, left: 30),
+                padding: const EdgeInsets.only(left: 30),
                 child: IconButton(
                   icon: const Icon(Icons.menu, size: 40, color: plugWhite,),
                   onPressed: () {
@@ -108,151 +106,102 @@ class _CustomAppBarState extends State<CustomAppBar> {
           ),
         ),
 
-        Positioned(
-          left: 55,
-          top: 120,
+        Padding(
+          padding: const EdgeInsets.only(top: 100.0, left: 40),
           child: MyText(
-            title: 'Good $daytime ${userData?.firstname}',
+            title: 'Good $daytime, ${userData?.firstname}',
             weight: FontWeight.w600, align: TextAlign.center, size: 22.5, color: plugWhite, textOverflow: TextOverflow.visible,
           ),
         ),
 
-        Positioned(
-          left: 0,
-          right: 0,
-          top: 160,
-          // bottom: 0,
+        Padding(
+          padding: const EdgeInsets.only(top: 150.0),
           child: Container(
-            margin: const EdgeInsets.symmetric(horizontal: 15),
+            margin: EdgeInsets.symmetric(horizontal: 15.w),
+            padding: EdgeInsets.symmetric(horizontal: 20.w),
             width: double.infinity,
-            height: 200,
+            height: 130.h,
             decoration: BoxDecoration(
               color: Colors.black, borderRadius: BorderRadius.circular(20)
             ),
-          )
-        ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                MyText(title: 'Balance', size: 12.sp, color: AppColors.white, weight: FontWeight.w400,),
 
-        Positioned(
-          left: 30,
-          top: 170,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              MyText(title: 'Balance', size: 16, color: plugWhite, weight: FontWeight.w400,),
+                Text(
+                  formattedAmount,
+                  style: GoogleFonts.roboto(fontSize: 22.sp, color: AppColors.white, fontWeight: FontWeight.w800, letterSpacing: 0.7),
+                ),
+                
+                Gap(10.h),
+                Container(color: AppColors.white, width: 200, height: 2,),
+                
+                Gap(10.h),
+                Row(
+                  children: [
+                    MyText(
+                      title: vacctsData != null && vacctsData.data.isNotEmpty
+                      ? vacctsData.data[0].accountNumber
+                      : 'No Account Number',
+                      size: 15.sp, color: AppColors.white, weight: FontWeight.w600,
+                    ),
 
-              const SizedBox(height: 4),
-              Text(
-                formattedAmount,
-                style: GoogleFonts.roboto(fontSize: 22.sp,  color: plugWhite, fontWeight: FontWeight.w800, letterSpacing: 0.7),
-              ),
-              
-              Gap(10.h),
-              Container(
-                color: Colors.white,
-                width: 200,
-                height: 2,
-              ),
-              
-              Gap(15.h),
-              Row(
-                children: [
-                  MyText(
-                    title: vacctsData != null && vacctsData.data.isNotEmpty
-                    ? vacctsData.data[0].accountNumber
-                    : 'No Account Number',
-                    size: 15.sp, color: plugWhite, weight: FontWeight.w600,
-                  ),
-
-                  Gap(12.w),
-                  GestureDetector(
-                    onTap: () async {
-                      print('Account number copied');
-                      if (vacctsData != null && vacctsData.data.isNotEmpty) {
-                        await FlutterClipboard.copy('Account Number: ${vacctsData.data[0].accountNumber}')
-                          .then((value) => Flushbar(
-                            message: 'Account number copied to clipboard',
+                    Gap(12.w),
+                    TouchableOpacity(
+                      onTap: () async {
+                        print('Account number copied');
+                        if (vacctsData != null && vacctsData.data.isNotEmpty) {
+                          await FlutterClipboard.copy('Account Number: ${vacctsData.data.first.accountNumber}')
+                            .then((value) => Flushbar(
+                              message: 'Account number copied to clipboard',
+                              flushbarStyle: FlushbarStyle.GROUNDED,
+                              isDismissible: true,
+                              flushbarPosition: FlushbarPosition.TOP,
+                              duration: const Duration(seconds: 2),
+                              backgroundColor: Colors.red,
+                            ).show(context));
+                        } 
+                        else {
+                          Flushbar(
+                            message: 'No account number to copy',
                             flushbarStyle: FlushbarStyle.GROUNDED,
                             isDismissible: true,
                             flushbarPosition: FlushbarPosition.TOP,
                             duration: const Duration(seconds: 2),
                             backgroundColor: Colors.red,
-                          ).show(context));
-                      } 
-                      else {
-                        Flushbar(
-                          message: 'No account number to copy',
-                          flushbarStyle: FlushbarStyle.GROUNDED,
-                          isDismissible: true,
-                          flushbarPosition: FlushbarPosition.TOP,
-                          duration: const Duration(seconds: 2),
-                          backgroundColor: Colors.red,
-                        ).show(context);
-                      }
-                    },
-                    child: const Icon(Icons.copy_rounded, color: AppColors.white, size: 50),
-                  ),
+                          ).show(context);
+                        }
+                      },
+                      child: const Icon(Icons.copy_sharp, color: AppColors.white,),
+                    )
+                  ],
+                ),
 
-                  // TouchableOpacity(
-                  //   onTap: () async {
-                  //     print('Account number copied');
-                  //     if (vacctsData != null && vacctsData.data.isNotEmpty) {
-                  //       await FlutterClipboard.copy('Account Number: ${vacctsData.data.first.accountNumber}')
-                  //         .then((value) => Flushbar(
-                  //           message: 'Account number copied to clipboard',
-                  //           flushbarStyle: FlushbarStyle.GROUNDED,
-                  //           isDismissible: true,
-                  //           flushbarPosition: FlushbarPosition.TOP,
-                  //           duration: const Duration(seconds: 2),
-                  //           backgroundColor: Colors.red,
-                  //         ).show(context));
-                  //     } 
-                  //     else {
-                  //       Flushbar(
-                  //         message: 'No account number to copy',
-                  //         flushbarStyle: FlushbarStyle.GROUNDED,
-                  //         isDismissible: true,
-                  //         flushbarPosition: FlushbarPosition.TOP,
-                  //         duration: const Duration(seconds: 2),
-                  //         backgroundColor: Colors.red,
-                  //       ).show(context);
-                  //     }
-                  //   },
-                  //   child: const Icon(Icons.copy_sharp, color: AppColors.white,),
-                  // )
-                ],
-              ),
+                AppVerticalSpacing.verticalSpacingS,
+                MyText(
+                  title: vacctsData != null && vacctsData.data.isNotEmpty
+                  ? vacctsData.data[0].provider.toUpperCase()
+                  : 'No Bank Name',
+                  size: 12.sp,
+                  color: AppColors.white,
+                  maxLines: 1,
+                  textOverflow: TextOverflow.ellipsis
+                ),
 
-              AppVerticalSpacing.verticalSpacingS,
-              MyText(
-                title: vacctsData != null && vacctsData.data.isNotEmpty
-                ? vacctsData.data[0].provider.toUpperCase()
-                : 'No Bank Name',
-                size: 12.sp,
-                color: AppColors.white,
-                maxLines: 1,
-                textOverflow: TextOverflow.ellipsis
-              ),
-
-              Gap(5.h),
-              MyText(
-                title: vacctsData != null && vacctsData.data.isNotEmpty
-                ? vacctsData.data[0].accountName
-                : 'No Account Name',
-                size: 12.sp,
-                color: AppColors.white,
-                maxLines: 1,
-                textOverflow: TextOverflow.ellipsis
-              ), 
-
-              // AppVerticalSpacing.verticalSpacingS,
-              // MyText(
-              //   title: terminalData.toString(),
-              //   size: 16,
-              //   color: plugWhite,
-              //   weight: FontWeight.w400,
-              // ),
-            ],
+                Gap(5.h),
+                MyText(
+                  title: vacctsData != null && vacctsData.data.isNotEmpty
+                  ? vacctsData.data[0].accountName
+                  : 'No Account Name',
+                  size: 12.sp,
+                  color: AppColors.white,
+                  maxLines: 1,
+                  textOverflow: TextOverflow.ellipsis
+                ), 
+              ],
+            ),
           ),
         ),
       ],

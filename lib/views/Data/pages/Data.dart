@@ -1,13 +1,10 @@
 import 'dart:math';
-
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Airtime/model/airtime_provider_model.dart';
 import 'package:mra/views/Airtime/service/airtime_service.dart';
 import 'package:mra/views/Data/model/data_plans_model.dart';
 import 'package:mra/views/Data/model/data_types_model.dart';
-import 'package:mra/views/Transfer/constants/textField.dart';
 import '../../../res/import/import.dart';
 
 class Data extends StatefulWidget {
@@ -19,7 +16,7 @@ class Data extends StatefulWidget {
 
 class _DataState extends State<Data> {
   TextEditingController controller = TextEditingController();
-  TextEditingController phonecontroller = TextEditingController();
+  TextEditingController phoneController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
   int? selectedProviderIndex;
@@ -111,12 +108,9 @@ class _DataState extends State<Data> {
     if (isGranted) {
       return await FastContacts.getAllContacts();
     }
-    if (mounted) {
-      setState(() {});
-    }
+    setState(() {});
     return [];
   }
-
 
   @override
   void initState() {
@@ -234,59 +228,48 @@ class _DataState extends State<Data> {
                         ),
 
                         AppVerticalSpacing.verticalSpacingS,
-                        MyText(
-                          title: 'Mobile Number',
-                          size: 14,
-                          color: plugSecondaryTextColor,
-                          weight: FontWeight.w400,
-                        ),
+                        MyText(title: 'Mobile Number', size: 14, color: plugSecondaryTextColor, weight: FontWeight.w400,),
 
                         AppVerticalSpacing.verticalSpacingS,
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Expanded(
-                                    child: IntlPhoneField(
-                                      controller: phonecontroller,
-                                      decoration: textInputDecoration.copyWith(
-                                          hintText: '0000 0000 0000',
-                                          enabledBorder: InputBorder.none,
-                                          focusedBorder: InputBorder.none,
-                                          errorBorder: InputBorder.none,
-                                          fillColor: Color(0xffF5F5F5),
-                                          focusedErrorBorder:InputBorder.none
+                              child: Container(
+                                color: const Color(0xffF5F5F5),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      Image.asset('assets/images/naijaimg.png'),
+                                      
+                                      AppHorizontalSpacing.horizontalSpacingS,
+                                      MyText(title: '+234', color: plugBlack,size: 16,),
+                                      
+                                      Expanded(
+                                        child: CustomInAppTextFormField(
+                                          obscureText: false,
+                                          readonly: false,
+                                          fillColor: const Color(0xffF5F5F5),
+                                          controller: phoneController,
+                                          validator: (val) {
+                                            if (val!.isEmpty || val.length < 10) {
+                                              return ("Input your 11 digits phone number");
+                                            }
+                                            if (val.length == 10 && val[0] != '0') {
+                                              phoneController.text = '0$val';
+                                            }
+                                            return null;
+                                          },
+                                          hintText: 'Enter phone number',
+                                          textInputType: TextInputType.number,
+                                          textInputAction: TextInputAction.done,
                                         ),
-                                      initialCountryCode: 'NG',
-                                      initialValue: '00000000000',
-                                      autofocus: false,
-                                      validator: (p0) {
-                                        if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
-                                          return ("Invalid phone number");
-                                        }
-                                        return null;
-                                      },
-                                      flagsButtonMargin: const EdgeInsets.only(left: 10),
-                                      dropdownIconPosition: IconPosition.trailing,
-                                      dropdownIcon: const Icon(Icons.keyboard_arrow_down, color: AppColors.textPrimaryColor,),
-                                      disableLengthCheck: true,
-                                      textInputAction: TextInputAction.next,
-                                      onChanged: (phone) {
-                                        setState(() {
-                                          countryCode = phone.countryCode;
-                                        });
-                                      },
-                                      onCountryChanged: (countryValue) {
-                                        setState(() {
-                                          country = countryValue.name;
-                                        });
-                                      },
-                                    ),
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                ),
                               ),
                             ),
 
@@ -298,101 +281,90 @@ class _DataState extends State<Data> {
                                   context: context,
                                   builder: (context) => customBbox(
                                     color: plugWhite,
-                                    radius: const BorderRadius.only(
-                                      topLeft: Radius.circular(30),
-                                      topRight: Radius.circular(30),
-                                    ),
+                                    radius: const BorderRadius.only(topLeft: Radius.circular(30),topRight: Radius.circular(30),),
                                     widget: SizedBox(
                                       height: 400,
                                       width: MediaQuery.of(context).size.width,
                                       child: FutureBuilder(
-                                          future: getContacts(),
-                                          builder: (context, snapshot) {
-                                            if (snapshot.data == null) {
-                                              return const Text(
-                                                "No contacts found"
-                                              );
-                                            }
-                                            var contacts = snapshot.data;
-                                            return snapshot.hasData
-                                                ? ListView.builder(
-                                                    itemCount: contacts!.length,
-                                                    itemBuilder: (context, i) {
-                                                      Contact contact = snapshot.data![i];
-                                                      // controller.text = contact.phones[0].number;
-                                                      return InkWell(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            contact;
-                                                            controller.text = contact.phones[0].number;
-                                                          });
-                                                          Navigator.pop(context);
-                                                        },
-                                                        child: Padding(
-                                                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                                                          child: Column(
+                                        future: getContacts(),
+                                        builder: (context, snapshot) {
+                                          var contacts = snapshot.data;
+
+                                          return snapshot.hasData
+                                          ? ListView.builder(
+                                              itemCount: contacts!.length,
+                                              itemBuilder: (context, i) {
+                                                Contact contact = snapshot.data![i];
+                                                // phoneController.text = contact.phones[0].number;
+
+                                                return InkWell(
+                                                  onTap: () {
+                                                    setState(() {
+                                                      contact;
+                                                      phoneController.text = contact.phones[0].number;
+                                                    });
+                                                    Navigator.pop(context);
+                                                  },
+                                                  child: Padding(
+                                                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                                                    child: Column(
+                                                      children: [
+                                                        Gap(10.h),
+                                                        Container(
+                                                          padding: const EdgeInsets.all(10),
+                                                          height: 70,
+                                                          width: MediaQuery.of(context).size.width,
+                                                          child:
+                                                            Row(
+                                                            crossAxisAlignment: CrossAxisAlignment.start,
                                                             children: [
-                                                              AppVerticalSpacing.verticalSpacingD,
-                                                              Container(
-                                                                padding: const EdgeInsets.all(10),
-                                                                height: 70,
-                                                                width: MediaQuery.of(context).size.width,
-                                                                child: Row(
-                                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                                  children: [
-                                                                    CircleAvatar(
-                                                                      radius: 20,
-                                                                      child: Icon(Icons.person, color:plugTetTextColor,),
-                                                                    ),
-
-                                                                    AppHorizontalSpacing.horizontalSpacingS,
-                                                                    Column(
-                                                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                                                      children: [
-                                                                        MyText(
-                                                                          title: contact.displayName,
-                                                                          size: 16,
-                                                                          color: plugBlack,
-                                                                          weight: FontWeight.w700,
-                                                                        ),
-
-                                                                        MyText(
-                                                                          title: contact.phones[0].number,
-                                                                          size: 16,
-                                                                          color: plugBlack,
-                                                                          weight: FontWeight.w700,
-                                                                        ),
-                                                                      ],
-                                                                    ),
-                                                                  ],
-                                                                ),
+                                                              CircleAvatar(
+                                                                radius: 20,
+                                                                child: Icon(Icons.person, color: plugTetTextColor,),
                                                               ),
-                                                              const Divider(color: Color(0xffF5F5F5), thickness: 2,),
+
+                                                              Gap(20.w),
+                                                              Column(
+                                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                                children: [
+                                                                  MyText(
+                                                                    title: contact.displayName,
+                                                                    size: 16,
+                                                                    color: plugBlack,
+                                                                    weight: FontWeight.w700,
+                                                                  ),
+                                                                  MyText(
+                                                                    title: contact.phones[0].number,
+                                                                    size: 16,
+                                                                    color: plugBlack,
+                                                                    weight: FontWeight.w600,
+                                                                  ),
+                                                                ],
+                                                              ),
                                                             ],
                                                           ),
                                                         ),
-                                                      );
-                                                    }
-                                                  )
-                                                : snapshot.hasError
-                                                ? Center(
-                                                    child: MyText(
-                                                      title:'No Contacts Available On this device',
-                                                      size: 24,
-                                                      weight: FontWeight.w700,
-                                                      color: plugBlack,
+
+                                                        const Divider(color: Color(0xffF5F5F5), thickness: 2,),
+                                                      ],
                                                     ),
-                                                  )
-                                                : Center(
-                                                    child: MyText(
-                                                      title: 'LOADING.....',
-                                                      size: 24,
-                                                      weight:
-                                                          FontWeight.w700,
-                                                      color: plugBlack,
-                                                    ),
-                                                  );
-                                          }),
+                                                  ),
+                                                );
+                                              })
+                                              : snapshot.hasError
+                                              ? Center(
+                                                  child: MyText(
+                                                    title: 'NO Contacts Available On this device',
+                                                    size: 24, weight: FontWeight.w700, color: plugBlack,
+                                                  ),
+                                                )
+                                              : Center(
+                                                  child: MyText(
+                                                    title: 'LOADING.....', size: 24, weight: FontWeight.w700, color: plugBlack,
+                                                  ),
+                                                );
+                                          }
+                                        ),
                                     ),
                                   ),
                                 );
@@ -405,11 +377,7 @@ class _DataState extends State<Data> {
                         AppVerticalSpacing.verticalSpacingN,
                         MyText(
                           title: 'Select Data Type',
-                          fonts: GoogleFonts.roboto(
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14,
-                            color: plugTextColor,
-                          ),
+                          fonts: GoogleFonts.roboto(fontWeight: FontWeight.w400, fontSize: 14, color: plugTextColor,),
                         ),
 
                         Gap(10.h),
@@ -501,24 +469,24 @@ class _DataState extends State<Data> {
                         Gap(30.h),
                         CustomButtonWithIconRight(
                           onPressed: () async {
-                            if (selectedRadioTile != null && phonecontroller.text.length != 10 || phonecontroller.text.length != 11 &&
+                            if (selectedRadioTile != null && phoneController.text.length != 10 || phoneController.text.length != 11 &&
                               _formKey.currentState!.validate()) {
                               final random = Random();
                               final refId = 'ref${random.nextInt(999999999)}d';
 
                               await dataNotifier.purchaseData(
                                 DataPayment(
-                                  networkID: selectedPlanId.toString(), phone: phonecontroller.text
+                                  networkID: selectedPlanId.toString(), phone: phoneController.text
                                 ),
                                 context
                               );
                               
                               dataNotifier.setDataPayment(
                                 selectedPlanId.toString(),
-                                phonecontroller.text,
+                                phoneController.text,
                               );
                               dataNotifier.setNetworkID(selectedPlanId.toString());
-                              dataNotifier.setPhone(phonecontroller.text);
+                              dataNotifier.setPhone(phoneController.text);
                               dataNotifier.setReference(refId);
                               dataNotifier.setProvider(provider);
                               dataNotifier.setPlanName(selectedPlanName.toString());
@@ -539,7 +507,7 @@ class _DataState extends State<Data> {
                                 backgroundColor: Colors.red,
                               ).show(context);
                             } 
-                            else if (phonecontroller.text.length != 10 || phonecontroller.text.length != 11) {
+                            else if (phoneController.text.length != 10 || phoneController.text.length != 11) {
                               Flushbar(
                                 message: 'Input a valid phone number, to continue',
                                 duration: Duration(seconds: 3),
