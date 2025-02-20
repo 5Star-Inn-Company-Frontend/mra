@@ -107,7 +107,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         ),
 
         Padding(
-          padding: const EdgeInsets.only(top: 100.0, left: 40),
+          padding: const EdgeInsets.only(top: 120.0, left: 60),
           child: MyText(
             title: 'Good $daytime, ${userData?.firstname}',
             weight: FontWeight.w600, align: TextAlign.center, size: 22.5, color: plugWhite, textOverflow: TextOverflow.visible,
@@ -115,7 +115,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         ),
 
         Padding(
-          padding: const EdgeInsets.only(top: 150.0),
+          padding: const EdgeInsets.only(top: 170.0),
           child: Container(
             margin: EdgeInsets.symmetric(horizontal: 15.w),
             padding: EdgeInsets.symmetric(horizontal: 20.w),
