@@ -165,19 +165,21 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   ),
 
                   Gap(12.w),
-                  TouchableOpacity(
+                  GestureDetector(
                     onTap: () async {
+                      print('Account number copied');
                       if (vacctsData != null && vacctsData.data.isNotEmpty) {
-                        await FlutterClipboard.copy('Account Number: ${vacctsData.data.first.accountNumber}')
+                        await FlutterClipboard.copy('Account Number: ${vacctsData.data[0].accountNumber}')
                           .then((value) => Flushbar(
                             message: 'Account number copied to clipboard',
                             flushbarStyle: FlushbarStyle.GROUNDED,
                             isDismissible: true,
                             flushbarPosition: FlushbarPosition.TOP,
                             duration: const Duration(seconds: 2),
-                            backgroundColor: Colors.green,
+                            backgroundColor: Colors.red,
                           ).show(context));
-                      } else {
+                      } 
+                      else {
                         Flushbar(
                           message: 'No account number to copy',
                           flushbarStyle: FlushbarStyle.GROUNDED,
@@ -188,8 +190,36 @@ class _CustomAppBarState extends State<CustomAppBar> {
                         ).show(context);
                       }
                     },
-                    child: const Icon(Icons.copy_sharp, color: AppColors.white,),
-                  )
+                    child: const Icon(Icons.copy_rounded, color: AppColors.white, size: 50),
+                  ),
+
+                  // TouchableOpacity(
+                  //   onTap: () async {
+                  //     print('Account number copied');
+                  //     if (vacctsData != null && vacctsData.data.isNotEmpty) {
+                  //       await FlutterClipboard.copy('Account Number: ${vacctsData.data.first.accountNumber}')
+                  //         .then((value) => Flushbar(
+                  //           message: 'Account number copied to clipboard',
+                  //           flushbarStyle: FlushbarStyle.GROUNDED,
+                  //           isDismissible: true,
+                  //           flushbarPosition: FlushbarPosition.TOP,
+                  //           duration: const Duration(seconds: 2),
+                  //           backgroundColor: Colors.red,
+                  //         ).show(context));
+                  //     } 
+                  //     else {
+                  //       Flushbar(
+                  //         message: 'No account number to copy',
+                  //         flushbarStyle: FlushbarStyle.GROUNDED,
+                  //         isDismissible: true,
+                  //         flushbarPosition: FlushbarPosition.TOP,
+                  //         duration: const Duration(seconds: 2),
+                  //         backgroundColor: Colors.red,
+                  //       ).show(context);
+                  //     }
+                  //   },
+                  //   child: const Icon(Icons.copy_sharp, color: AppColors.white,),
+                  // )
                 ],
               ),
 
