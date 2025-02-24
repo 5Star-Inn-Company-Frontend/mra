@@ -1,3 +1,4 @@
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:mra/utils/widget/appbar_two.dart';
 import 'package:mra/views/Account/pages/Referrals/model/referral_model.dart';
 import '../../../../res/import/import.dart';
@@ -7,6 +8,7 @@ class Referrals extends StatelessWidget {
 
 Future<ReferralModel?> loadReferralsList() async {
   final token = await const FlutterSecureStorage().read(key: 'token');
+  print(token);
   try {
     final response = await ApiService.dio.get(
       '/referrals-list',
@@ -98,16 +100,11 @@ Future<ReferralModel?> loadReferralsList() async {
                 borderColor: AppColors.plugPrimaryColor,
                 radius: BorderRadius.circular(8),
                 widget: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 12),
                   child: Row(
                     children: [
                       Expanded(
-                        child: HomeScreenCustomTextFormField(
-                          obscureText: false,
-                          readonly: false,
-                          textInputAction: TextInputAction.next,
-                          color: Colors.transparent,
-                        ),
+                        child: Text('1', style: GoogleFonts.poppins(fontSize: 12.sp),)
                       ),
                       customBbox(
                         width: 52,
@@ -154,9 +151,14 @@ Future<ReferralModel?> loadReferralsList() async {
                       physics: NeverScrollableScrollPhysics(),
                       itemCount: referrals.length,
                       itemBuilder: (context, index) {
+                        final referral = referrals[index];
                         return ListTile(
-                          title: Text('Referral ${index + 1}'),
-                          subtitle: Text(referrals[index].toString()),
+                          title: Text('Referral ${index + 1}', style: GoogleFonts.poppins(fontSize: 13.5.sp),),
+                          subtitle: Text(
+                            'Name: ${referral.firstname} ${referral.lastname}\n'
+                            'Phone: ${referral.phone}',
+                            style: GoogleFonts.poppins(fontSize: 11.5.sp),
+                          ),
                         );
                       },
                     );
